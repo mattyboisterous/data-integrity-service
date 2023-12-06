@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataIntegrityService.Console", "DataIntegrityService.Console\DataIntegrityService.Console.csproj", "{7947AE37-D049-47FA-BB0D-1A9A4B0EADBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataIntegrityService.Core", "DataIntegrityService.Core\DataIntegrityService.Core.csproj", "{BB8E7F17-61D2-4FD0-A10A-18776B81717C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7947AE37-D049-47FA-BB0D-1A9A4B0EADBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7947AE37-D049-47FA-BB0D-1A9A4B0EADBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7947AE37-D049-47FA-BB0D-1A9A4B0EADBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7947AE37-D049-47FA-BB0D-1A9A4B0EADBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB8E7F17-61D2-4FD0-A10A-18776B81717C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB8E7F17-61D2-4FD0-A10A-18776B81717C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB8E7F17-61D2-4FD0-A10A-18776B81717C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8E7F17-61D2-4FD0-A10A-18776B81717C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {47195169-4D03-4BE5-BBE3-F48CFC74E3CB}
+	EndGlobalSection
+EndGlobal
