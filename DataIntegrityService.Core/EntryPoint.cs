@@ -1,6 +1,7 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Providers;
+using DataIntegrityService.Core.Services;
 using DataIntegrityService.Core.Workflows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -61,6 +62,7 @@ namespace DataIntegrityService.Core
       services.AddTransient<IDataService, EvidenceNoteService>();
       services.AddTransient<IDataService, MemoService>();
       services.AddTransient<IDataService, ProvisionService>();
+      services.AddTransient<IDataService, QualityAreaService>();
       services.AddTransient<IDataService, VisitService>();
       
       services.AddTransient<DataServiceFactory>();
