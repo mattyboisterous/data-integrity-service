@@ -13,8 +13,11 @@ namespace DataIntegrityService.Core.Workflows
 {
   public class DeleteInsertAll
   {
-    async void Execute<T>(IDataService dataService, T modelType, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
+    public async void Execute<T>(IDataService dataService, T modelType, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
     {
+
+      // todo: Mapper to translate Http models to local models possibly?
+
       try
       {
         if (dataService is IHttpGetService)

@@ -1,6 +1,7 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Providers;
+using DataIntegrityService.Core.Workflows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,9 +39,10 @@ namespace DataIntegrityService.Core
           dataService.Initialise();
 
           // todo: determine pattern, invoke correct workflow...
-          // todo: call "Execute" on workflow service...
+          var workflow = new DeleteInsertAll();
 
-
+          // call "Execute" on workflow service...
+          workflow.Execute(dataService, Type.GetType(dataService.Settings.Models.Source), null, null);
         }
       }
     }
