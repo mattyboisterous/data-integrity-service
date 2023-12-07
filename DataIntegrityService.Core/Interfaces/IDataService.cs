@@ -11,5 +11,7 @@ namespace DataIntegrityService.Core.Interfaces
   {
     string Key { get; }
     DataServiceConfiguration Settings { get; set; }
+
+    void Initialise();
   }
 }

@@ -20,7 +20,7 @@ namespace DataIntegrityService.Core.Configuration
     public required string DatasetGroup { get; set; }
     public required string DatasetMethod { get; set; }
     public required List<string> Dependencies { get; set; }
-    public required string Http { get; set; }
+    public required HttpServiceConfiguration Http { get; set; }
   }
 
   public sealed class HttpServiceConfiguration

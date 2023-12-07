@@ -34,6 +34,12 @@ namespace DataIntegrityService.Core
         {
           var dataService = factory.GetDataService(serviceConfiguration);
 
+          // initialise service...
+          dataService.Initialise();
+
+          // todo: determine pattern, invoke correct workflow...
+          // todo: call "Execute" on workflow service...
+
 
         }
       }

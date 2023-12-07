@@ -11,6 +11,7 @@ namespace DataIntegrityService.Core.Models
   {
     public T Data { get; set; }
     public bool MethodCancelled { get; set; }
+    public bool MethodSucceeded { get; set; } = true;
     //public Error Error { get; set; }
     //public bool HasError
     //{

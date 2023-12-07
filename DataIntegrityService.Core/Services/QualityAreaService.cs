@@ -6,18 +6,15 @@ using DataIntegrityService.Core.Services.Local;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataIntegrityService.Core.Providers
+namespace DataIntegrityService.Core.Services
 {
-  public class ProvisionService : IDataService, IHttpGetService, ILocalCacheService
+  public class QualityAreaService : IDataService, IHttpGetService, ILocalDbService
   {
-    public string Key => "Provision";
+    public string Key => "QualityArea";
     public required DataServiceConfiguration Settings { get; set; }
-
-    public string CacheKeyMap => "provision-{0}";
 
     public void Initialise()
     {
@@ -33,24 +30,14 @@ namespace DataIntegrityService.Core.Providers
 
     #endregion
 
-    #region ILocalCacheService members
+    #region ILocalDbService
 
-    public List<T> GetAllLocal<T>()
+    public int InsertAll<T>(List<T> data)
     {
       throw new NotImplementedException();
     }
 
-    public string GetCacheKey(string primaryKey)
-    {
-      return string.Format(CacheKeyMap, primaryKey);
-    }
-
-    public void Insert<T>(string key, T data)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void RemoveIfExists<T>(string key)
+    public int DeleteAll<T>()
     {
       throw new NotImplementedException();
     }

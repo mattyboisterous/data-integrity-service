@@ -12,5 +12,10 @@ namespace DataIntegrityService.Core.Providers
   {
     public string Key => "Visit";
     public required DataServiceConfiguration Settings { get; set; }
+
+    public void Initialise()
+    {
+      throw new NotImplementedException();
+    }
   }
 }

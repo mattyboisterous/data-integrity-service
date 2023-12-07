@@ -13,9 +13,9 @@ namespace DataIntegrityService.Core.Providers
     public string Key => "EvidenceNote";
     public required DataServiceConfiguration Settings { get; set; }
 
-    public void Execute()
+    public void Initialise()
     {
-      Console.WriteLine($"EvidenceNoteService doing some work...");
+      throw new NotImplementedException();
     }
   }
 }

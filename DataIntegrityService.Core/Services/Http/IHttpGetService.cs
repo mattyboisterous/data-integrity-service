@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataIntegrityService.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace DataIntegrityService.Core.Services.Http
 {
   public interface IHttpGetService
   {
-    Task<T> HttpGet<T>(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null!);
+    Task<DataResponse<List<T>>> HttpGetAll<T>(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null!);
   }
 }
