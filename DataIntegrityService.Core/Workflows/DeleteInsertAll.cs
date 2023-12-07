@@ -22,9 +22,7 @@ namespace DataIntegrityService.Core.Workflows
       {
         if (dataService is IHttpGetService)
         {
-          // todo: need to format url mask...
-
-          var dataResponse = await ((IHttpGetService)dataService).HttpGetAll<T>(dataService.Settings.Http.Get, messageHandler, cancellationTokenSource);
+          var dataResponse = await ((IHttpGetService)dataService).HttpGetAll<T>(((IHttpGetService)dataService).Url, messageHandler, cancellationTokenSource);
 
           if (dataResponse != null && dataResponse.MethodSucceeded)
           {

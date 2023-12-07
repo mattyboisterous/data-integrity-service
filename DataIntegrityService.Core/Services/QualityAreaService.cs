@@ -14,11 +14,14 @@ namespace DataIntegrityService.Core.Services
   public class QualityAreaService : IDataService, IHttpGetService, ILocalDbService
   {
     public string Key => "QualityArea";
+
     public required DataServiceConfiguration Settings { get; set; }
+    
+    public required string Url { get; set; }
 
     public void Initialise()
     {
-      throw new NotImplementedException();
+      Url = Settings.Http.Get!;
     }
 
     #region IHttpGetService members

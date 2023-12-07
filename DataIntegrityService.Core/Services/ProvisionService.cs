@@ -15,13 +15,16 @@ namespace DataIntegrityService.Core.Providers
   public class ProvisionService : IDataService, IHttpGetService, ILocalCacheService
   {
     public string Key => "Provision";
+
     public required DataServiceConfiguration Settings { get; set; }
 
     public string CacheKeyMap => "provision-{0}";
 
+    public required string Url { get; set; }
+
     public void Initialise()
     {
-      throw new NotImplementedException();
+      // do nothing...
     }
 
     #region IHttpGetService members

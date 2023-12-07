@@ -9,6 +9,8 @@ namespace DataIntegrityService.Core.Services.Http
 {
   public interface IHttpGetService
   {
+    string Url { get; set; }
+
     Task<DataResponse<List<T>>> HttpGetAll<T>(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null!);
   }
 }
