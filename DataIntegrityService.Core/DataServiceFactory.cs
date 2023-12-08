@@ -11,6 +11,7 @@ namespace DataIntegrityService.Core
   public class DataServiceFactory
   {
     private readonly IEnumerable<IDataService> _dataServices;
+    
     public DataServiceFactory(IEnumerable<IDataService> dataServices)
     {
       _dataServices = dataServices;

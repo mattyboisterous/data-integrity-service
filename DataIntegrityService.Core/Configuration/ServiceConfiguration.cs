@@ -18,7 +18,8 @@ namespace DataIntegrityService.Core.Configuration
     public required string Key { get; set; }
     public required string DatasetName { get; set; }
     public required string DatasetGroup { get; set; }
-    public required string DatasetMethod { get; set; }
+    public required string DataWorkflow { get; set; }
+    public required string MapperKey { get; set; }
     public required ModelTypes Models { get; set; }
     public required List<string> Dependencies { get; set; }
     public required HttpServiceConfiguration Http { get; set; }

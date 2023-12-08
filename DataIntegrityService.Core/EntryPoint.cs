@@ -1,5 +1,6 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Interfaces;
+using DataIntegrityService.Core.Mappers;
 using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
 using DataIntegrityService.Core.Workflows;
@@ -19,7 +20,8 @@ namespace DataIntegrityService.Core
     public static void Run()
     {
       var serviceProvider = CreateServiceProvider();
-      var factory = serviceProvider.GetService<DataServiceFactory>()!;
+      var serviceFactory = serviceProvider.GetService<DataServiceFactory>()!;
+      var workflowFactory = serviceProvider.GetService<WorkflowServiceFactory>()!;
 
       // Build a config object, using env vars and JSON providers.
       IConfigurationRoot config = new ConfigurationBuilder()
@@ -34,16 +36,20 @@ namespace DataIntegrityService.Core
       {
         foreach (var serviceConfiguration in settings.DataServices)
         {
-          var dataService = factory.GetDataService(serviceConfiguration);
+          var dataService = serviceFactory.GetDataService(serviceConfiguration);
+          var workflow = workflowFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
 
           // initialise service...
           dataService.Initialise();
 
-          // todo: determine pattern, invoke correct workflow...
-          var workflow = new DeleteInsertAll();
+          // determine concrete types...
+          var sourceType = Type.GetType(dataService.Settings.Models.Source);
+          var destinationType = Type.GetType(dataService.Settings.Models.Destination);
+          
+          //var mapper = Type.GetType(dataService.Settings.MapperKey);
 
-          // call "Execute" on workflow service...
-          workflow.Execute(dataService, Type.GetType(dataService.Settings.Models.Source), null, null);
+          // perform work using this workflow...
+          //workflow.Execute(dataService, sourceType, destinationType, null, null); 
         }
       }
     }
@@ -64,8 +70,11 @@ namespace DataIntegrityService.Core
       services.AddTransient<IDataService, ProvisionService>();
       services.AddTransient<IDataService, QualityAreaService>();
       services.AddTransient<IDataService, VisitService>();
-      
+
+      services.AddTransient<IWorkflowService, DeleteInsertAllFlow>();
+
       services.AddTransient<DataServiceFactory>();
+      services.AddTransient<WorkflowServiceFactory>();
     }
   }
 }
