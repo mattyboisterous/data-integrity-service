@@ -15,36 +15,39 @@ namespace DataIntegrityService.Core.Workflows
   {
     public string Key => "DeleteInsertAll";
 
-    public async Task Execute<T1, T2>(IDataService dataService, T1 sourceType, T2 destinationType, IModelMapper<T1, T2> modelMapper, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
+    public async Task Execute<T1, T2>(IDataService dataService, T1 sourceType, T2 destinationType, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
     {
       try
       {
-        var dataResponse = await ((IHttpGetService)dataService).HttpGetAll<T1>(((IHttpGetService)dataService).Url, messageHandler, cancellationTokenSource);
-
-        if (dataResponse != null && dataResponse.MethodSucceeded)
+        if (dataService.IsInitialised)
         {
-          // perform nay model mapping before attempting to store data locally...
-          var data = modelMapper.MapDataModels(dataResponse.Data);
+          var dataResponse = await ((IHttpGetService)dataService).HttpGetAll<T1>(((IHttpGetService)dataService).Url, messageHandler, cancellationTokenSource);
 
-          // delete and insert all in cache, if configured...
-          if (dataService is ILocalCacheService)
+          if (dataResponse != null && dataResponse.MethodSucceeded)
           {
-            ((ILocalCacheService)dataService).RemoveIfExists<T2>(((ILocalCacheService)dataService).CacheKeyMap); // todo: this is the map, need to determine final key, same with Url...
+            // perform any model mapping before attempting to store data locally...
+            //var data = modelMapper.MapDataModels(dataResponse.Data);
 
-            ((ILocalCacheService)dataService).Insert(((ILocalCacheService)dataService).CacheKeyMap, dataResponse.Data);
+            // delete and insert all in cache, if configured...
+            if (dataService is ILocalCacheService)
+            {
+              ((ILocalCacheService)dataService).RemoveIfExists<IDataModel>(((ILocalCacheService)dataService).CacheKeyMap); // todo: this is the map, need to determine final key, same with Url...
+
+              ((ILocalCacheService)dataService).Insert(((ILocalCacheService)dataService).CacheKeyMap, dataResponse.Data);
+            }
+
+            // delete and insert all in Db, if configured...
+            if (dataService is ILocalDbService)
+            {
+              ((ILocalDbService)dataService).DeleteAll<IDataModel>();
+
+              ((ILocalDbService)dataService).InsertAll(dataResponse.Data);
+            }
           }
 
-          // delete and insert all in Db, if configured...
-          if (dataService is ILocalDbService)
-          {
-            ((ILocalDbService)dataService).DeleteAll<T2>();
-
-            ((ILocalDbService)dataService).InsertAll(dataResponse.Data);
-          }
+          //CurrentRunState.BytesDownloaded += Utilities.GetObjectSize(qas);
+          //dataSet.Count = qas.Count;
         }
-
-        //CurrentRunState.BytesDownloaded += Utilities.GetObjectSize(qas);
-        //dataSet.Count = qas.Count;
       }
       catch (Exception ex)
       {

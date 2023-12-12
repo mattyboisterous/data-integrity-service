@@ -12,6 +12,7 @@ namespace DataIntegrityService.Core.Providers
   {
     public string Key => "Memo";
     public required DataServiceConfiguration Settings { get; set; }
+    public bool IsInitialised { get; set; }
 
     public void Initialise()
     {

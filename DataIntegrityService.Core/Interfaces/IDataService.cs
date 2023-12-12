@@ -9,6 +9,7 @@ namespace DataIntegrityService.Core.Interfaces
 {
   public interface IDataService
   {
+    bool IsInitialised { get; set; }
     string Key { get; }
     DataServiceConfiguration Settings { get; set; }
 

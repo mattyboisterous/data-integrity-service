@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Models
 {
-  public class ProvisionModel : IDataModel
+  public interface IDataModel
   {
-    public string Key => throw new NotImplementedException();
+    string Key { get; }
   }
 }

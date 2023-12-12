@@ -20,14 +20,22 @@ namespace DataIntegrityService.Core.Providers
 
     public string CacheKeyMap => "provision-{0}";
 
+    public bool IsInitialised { get; set; }
+
     public required string Url { get; set; }
 
     public void Initialise()
     {
       // do nothing...
+      IsInitialised = true;
     }
 
     #region IHttpGetService members
+
+    public Task<DataResponse<T>> HttpGet<T>(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null)
+    {
+      throw new NotImplementedException();
+    }
 
     public Task<DataResponse<List<T>>> HttpGetAll<T>(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null)
     {

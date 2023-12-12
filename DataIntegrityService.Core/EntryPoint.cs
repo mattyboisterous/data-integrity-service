@@ -1,6 +1,7 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Mappers;
+using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
 using DataIntegrityService.Core.Workflows;
@@ -43,13 +44,13 @@ namespace DataIntegrityService.Core
           dataService.Initialise();
 
           // determine concrete types...
-          var sourceType = Type.GetType(dataService.Settings.Models.Source);
-          var destinationType = Type.GetType(dataService.Settings.Models.Destination);
+          var sourceType = Type.GetType(dataService.Settings.Models.Source) as IDataModel;
+          var destinationType = Type.GetType(dataService.Settings.Models.Destination) as IDataModel;
           
           //var mapper = Type.GetType(dataService.Settings.MapperKey);
 
           // perform work using this workflow...
-          //workflow.Execute(dataService, sourceType, destinationType, null, null); 
+          workflow.Execute(dataService, sourceType, destinationType, null, null); 
         }
       }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataIntegrityService.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,6 @@ namespace DataIntegrityService.Core.Interfaces
   {
     string Key { get; }
 
-    Task Execute<T1, T2>(IDataService dataService, T1 sourceType, T2 destinationType, IModelMapper<T1, T2> modelMapper, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource);
+    Task Execute<T1, T2>(IDataService dataService, T1 sourceType, T2 destinationType, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource);
   }
 }
