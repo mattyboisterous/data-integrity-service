@@ -9,6 +9,11 @@ namespace DataIntegrityService.Core.Models
 {
   public class DataResponse<T>
   {
+    public DataResponse(T data)
+    {
+      Data = data;
+    }
+
     public T Data { get; set; }
     public bool MethodCancelled { get; set; }
     public bool MethodSucceeded { get; set; } = true;

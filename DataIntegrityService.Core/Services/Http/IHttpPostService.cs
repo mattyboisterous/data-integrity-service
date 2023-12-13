@@ -9,6 +9,6 @@ namespace DataIntegrityService.Core.Services.Http
 {
   public interface IHttpPostService
   {
-    Task<DataResponse<T1>> HttpPost<T, T1>(string url, T item, HttpMessageHandler handler);
+    Task<DataResponse<IDataModel>> HttpPost(string url, IDataModel item, HttpMessageHandler handler);
   }
 }

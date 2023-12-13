@@ -1,18 +1,11 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Interfaces;
-using DataIntegrityService.Core.Mappers;
-using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
 using DataIntegrityService.Core.Workflows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core
 {
@@ -33,6 +26,13 @@ namespace DataIntegrityService.Core
       // Get values from the config given their key and their target type.
       ServiceConfiguration? settings = config.GetRequiredSection("serviceConfiguration").Get<ServiceConfiguration>();
 
+      // todo: define model to hold tracked changes...
+      // todo: ref dataset empty? hydrate from server...(first time use)...
+      // todo: fetch local tracked changes...
+      // todo: fetch server tracked changes...
+      // todo: push local changes to server...
+      // todo: order server changes by dependency, perform work in order...
+
       if (settings != null)
       {
         foreach (var serviceConfiguration in settings.DataServices)
@@ -43,14 +43,8 @@ namespace DataIntegrityService.Core
           // initialise service...
           dataService.Initialise();
 
-          // determine concrete types...
-          var sourceType = Type.GetType(dataService.Settings.Models.Source) as IDataModel;
-          var destinationType = Type.GetType(dataService.Settings.Models.Destination) as IDataModel;
-          
-          //var mapper = Type.GetType(dataService.Settings.MapperKey);
-
           // perform work using this workflow...
-          workflow.Execute(dataService, sourceType, destinationType, null, null); 
+          workflow.Execute(dataService, null, null); 
         }
       }
     }
@@ -68,7 +62,7 @@ namespace DataIntegrityService.Core
     {
       services.AddTransient<IDataService, EvidenceNoteService>();
       services.AddTransient<IDataService, MemoService>();
-      services.AddTransient<IDataService, ProvisionService>();
+      //services.AddTransient<IDataService, ProvisionService>();
       services.AddTransient<IDataService, QualityAreaService>();
       services.AddTransient<IDataService, VisitService>();
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataIntegrityService.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace DataIntegrityService.Core.Services.Local
 {
   public interface ILocalDbService
   {
-    int DeleteAll<T>();
-    int InsertAll<T>(List<T> data);
+    int DeleteAll<IDataModel>();
+    int InsertAll(IEnumerable<IDataModel> data);
   }
 }

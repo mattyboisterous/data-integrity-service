@@ -1,4 +1,5 @@
 ﻿using DataIntegrityService.Core.Configuration;
+using DataIntegrityService.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace DataIntegrityService.Core.Interfaces
     DataServiceConfiguration Settings { get; set; }
 
     void Initialise();
+
+    IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data);
   }
 }

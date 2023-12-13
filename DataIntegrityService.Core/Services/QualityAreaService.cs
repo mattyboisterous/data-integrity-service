@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Services
 {
-  public class QualityAreaService : IDataService, IHttpGetService, ILocalDbService
+  public class QualityAreaService : IDataService, IHttpGetService
   {
     public string Key => "QualityArea";
 
@@ -28,28 +28,25 @@ namespace DataIntegrityService.Core.Services
       IsInitialised = true;
     }
 
+    public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
+    {
+      // no transformation required...
+      return data;
+    }
+
     #region IHttpGetService members
 
-    public Task<DataResponse<T>> HttpGet<T>(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null)
+    public Task<DataResponse<IDataModel>> HttpGet(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null)
     {
       throw new NotImplementedException();
     }
 
-    public async Task<DataResponse<List<T>>> HttpGetAll<T>(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null) where T : IDataModel
+    public async Task<DataResponse<IEnumerable<IDataModel>>> HttpGetAll(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null)
     {
-      // todo: mock response for now...
+      // mock response for now...
       var data = new List<QualityAreaModel>() { new QualityAreaModel() { Code = "QA1", Description = "Quality Area 1" }, new Models.QualityAreaModel() { Code = "QA2", Description = "Quality Area 2" } };
 
-      return await Task.FromResult(new DataResponse<List<QualityAreaModel>>() { Data = data, MethodSucceeded = true });
-
-    }
-
-    public T GetModel<T>(string key) where T : IDataModel
-    {
-      if (key == "x")
-        return ((T)(IDataModel)new QualityAreaModel() { Code = "x", Description = "x" });
-
-      throw new Exception();
+      return await Task.FromResult(new DataResponse<IEnumerable<IDataModel>>(data));
     }
 
     #endregion
@@ -58,12 +55,14 @@ namespace DataIntegrityService.Core.Services
 
     public int InsertAll<T>(List<T> data)
     {
-      throw new NotImplementedException();
+      // mock response for now...
+      return 3;
     }
 
     public int DeleteAll<T>()
     {
-      throw new NotImplementedException();
+      // mock response for now...
+      return 3;
     }
 
     #endregion

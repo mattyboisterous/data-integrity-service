@@ -1,5 +1,6 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Interfaces;
+using DataIntegrityService.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace DataIntegrityService.Core.Providers
     public bool IsInitialised { get; set; }
 
     public void Initialise()
+    {
+      throw new NotImplementedException();
+    }
+
+    public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
     {
       throw new NotImplementedException();
     }

@@ -9,6 +9,6 @@ namespace DataIntegrityService.Core.Services.Http
 {
   public interface IHttpPutService
   {
-    Task<DataResponse<T>> HttpPut<T>(string url, T item, string id, HttpMessageHandler handler);
+    Task<DataResponse<IDataModel>> HttpPut(string url, IDataModel item, string id, HttpMessageHandler handler);
   }
 }
