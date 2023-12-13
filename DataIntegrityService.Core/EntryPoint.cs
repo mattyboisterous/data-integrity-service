@@ -1,5 +1,6 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Interfaces;
+using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
 using DataIntegrityService.Core.Workflows;
@@ -35,17 +36,28 @@ namespace DataIntegrityService.Core
 
       if (settings != null)
       {
+        Logger.Info("Data Integrity Service running...");
+
         foreach (var serviceConfiguration in settings.DataServices)
         {
+          Logger.Info($"Resolving data service for '{serviceConfiguration.DatasetName}'...");
           var dataService = serviceFactory.GetDataService(serviceConfiguration);
+
+          Logger.Info($"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
           var workflow = workflowFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
 
           // initialise service...
+          Logger.Info($"Initialising data service...");
           dataService.Initialise();
 
           // perform work using this workflow...
-          workflow.Execute(dataService, null, null); 
+          Logger.Info($"Performing workflow...");
+          workflow.Execute(dataService, null, null);
+
+          Logger.Info($"Workflow complete for data service '{serviceConfiguration.DatasetName}'.");
         }
+
+        Logger.Info($"All work done! Stopping...");
       }
     }
 
