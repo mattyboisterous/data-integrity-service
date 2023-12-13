@@ -36,7 +36,8 @@ namespace DataIntegrityService.Core
 
       if (settings != null)
       {
-        Logger.Info("Data Integrity Service running...");
+        Logger.Info("*** Data Integrity Service running ***");
+        Logger.Info("");
 
         foreach (var serviceConfiguration in settings.DataServices)
         {
