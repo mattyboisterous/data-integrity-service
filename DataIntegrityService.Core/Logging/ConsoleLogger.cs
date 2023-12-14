@@ -8,19 +8,19 @@ namespace DataIntegrityService.Core.Logging
 {
   public static class Logger
   {
-    public static void Error(string message)
+    public static void Error(string source, string message)
     {
-      Console.WriteLine($"ERROR: {message}");
+      Console.WriteLine($"ERROR: {source} > {message}");
     }
 
-    public static void Info(string message)
+    public static void Info(string source, string message)
     {
-      Console.WriteLine(message);
+      Console.WriteLine($"INFO: {source} > {message}");
     }
 
-    public static void Warn(string message)
+    public static void Warn(string source, string message)
     {
-      Console.WriteLine($"WARN: {message}");
+      Console.WriteLine($"WARN: {source} > {message}");
     }
   }
 }

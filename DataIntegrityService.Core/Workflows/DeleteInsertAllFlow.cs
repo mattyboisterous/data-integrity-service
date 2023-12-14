@@ -20,18 +20,18 @@ namespace DataIntegrityService.Core.Workflows
     {
       try
       {
-        Logger.Info("DeleteInsertAllFlow running...");
+        Logger.Info("DeleteInsertAllFlow", "DeleteInsertAllFlow running...");
 
         if (dataService.IsInitialised)
         {
-          Logger.Info("Data service initialised, fetching data from backend Api...");
+          Logger.Info("DeleteInsertAllFlow", "Data service initialised, fetching data from backend Api...");
 
           // fetch all data from the server...
           var dataResponse = await dataService.GetAllFromServer(messageHandler, cancellationTokenSource);
 
           if (dataResponse != null && dataResponse.MethodSucceeded)
           {
-            Logger.Info("Data received, looking to perform any necessary transformations...");
+            Logger.Info("DeleteInsertAllFlow", "Data received, looking to perform any necessary transformations...");
 
             // perform any data tranformation before attempting to store data locally...
             var data = dataService.TransformData(dataResponse.Data);
@@ -39,7 +39,7 @@ namespace DataIntegrityService.Core.Workflows
             // delete and insert all in cache, if configured...
             if (dataService is ILocalCacheService)
             {
-              Logger.Info("Data service uses a local cache service, removing and inserting all data...");
+              Logger.Info("DeleteInsertAllFlow", "Data service uses a local cache service, removing and inserting all data...");
 
               ((ILocalCacheService)dataService).RemoveIfExists<IDataModel>(((ILocalCacheService)dataService).CacheKeyMap); // todo: this is the map, need to determine final key, same with Url...
 
@@ -49,7 +49,7 @@ namespace DataIntegrityService.Core.Workflows
             // delete and insert all in Db, if configured...
             if (dataService is ILocalDbService)
             {
-              Logger.Info("Data service uses a local DB service, removing and inserting all data...");
+              Logger.Info("DeleteInsertAllFlow", "Data service uses a local DB service, removing and inserting all data...");
 
               ((ILocalDbService)dataService).DeleteAll<IDataModel>();
 
@@ -57,9 +57,9 @@ namespace DataIntegrityService.Core.Workflows
             }
           }
           else
-            Logger.Error("Api error, no  data returned.");
+            Logger.Error("DeleteInsertAllFlow", "Api error, no  data returned.");
 
-          Logger.Info("DeleteInsertAllFlow completed.");
+          Logger.Info("DeleteInsertAllFlow", "DeleteInsertAllFlow completed.");
 
           //CurrentRunState.BytesDownloaded += Utilities.GetObjectSize(qas);
           //dataSet.Count = qas.Count;
@@ -67,7 +67,7 @@ namespace DataIntegrityService.Core.Workflows
       }
       catch (Exception ex)
       {
-        Logger.Error(ex.ToString());
+        Logger.Error("DeleteInsertAllFlow", ex.ToString());
       }
     }
   }

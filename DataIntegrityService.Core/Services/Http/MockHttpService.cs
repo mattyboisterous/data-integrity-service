@@ -1,4 +1,5 @@
-﻿using DataIntegrityService.Core.Models;
+﻿using DataIntegrityService.Core.Logging;
+using DataIntegrityService.Core.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,9 @@ namespace DataIntegrityService.Core.Services.Http
       if (typeof(T) == typeof(QualityAreaModel))
       {
         var testData = (T)(object)new QualityAreaModel() { Code = "QA1", Description = "Quality Area 1" };
+
+        Logger.Info("MockHttpService", $"Http 200, returning 1 item.");
+
         return await Task.FromResult(new DataResponse<T>(testData));
       }
 
@@ -27,6 +31,9 @@ namespace DataIntegrityService.Core.Services.Http
       if (typeof(T) == typeof(QualityAreaModel))
       {
         var data = new List<QualityAreaModel>() { new QualityAreaModel() { Code = "QA1", Description = "Quality Area 1" }, new QualityAreaModel() { Code = "QA2", Description = "Quality Area 2" } };
+
+        Logger.Info("MockHttpService", $"Http 200, returning 2 items.");
+
         var testData = (IEnumerable<T>)(object)data;
 
         return await Task.FromResult(new DataResponse<IEnumerable<T>>(testData));

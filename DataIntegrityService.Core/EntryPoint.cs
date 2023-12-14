@@ -37,29 +37,29 @@ namespace DataIntegrityService.Core
 
       if (settings != null)
       {
-        Logger.Info("*** Data Integrity Service running ***");
-        Logger.Info("");
+        Logger.Info("EntryPoint", " *** Data Integrity Service running ***");
+        Logger.Info("EntryPoint", "");
 
         foreach (var serviceConfiguration in settings.DataServices)
         {
-          Logger.Info($"Resolving data service for '{serviceConfiguration.DatasetName}'...");
+          Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
           var dataService = serviceFactory.GetDataService(serviceConfiguration);
 
-          Logger.Info($"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
+          Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
           var workflow = workflowFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
 
           // initialise service...
-          Logger.Info($"Initialising data service...");
+          Logger.Info("EntryPoint", $"Initialising data service...");
           dataService.Initialise();
 
           // perform work using this workflow...
-          Logger.Info($"Performing workflow...");
+          Logger.Info("EntryPoint", $"Performing workflow...");
           workflow.Execute(dataService, null, null);
 
-          Logger.Info($"Workflow complete for data service '{serviceConfiguration.DatasetName}'.");
+          Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}'.");
         }
 
-        Logger.Info($"All work done! Stopping...");
+        Logger.Info("EntryPoint", $"All work done! Stopping...");
       }
     }
 

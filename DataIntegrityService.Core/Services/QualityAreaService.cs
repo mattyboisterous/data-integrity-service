@@ -39,13 +39,13 @@ namespace DataIntegrityService.Core.Services
       Url = Settings.Http.Get!;
       IsInitialised = true;
 
-      Logger.Info("Data service initialised.");
+      Logger.Info("QualityAreaService", "Data service initialised.");
     }
 
     public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
     {
       // no transformation required...
-      Logger.Info("No transformation required, returning data.");
+      Logger.Info("QualityAreaService", "No transformation required, returning data.");
       return data;
     }
 
@@ -77,14 +77,14 @@ namespace DataIntegrityService.Core.Services
     public int InsertAll(IEnumerable<IDataModel> data)
     {
       // mock response for now...
-      Logger.Info($"Inserting {data.Count()} item(s) into local DB.");
+      Logger.Info("QualityAreaService", $"Inserting {data.Count()} item(s) into local DB.");
       return data.Count();
     }
 
     public int DeleteAll<T>()
     {
       // mock response for now...
-      Logger.Info($"Deleting all from local DB.");
+      Logger.Info("QualityAreaService", $"Deleting all from local DB.");
       return 3;
     }
 
