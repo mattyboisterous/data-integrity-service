@@ -23,6 +23,7 @@ namespace DataIntegrityService.Core.Configuration
     public required ModelTypes Models { get; set; }
     public required List<string> Dependencies { get; set; }
     public required HttpServiceConfiguration Http { get; set; }
+    public required LocalCacheServiceConfiguration Cache { get; set; }
   }
 
   public sealed class ModelTypes
@@ -38,5 +39,11 @@ namespace DataIntegrityService.Core.Configuration
     public string? Put { get; set; }
     public string? Post { get; set; }
     public string? Delete { get; set; }
+  }
+
+  public sealed class LocalCacheServiceConfiguration
+  {
+    public string? Key { get; set; }
+    public string? KeyMap { get; set; }
   }
 }
