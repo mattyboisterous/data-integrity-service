@@ -27,7 +27,7 @@ namespace DataIntegrityService.Core.Workflows
           Logger.Info("Data service initialised, fetching data from backend Api...");
 
           // fetch all data from the server...
-          var dataResponse = await ((IHttpGetService)dataService).HttpGetAll(((IHttpGetService)dataService).Url, messageHandler, cancellationTokenSource);
+          var dataResponse = await dataService.GetAllFromServer(messageHandler, cancellationTokenSource);
 
           if (dataResponse != null && dataResponse.MethodSucceeded)
           {
@@ -67,6 +67,7 @@ namespace DataIntegrityService.Core.Workflows
       }
       catch (Exception ex)
       {
+        Logger.Error(ex.ToString());
       }
     }
   }

@@ -19,7 +19,7 @@ namespace DataIntegrityService.Core
     public IDataService GetDataService(DataServiceConfiguration serviceConfiguration)
     {
       var dataService = _dataServices.FirstOrDefault(ds => ds.Key == serviceConfiguration.Key)
-                  ?? throw new NotSupportedException();
+                  ?? throw new NotSupportedException($"Data Service '{serviceConfiguration.Key}' has not been configured to run.");
 
       dataService.Settings = serviceConfiguration;
 

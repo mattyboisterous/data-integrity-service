@@ -7,8 +7,18 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataIntegrityService.Core.Models
 {
-  public class DataResponse<T>
+  public interface IDataResponse<T>
   {
+    T Data { get; set; }
+    bool MethodCancelled { get; set; }
+    bool MethodSucceeded { get; set; }
+  }
+
+  public class DataResponse<T> : IDataResponse<T>
+  {
+    public DataResponse()
+    { }
+
     public DataResponse(T data)
     {
       Data = data;

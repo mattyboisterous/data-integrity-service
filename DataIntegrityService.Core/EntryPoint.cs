@@ -3,6 +3,7 @@ using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
+using DataIntegrityService.Core.Services.Http;
 using DataIntegrityService.Core.Workflows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -80,6 +81,8 @@ namespace DataIntegrityService.Core
       services.AddTransient<IDataService, VisitService>();
 
       services.AddTransient<IWorkflowService, DeleteInsertAllFlow>();
+
+      services.AddTransient<IHttpService, MockHttpService>();
 
       services.AddTransient<DataServiceFactory>();
       services.AddTransient<WorkflowServiceFactory>();

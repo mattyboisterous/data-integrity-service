@@ -15,8 +15,10 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataIntegrityService.Core.Services
 {
-  public class QualityAreaService : IDataService, IHttpGetService, ILocalDbService
+  public class QualityAreaService : IDataService, ILocalDbService
   {
+    private IHttpService HttpService { get; set; }
+
     public string Key => "QualityArea";
 
     public required DataServiceConfiguration Settings { get; set; }
@@ -24,6 +26,13 @@ namespace DataIntegrityService.Core.Services
     public bool IsInitialised { get; set; }
 
     public required string Url { get; set; }
+
+    public QualityAreaService(IHttpService httpService)
+    { 
+      HttpService = httpService;
+    }
+
+    #region IDataService Members
 
     public void Initialise()
     {
@@ -40,21 +49,25 @@ namespace DataIntegrityService.Core.Services
       return data;
     }
 
-    #region IHttpGetService members
+    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
+    {
+      var result = await HttpService.GetAll<QualityAreaModel>(Url, messageHandler, cancellationTokenSource);
 
-    public Task<DataResponse<IDataModel>> HttpGet(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null)
+      return new DataResponse<IEnumerable<IDataModel>>
+      {
+        Data = result.Data.Cast<IDataModel>(),
+        MethodSucceeded = result.MethodSucceeded
+      };
+    }
+
+    public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer<T>(HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
     {
       throw new NotImplementedException();
     }
 
-    public async Task<DataResponse<IEnumerable<IDataModel>>> HttpGetAll(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null)
+    public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey<T>(string key, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
     {
-      // mock response for now...
-      Logger.Info("Fetching data from Api...");
-      var data = new List<QualityAreaModel>() { new QualityAreaModel() { Code = "QA1", Description = "Quality Area 1" }, new Models.QualityAreaModel() { Code = "QA2", Description = "Quality Area 2" } };
-
-      Logger.Info($"{data.Count} item(s) found, returning...");
-      return await Task.FromResult(new DataResponse<IEnumerable<IDataModel>>(data));
+      throw new NotImplementedException();
     }
 
     #endregion
