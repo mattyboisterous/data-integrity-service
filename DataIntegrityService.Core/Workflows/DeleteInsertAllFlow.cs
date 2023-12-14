@@ -41,9 +41,9 @@ namespace DataIntegrityService.Core.Workflows
             {
               Logger.Info("DeleteInsertAllFlow", "Data service uses a local cache service, removing and inserting all data...");
 
-              ((ILocalCacheService)dataService).RemoveIfExists(((ILocalCacheService)dataService).CacheKeyMap); // todo: this is the map, need to determine final key, same with Url...
+              ((ILocalCacheService)dataService).RemoveIfExists(string.Format(dataService.Settings.Cache.Key)); 
 
-              ((ILocalCacheService)dataService).Insert(((ILocalCacheService)dataService).CacheKeyMap, data);
+              ((ILocalCacheService)dataService).Insert(string.Format(dataService.Settings.Cache.Key), data);
             }
 
             // delete and insert all in Db, if configured...

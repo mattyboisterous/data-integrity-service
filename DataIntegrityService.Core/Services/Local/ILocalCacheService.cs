@@ -9,8 +9,6 @@ namespace DataIntegrityService.Core.Services.Local
 {
   public interface ILocalCacheService
   {
-    string CacheKeyMap { get; }
-    string GetCacheKey(string primaryKey);
     IEnumerable<IDataModel> GetAllLocal(string key);
     void RemoveIfExists(string key);
     void Insert(string key, IEnumerable<IDataModel> data);

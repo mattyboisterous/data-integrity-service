@@ -21,8 +21,6 @@ namespace DataIntegrityService.Core.Providers
 
     public required DataServiceConfiguration Settings { get; set; }
 
-    public string CacheKeyMap => "provision-{0}";
-
     public bool IsInitialised { get; set; }
 
     public required string Url { get; set; }
@@ -72,11 +70,6 @@ namespace DataIntegrityService.Core.Providers
     #endregion
 
     #region ILocalCacheService members
-
-    public string GetCacheKey(string primaryKey)
-    {
-      return "x";
-    }
 
     public IEnumerable<IDataModel> GetAllLocal(string key)
     {
