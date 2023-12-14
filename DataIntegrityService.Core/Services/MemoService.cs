@@ -29,13 +29,7 @@ namespace DataIntegrityService.Core.Providers
     {
       throw new NotImplementedException();
     }
-
-    public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer<T>(HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey<T>(string key, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
+    public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
     {
       throw new NotImplementedException();
     }

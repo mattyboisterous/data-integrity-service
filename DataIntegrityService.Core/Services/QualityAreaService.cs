@@ -60,14 +60,15 @@ namespace DataIntegrityService.Core.Services
       };
     }
 
-    public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer<T>(HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
+    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
     {
-      throw new NotImplementedException();
-    }
+      var result = await HttpService.GetAll<QualityAreaModel>(string.Format(Settings.Http.GetAllByKey, key), messageHandler, cancellationTokenSource);
 
-    public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey<T>(string key, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
-    {
-      throw new NotImplementedException();
+      return new DataResponse<IEnumerable<IDataModel>>
+      {
+        Data = result.Data.Cast<IDataModel>(),
+        MethodSucceeded = result.MethodSucceeded
+      };
     }
 
     #endregion

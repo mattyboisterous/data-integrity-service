@@ -34,6 +34,7 @@ namespace DataIntegrityService.Core.Configuration
   public sealed class HttpServiceConfiguration
   {
     public string? Get { get; set; }
+    public string? GetAllByKey { get; set; }
     public string? Put { get; set; }
     public string? Post { get; set; }
     public string? Delete { get; set; }

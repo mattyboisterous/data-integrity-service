@@ -68,7 +68,7 @@ namespace DataIntegrityService.Core
       var host = Host.CreateDefaultBuilder()
           .ConfigureServices(ConfigureServices)
           .Build();
-      
+
       return host.Services;
     }
 
@@ -76,7 +76,7 @@ namespace DataIntegrityService.Core
     {
       services.AddTransient<IDataService, EvidenceNoteService>();
       services.AddTransient<IDataService, MemoService>();
-      //services.AddTransient<IDataService, ProvisionService>();
+      services.AddTransient<IDataService, ProvisionService>();
       services.AddTransient<IDataService, QualityAreaService>();
       services.AddTransient<IDataService, VisitService>();
 

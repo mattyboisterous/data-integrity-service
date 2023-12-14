@@ -19,7 +19,6 @@ namespace DataIntegrityService.Core.Interfaces
     IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data);
 
     Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource);
-    Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer<T>(HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource);
-    Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey<T>(string key, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource);
+    Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource);
   }
 }
