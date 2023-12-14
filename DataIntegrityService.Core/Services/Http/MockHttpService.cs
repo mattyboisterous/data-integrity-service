@@ -16,7 +16,7 @@ namespace DataIntegrityService.Core.Services.Http
     {
       if (typeof(T) == typeof(QualityAreaModel))
       {
-        var testData = (T)(object)new QualityAreaModel() { Code = "QA1", Description = "Quality Area 1" };
+        var testData = (T)(object)new QualityAreaModel() { QualityAreaId = 1, Code = "QA1", Description = "Quality Area 1" };
 
         Logger.Info("MockHttpService", $"Http 200, returning 1 item.");
 
@@ -30,7 +30,7 @@ namespace DataIntegrityService.Core.Services.Http
     {
       if (typeof(T) == typeof(QualityAreaModel))
       {
-        var data = new List<QualityAreaModel>() { new QualityAreaModel() { Code = "QA1", Description = "Quality Area 1" }, new QualityAreaModel() { Code = "QA2", Description = "Quality Area 2" } };
+        var data = new List<QualityAreaModel>() { new QualityAreaModel() { QualityAreaId = 1, Code = "QA1", Description = "Quality Area 1" }, new QualityAreaModel() { QualityAreaId = 2, Code = "QA2", Description = "Quality Area 2" } };
 
         Logger.Info("MockHttpService", $"Http 200, returning 2 items.");
 

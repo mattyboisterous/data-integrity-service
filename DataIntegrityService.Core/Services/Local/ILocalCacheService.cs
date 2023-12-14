@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataIntegrityService.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,8 @@ namespace DataIntegrityService.Core.Services.Local
   {
     string CacheKeyMap { get; }
     string GetCacheKey(string primaryKey);
-    List<T> GetAllLocal<T>();
-    void RemoveIfExists<T>(string key);
-    void Insert<T>(string key, T data);
+    IEnumerable<IDataModel> GetAllLocal(string key);
+    void RemoveIfExists(string key);
+    void Insert(string key, IEnumerable<IDataModel> data);
   }
 }
