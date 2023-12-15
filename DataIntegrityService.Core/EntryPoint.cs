@@ -46,6 +46,7 @@ namespace DataIntegrityService.Core
 
       // todo: consider how multi user/secondary officer would work...on switch user, update any pending changes on server with userId?
       // todo: consider newly switched user...how to initialise local state based on all open visits etc...hwo to make application agnostic?
+      // todo: need this for a fresh user...'initialise'...check DIS for current implementation...
 
       if (settings != null)
       {

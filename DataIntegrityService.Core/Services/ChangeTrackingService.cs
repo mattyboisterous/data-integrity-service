@@ -54,7 +54,7 @@ namespace DataIntegrityService.Core.Services
         MethodSucceeded = result.MethodSucceeded
       };
     }
-
+    
     public IEnumerable<IDataModel> GetAllLocal(string key)
     {
       throw new NotImplementedException();

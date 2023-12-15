@@ -36,6 +36,7 @@ namespace DataIntegrityService.Core.Configuration
   public sealed class LocalCacheServiceConfiguration
   {
     public string? Key { get; set; }
+    public string? AltKey { get; set; }
     public string? KeyMap { get; set; }
   }
 }
