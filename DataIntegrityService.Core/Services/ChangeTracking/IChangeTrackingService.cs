@@ -13,5 +13,6 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
     Task IncrementAttempt(AllModelDataSetChange item);
     Task FlagAsCompleted(AllModelDataSetChange item);
     Task FlagAsPoison(AllModelDataSetChange item);
+    Task FlushAllPendingChanges();
   }
 }
