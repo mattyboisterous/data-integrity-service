@@ -43,7 +43,7 @@ namespace DataIntegrityService.Core.Workflows
 
               ((ILocalCacheService)dataService).RemoveIfExists(string.Format(dataService.Settings.Cache.Key)); 
 
-              ((ILocalCacheService)dataService).Insert(string.Format(dataService.Settings.Cache.Key), data);
+              ((ILocalCacheService)dataService).InsertOrReplace(string.Format(dataService.Settings.Cache.Key), data);
             }
 
             // delete and insert all in Db, if configured...

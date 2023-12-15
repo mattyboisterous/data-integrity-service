@@ -36,7 +36,7 @@ namespace DataIntegrityService.Core.Providers
       IsInitialised = true;
     }
 
-    #region IHttpGetService members
+    #region IDataService members
 
     public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
     {
@@ -82,7 +82,7 @@ namespace DataIntegrityService.Core.Providers
       Logger.Info("ProvisionService", $"Deleting all from local cache with key '{key}'.");
     }
 
-    public void Insert(string key, IEnumerable<IDataModel> data)
+    public void InsertOrReplace(string key, IEnumerable<IDataModel> data)
     {
       // mock response for now...
       Logger.Info("ProvisionService", $"Inserting {data.Count()} item(s) into local cache with key '{key}'.");

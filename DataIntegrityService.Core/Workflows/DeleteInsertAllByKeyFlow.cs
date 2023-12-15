@@ -49,7 +49,7 @@ namespace DataIntegrityService.Core.Workflows
 
                   ((ILocalCacheService)dataService).RemoveIfExists(string.Format(dataService.Settings.Cache.KeyMap, item.Key));
 
-                  ((ILocalCacheService)dataService).Insert(string.Format(dataService.Settings.Cache.KeyMap, item.Key), data);
+                  ((ILocalCacheService)dataService).InsertOrReplace(string.Format(dataService.Settings.Cache.KeyMap, item.Key), data);
                 }
 
                 // delete and insert all in Db, if configured...
