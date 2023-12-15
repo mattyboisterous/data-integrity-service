@@ -21,7 +21,7 @@ namespace DataIntegrityService.Core.Workflows
       {
         if (dataService.IsInitialised)
         {
-          Logger.Info("DeleteInsertAllByKeyFlow", "Data service initialised, fetching data from backend Api...");
+          Logger.Info("DeleteInsertAllByKeyFlow", $"Data service '{dataService.Key}' initialised, fetching data from backend Api...");
 
           // fetch all data from the server...
           var dataResponseAllKeys = await dataService.GetAllFromServer(messageHandler, cancellationTokenSource);
@@ -45,7 +45,7 @@ namespace DataIntegrityService.Core.Workflows
                 // delete and insert all in cache, if configured...
                 if (dataService is ILocalCacheService)
                 {
-                  Logger.Info("DeleteInsertAllByKey", "Data service uses a local cache service, removing and inserting all data...");
+                  Logger.Info("DeleteInsertAllByKey", $"Data service '{dataService.Key}' uses a local cache service, removing and inserting all data...");
 
                   ((ILocalCacheService)dataService).RemoveIfExists(string.Format(dataService.Settings.Cache.KeyMap, item.Key));
 
@@ -55,7 +55,7 @@ namespace DataIntegrityService.Core.Workflows
                 // delete and insert all in Db, if configured...
                 if (dataService is ILocalDbService)
                 {
-                  Logger.Info("DeleteInsertAllByKey", "Data service uses a local DB service, removing and inserting all data...");
+                  Logger.Info("DeleteInsertAllByKey", $"Data service '{dataService.Key}' uses a local DB service, removing and inserting all data...");
 
                   ((ILocalDbService)dataService).DeleteAll<IDataModel>();
 

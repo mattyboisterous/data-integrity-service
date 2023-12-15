@@ -56,7 +56,8 @@ namespace DataIntegrityService.Core
           Logger.Info("EntryPoint", $"Performing workflow...");
           workflow.Execute(dataService, null, null);
 
-          Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}'.");
+          Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
+          Logger.Info("EntryPoint", "");
         }
 
         Logger.Info("EntryPoint", $"All work done! Stopping...");

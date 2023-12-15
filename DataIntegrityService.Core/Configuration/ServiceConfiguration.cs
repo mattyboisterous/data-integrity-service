@@ -19,19 +19,11 @@ namespace DataIntegrityService.Core.Configuration
     public required string DatasetName { get; set; }
     public required string DatasetGroup { get; set; }
     public required string DataWorkflow { get; set; }
-    public required string MapperKey { get; set; }
-    public required ModelTypes Models { get; set; }
     public required List<string> Dependencies { get; set; }
     public required HttpServiceConfiguration Http { get; set; }
     public required LocalCacheServiceConfiguration Cache { get; set; }
   }
-
-  public sealed class ModelTypes
-  {
-    public required string Source { get; set; }
-    public required string Destination { get; set; }
-  }
-
+  
   public sealed class HttpServiceConfiguration
   {
     public string? Get { get; set; }
