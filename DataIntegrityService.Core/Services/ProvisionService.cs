@@ -45,25 +45,25 @@ namespace DataIntegrityService.Core.Providers
       return data;
     }
 
-    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
+    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(HttpMessageHandler messageHandler, CancellationToken cancellationToken)
     {
-      var result = await HttpService.GetAll<QualityAreaModel>(Url, messageHandler, cancellationTokenSource);
+      var result = await HttpService.GetAll<QualityAreaModel>(Url, messageHandler, cancellationToken);
 
       return new DataResponse<IEnumerable<IDataModel>>
       {
         Data = result.Data.Cast<IDataModel>(),
-        MethodSucceeded = result.MethodSucceeded
+        ActionSucceeded = result.ActionSucceeded
       };
     }
 
-    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
+    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, HttpMessageHandler messageHandler, CancellationToken cancellationToken)
     {
-      var result = await HttpService.GetAll<QualityAreaModel>(string.Format(Settings.Http.GetAllByKey, key), messageHandler, cancellationTokenSource);
+      var result = await HttpService.GetAll<QualityAreaModel>(string.Format(Settings.Http.GetAllByKey, key), messageHandler, cancellationToken);
 
       return new DataResponse<IEnumerable<IDataModel>>
       {
         Data = result.Data.Cast<IDataModel>(),
-        MethodSucceeded = result.MethodSucceeded
+        ActionSucceeded = result.ActionSucceeded
       };
     }
 

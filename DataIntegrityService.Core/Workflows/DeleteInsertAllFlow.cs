@@ -16,7 +16,7 @@ namespace DataIntegrityService.Core.Workflows
   {
     public string Key => "DeleteInsertAll";
 
-    public async Task Execute(IDataService dataService, HttpMessageHandler messageHandler, CancellationTokenSource cancellationTokenSource)
+    public async Task Execute(IDataService dataService, HttpMessageHandler messageHandler, CancellationToken cancellationToken)
     {
       try
       {
@@ -27,9 +27,9 @@ namespace DataIntegrityService.Core.Workflows
           Logger.Info("DeleteInsertAllFlow", $"Data service '{dataService.Key}' initialised, fetching data from backend Api...");
 
           // fetch all data from the server...
-          var dataResponse = await dataService.GetAllFromServer(messageHandler, cancellationTokenSource);
+          var dataResponse = await dataService.GetAllFromServer(messageHandler, cancellationToken);
 
-          if (dataResponse != null && dataResponse.MethodSucceeded)
+          if (dataResponse != null && dataResponse.ActionSucceeded)
           {
             Logger.Info("DeleteInsertAllFlow", "Data received, looking to perform any necessary transformations...");
 

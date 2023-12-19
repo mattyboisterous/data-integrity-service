@@ -10,8 +10,9 @@ namespace DataIntegrityService.Core.Models
   public interface IDataResponse<T>
   {
     T Data { get; set; }
-    bool MethodCancelled { get; set; }
-    bool MethodSucceeded { get; set; }
+    bool ActionCancelled { get; set; }
+    bool ActionSucceeded { get; set; }
+    int HttpResponseCode { get; set; }
   }
 
   public class DataResponse<T> : IDataResponse<T>
@@ -25,12 +26,8 @@ namespace DataIntegrityService.Core.Models
     }
 
     public T Data { get; set; }
-    public bool MethodCancelled { get; set; }
-    public bool MethodSucceeded { get; set; } = true;
-    //public Error Error { get; set; }
-    //public bool HasError
-    //{
-    //  get { return Error != null; }
-    //}
+    public bool ActionCancelled { get; set; }
+    public bool ActionSucceeded { get; set; } = true;
+    public int HttpResponseCode { get; set; }
   }
 }

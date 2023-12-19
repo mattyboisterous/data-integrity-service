@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Models
 {
-  public class AllModelDataSetChange : IDataModel
+  public class DataChangeTrackingModel : IDataModel
   {
     public string Key => Id;
 

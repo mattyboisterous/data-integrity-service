@@ -53,6 +53,8 @@ namespace DataIntegrityService.Core
         Logger.Info("EntryPoint", " *** Data Integrity Service running ***");
         Logger.Info("EntryPoint", "");
 
+        CancellationTokenSource cts = new CancellationTokenSource();
+
         foreach (var serviceConfiguration in settings.DataServices)
         {
           Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
@@ -67,7 +69,7 @@ namespace DataIntegrityService.Core
 
           // perform work using this workflow...
           Logger.Info("EntryPoint", $"Performing workflow...");
-          workflow.Execute(dataService, null, null);
+          workflow.Execute(dataService, null, cts.Token);
 
           Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
           Logger.Info("EntryPoint", "");
@@ -98,6 +100,7 @@ namespace DataIntegrityService.Core
       services.AddTransient<IWorkflowService, DeleteInsertAllByKeyFlow>();
 
       services.AddTransient<IHttpService, MockHttpService>();
+      services.AddTransient<IHttpMessageHandlerService, HttpMessageHandlerService>();
 
       services.AddTransient<DataServiceFactory>();
       services.AddTransient<WorkflowServiceFactory>();

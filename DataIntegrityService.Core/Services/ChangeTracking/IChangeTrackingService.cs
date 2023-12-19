@@ -9,10 +9,10 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 {
   public interface IChangeTrackingService : IService
   {
-    AllModelDataSetChange GetNextChange();
-    Task IncrementAttempt(AllModelDataSetChange item);
-    Task FlagAsCompleted(AllModelDataSetChange item);
-    Task FlagAsPoison(AllModelDataSetChange item);
+    DataChangeTrackingModel GetNextChange();
+    Task IncrementAttempt(DataChangeTrackingModel item);
+    Task FlagAsCompleted(DataChangeTrackingModel item);
+    Task FlagAsPoison(DataChangeTrackingModel item);
     Task FlushAllPendingChanges();
   }
 }

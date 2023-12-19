@@ -17,12 +17,12 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       throw new NotImplementedException();
     }
 
-    public Task FlagAsCompleted(AllModelDataSetChange item)
+    public Task FlagAsCompleted(DataChangeTrackingModel item)
     {
       throw new NotImplementedException();
     }
 
-    public Task FlagAsPoison(AllModelDataSetChange item)
+    public Task FlagAsPoison(DataChangeTrackingModel item)
     {
       throw new NotImplementedException();
     }
@@ -32,12 +32,12 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       throw new NotImplementedException();
     }
 
-    public AllModelDataSetChange GetNextChange()
+    public DataChangeTrackingModel GetNextChange()
     {
       throw new NotImplementedException();
     }
 
-    public Task IncrementAttempt(AllModelDataSetChange item)
+    public Task IncrementAttempt(DataChangeTrackingModel item)
     {
       throw new NotImplementedException();
     }

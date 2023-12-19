@@ -12,7 +12,9 @@ namespace DataIntegrityService.Core.Services.Http
 {
   public class MockHttpService : IHttpService
   {
-    public async Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null)
+    public required IUserProfile User { get; set; }
+
+    public async Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler messageHandler, CancellationTokenSource tokenSource = null)
     {
       if (typeof(T) == typeof(QualityAreaModel))
       {
@@ -26,7 +28,7 @@ namespace DataIntegrityService.Core.Services.Http
       return await Task.FromResult(new DataResponse<T>(default));
     }
 
-    public async Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler handler, CancellationTokenSource tokenSource = null)
+    public async Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler messageHandler, CancellationToken token)
     {
       if (typeof(T) == typeof(QualityAreaModel))
       {
@@ -42,19 +44,29 @@ namespace DataIntegrityService.Core.Services.Http
       return await Task.FromResult(new DataResponse<IEnumerable<T>>());
     }
 
-    public async Task<IDataResponse<T>> Post<T>(string url, T item, HttpMessageHandler handler)
+    public async Task<IDataResponse<T>> Post<T>(string url, T item, HttpMessageHandler messageHandler)
     {
       return await Task.FromResult(new DataResponse<T>(item));
     }
 
-    public async Task<IDataResponse<T>> Put<T>(string url, T item, string id, HttpMessageHandler handler)
+    public async Task<IDataResponse<T>> Put<T>(string url, T item, HttpMessageHandler messageHandler)
     {
       return await Task.FromResult(new DataResponse<T>(item));
     }
 
-    public async Task<IDataResponse<int>> Delete<T>(string url, string id, HttpMessageHandler handler)
+    public async Task<IDataResponse<int>> Delete<T>(string url, HttpMessageHandler messageHandler)
     {
       return await Task.FromResult(new DataResponse<int>(1));
+    }
+
+    public Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler messageHandler, CancellationToken token)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<IDataResponse<int>> Get(string url, HttpMessageHandler messageHandler, CancellationToken token)
+    {
+      throw new NotImplementedException();
     }
   }
 }
