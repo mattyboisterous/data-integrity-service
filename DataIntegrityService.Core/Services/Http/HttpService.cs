@@ -12,12 +12,14 @@ namespace DataIntegrityService.Core.Services.Http
 {
   public class HttpService : IHttpService
   {
-    public Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler handler, CancellationToken token = null)
+    public IUserProfile User { get; set; }
+
+    public Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler handler, CancellationToken token)
     {
       throw new NotImplementedException();
     }
 
-    public Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler handler, CancellationToken token = null)
+    public Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler handler, CancellationToken token)
     {
       throw new NotImplementedException();
     }
@@ -33,6 +35,11 @@ namespace DataIntegrityService.Core.Services.Http
     }
 
     public Task<IDataResponse<int>> Delete<T>(string url, HttpMessageHandler handler)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<IDataResponse<int>> Get(string url, HttpMessageHandler messageHandler, CancellationToken token)
     {
       throw new NotImplementedException();
     }
