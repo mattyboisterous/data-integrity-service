@@ -38,14 +38,39 @@ namespace DataIntegrityService.Core
 
       if (localChangeTrackingService.IsInitialised)
       {
-        // todo: 'compress' changes...
+        // 'compress' changes...
+        localChangeTrackingService.CompressPendingChanges();
 
-        while(localChangeTrackingService.ChangesExist() && !token.IsCancellationRequested)
+        while (localChangeTrackingService.ChangesExist() && !token.IsCancellationRequested)
         {
-          localChangeTrackingService.GetNextChange();
+          var pendingChange = localChangeTrackingService.GetNextChange();
+
+          if (pendingChange != null)
+          {
+            // fetch configuration, then call up matching data service...
+            var serviceConfiguration = settings!.DataServices.FirstOrDefault(ds => ds.DatasetName == pendingChange.DatasetName);
+
+            if (serviceConfiguration != null)
+            {
+              Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
+              var dataService = serviceFactory.GetDataService(serviceConfiguration);
+
+              Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
+              var workflow = workflowFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
+
+              // initialise service...
+              Logger.Info("EntryPoint", $"Initialising data service...");
+              dataService.Initialise();
+
+              // perform work using this workflow...
+              Logger.Info("EntryPoint", $"Performing workflow...");
+              workflow.Execute(dataService, null, token);
+
+              Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
+              Logger.Info("EntryPoint", "");
+            }
+          }
         }
-
-
       }
 
       // todo: define model to hold tracked changes...DONE
@@ -55,8 +80,6 @@ namespace DataIntegrityService.Core
       // todo: push local changes to server...
       // todo: order server changes by dependency, perform work in order...
 
-      // todo: initialise ref data service, tracked changes service...
-      // todo: compress changes (Update, Update, Update, Delete == no changes)...
       // todo: ref service: order by dependencies (0 first)...model on existing behaviour...
       // todo: changes service > (push then pull, pull then push)
       // todo: changes service > order by Created (Utc)
