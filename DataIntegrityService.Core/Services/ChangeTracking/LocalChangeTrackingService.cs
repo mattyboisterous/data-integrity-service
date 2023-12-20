@@ -17,6 +17,11 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       throw new NotImplementedException();
     }
 
+    public bool ChangesExist()
+    {
+      return false;
+    }
+
     public Task FlagAsCompleted(DataChangeTrackingModel item)
     {
       throw new NotImplementedException();

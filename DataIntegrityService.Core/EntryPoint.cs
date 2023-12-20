@@ -1,6 +1,7 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Logging;
+using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
 using DataIntegrityService.Core.Services.Http;
@@ -13,11 +14,12 @@ namespace DataIntegrityService.Core
 {
   public class EntryPoint
   {
-    public static void Run()
+    public static void Run(IUserProfile user)
     {
       var serviceProvider = CreateServiceProvider();
       var serviceFactory = serviceProvider.GetService<DataServiceFactory>()!;
       var workflowFactory = serviceProvider.GetService<WorkflowServiceFactory>()!;
+      var changeTrackingFactory = serviceProvider.GetService<ChangeTrackingServiceFactory>()!;
 
       // Build a config object, using env vars and JSON providers.
       IConfigurationRoot config = new ConfigurationBuilder()
@@ -28,9 +30,20 @@ namespace DataIntegrityService.Core
       // Get values from the config given their key and their target type.
       ServiceConfiguration? settings = config.GetRequiredSection("serviceConfiguration").Get<ServiceConfiguration>();
 
+      Logger.Info("EntryPoint", $"Resolving data service for 'LocalChangeTrackingService'...");
+      var localChangeTrackingService = changeTrackingFactory.GetChangeTrackingService("LocalChangeTrackingService");
+
+      // fetch local tracked changes...
+      localChangeTrackingService.Initialise();
+
+      if (localChangeTrackingService.IsInitialised)
+      {
+        localChangeTrackingService.GetNextChange();
+      }
+
       // todo: define model to hold tracked changes...DONE
       // todo: ref dataset empty? hydrate from server...(first time use)...
-      // todo: fetch local tracked changes...
+
       // todo: fetch server tracked changes...
       // todo: push local changes to server...
       // todo: order server changes by dependency, perform work in order...
@@ -104,6 +117,7 @@ namespace DataIntegrityService.Core
 
       services.AddTransient<DataServiceFactory>();
       services.AddTransient<WorkflowServiceFactory>();
+      services.AddTransient<ChangeTrackingServiceFactory>();
     }
   }
 }

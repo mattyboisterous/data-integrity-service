@@ -45,6 +45,11 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       IsInitialised = true;
     }
 
+    public bool ChangesExist()
+    {
+      return TrackedChanges != null && TrackedChanges.Count > 0;
+    }
+
     public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllTrackedChanges()
     {
       var result = await HttpService.GetAll<DataChangeTrackingModel>($"api/v1/ChangeTracking/GetChangeTrackingByUser/{HttpService.User.UserId}", HttpMessageHandlerService.GetMessageHandler(), CancellationToken);
