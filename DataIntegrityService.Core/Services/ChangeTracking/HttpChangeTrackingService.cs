@@ -37,7 +37,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       // fetch tracked changes from server...
       var serverResponse = await GetAllTrackedChanges();
 
-      if (serverResponse != null && serverResponse.ActionSucceeded)
+      if (serverResponse != null && serverResponse.ActionCancelled)
       {
         TrackedChanges = (List<DataChangeTrackingModel>)serverResponse.Data;
       }

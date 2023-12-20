@@ -14,7 +14,7 @@ namespace DataIntegrityService.Core
 {
   public class EntryPoint
   {
-    public static void Run(IUserProfile user)
+    public static void Run(IUserProfile user, CancellationToken token)
     {
       var serviceProvider = CreateServiceProvider();
       var serviceFactory = serviceProvider.GetService<DataServiceFactory>()!;
@@ -38,7 +38,14 @@ namespace DataIntegrityService.Core
 
       if (localChangeTrackingService.IsInitialised)
       {
-        localChangeTrackingService.GetNextChange();
+        // todo: 'compress' changes...
+
+        while(localChangeTrackingService.ChangesExist() && !token.IsCancellationRequested)
+        {
+          localChangeTrackingService.GetNextChange();
+        }
+
+
       }
 
       // todo: define model to hold tracked changes...DONE
@@ -66,7 +73,7 @@ namespace DataIntegrityService.Core
         Logger.Info("EntryPoint", " *** Data Integrity Service running ***");
         Logger.Info("EntryPoint", "");
 
-        CancellationTokenSource cts = new CancellationTokenSource();
+
 
         foreach (var serviceConfiguration in settings.DataServices)
         {
@@ -82,7 +89,7 @@ namespace DataIntegrityService.Core
 
           // perform work using this workflow...
           Logger.Info("EntryPoint", $"Performing workflow...");
-          workflow.Execute(dataService, null, cts.Token);
+          workflow.Execute(dataService, null, token);
 
           Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
           Logger.Info("EntryPoint", "");
