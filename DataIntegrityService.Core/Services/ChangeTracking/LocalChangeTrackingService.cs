@@ -17,6 +17,11 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       throw new NotImplementedException();
     }
 
+    public Task CompressPendingChanges()
+    {
+      throw new NotImplementedException();
+    }
+
     public bool ChangesExist()
     {
       return false;

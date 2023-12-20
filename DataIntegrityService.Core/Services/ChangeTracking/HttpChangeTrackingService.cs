@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace DataIntegrityService.Core.Services.ChangeTracking
 {
@@ -45,6 +46,33 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       IsInitialised = true;
     }
 
+    public Task CompressPendingChanges()
+    {
+      // create a dictionary to store the latest action for each artifact...
+      var pendingActions = new Dictionary<string, DataChangeTrackingModel>();
+
+      // iterate through each message in the queue...
+      foreach(var message in TrackedChanges)
+      {
+        // is the artifact in the dictionary?
+        if (pendingActions.ContainsKey(message.DatasetName))
+        {
+          // if the current action is "Delete", remove the artifact from the dictionary...
+          if (message.Action == "Delete")
+            pendingActions.Remove(message.DatasetName);
+          else // Update the action for the artifact...
+            pendingActions[message.DatasetName] = message;
+        }
+        else // if the artifact is not in the dictionary, add it with the current action...
+          pendingActions.Add(message.DatasetName, message);
+      }
+
+      TrackedChanges.Clear();
+      TrackedChanges = pendingActions.Values.ToList(); // todo: order by dependency?
+
+      return Task.CompletedTask;
+    }
+
     public bool ChangesExist()
     {
       return TrackedChanges != null && TrackedChanges.Count > 0;
@@ -53,6 +81,12 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
     public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllTrackedChanges()
     {
       var result = await HttpService.GetAll<DataChangeTrackingModel>($"api/v1/ChangeTracking/GetChangeTrackingByUser/{HttpService.User.UserId}", HttpMessageHandlerService.GetMessageHandler(), CancellationToken);
+
+      // ensure we are ordered by Utc date...
+      if (result != null || result!.ActionSucceeded)
+      {
+        result.Data = result.Data.OrderBy(x => x.Created).ToList();
+      }
 
       return new DataResponse<IEnumerable<IDataModel>>
       {
