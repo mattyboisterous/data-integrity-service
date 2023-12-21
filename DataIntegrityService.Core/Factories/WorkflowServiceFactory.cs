@@ -1,5 +1,5 @@
 ﻿using DataIntegrityService.Core.Configuration;
-using DataIntegrityService.Core.Interfaces;
+using DataIntegrityService.Core.Workflows.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

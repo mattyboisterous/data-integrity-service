@@ -1,7 +1,7 @@
 ﻿using DataIntegrityService.Core.Configuration;
-using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Services.Http;
+using DataIntegrityService.Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Providers
 {
-  public class VisitService : IDataService
+    public class VisitService : IDataService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }

@@ -1,8 +1,9 @@
-﻿using DataIntegrityService.Core.Interfaces;
-using DataIntegrityService.Core.Logging;
+﻿using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Services.Http;
+using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Services.Local;
+using DataIntegrityService.Core.Workflows.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Workflows
 {
-  public class DeleteInsertAllFlow : IWorkflowService
+    public class DeleteInsertAllFlow : IWorkflowService
   {
     public string Key => "DeleteInsertAll";
 

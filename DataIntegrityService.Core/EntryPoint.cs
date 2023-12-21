@@ -1,19 +1,20 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Factories;
-using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
 using DataIntegrityService.Core.Services.Http;
+using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Workflows;
+using DataIntegrityService.Core.Workflows.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace DataIntegrityService.Core
 {
-  public class EntryPoint
+    public class EntryPoint
   {
     public static async void Run(IUserProfile user, CancellationToken token)
     {

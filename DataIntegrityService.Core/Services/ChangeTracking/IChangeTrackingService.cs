@@ -1,4 +1,5 @@
 ﻿using DataIntegrityService.Core.Models;
+using DataIntegrityService.Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Services.ChangeTracking
 {
-  public interface IChangeTrackingService : IService
+    public interface IChangeTrackingService : IService
   {
     bool ChangesExist();
     Task CompressPendingChanges();

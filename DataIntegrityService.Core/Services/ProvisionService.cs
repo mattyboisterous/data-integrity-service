@@ -1,8 +1,8 @@
 ﻿using DataIntegrityService.Core.Configuration;
-using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Services.Http;
+using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Services.Local;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Providers
 {
-  public class ProvisionService : IDataService, ILocalCacheService
+    public class ProvisionService : IDataService, ILocalCacheService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }

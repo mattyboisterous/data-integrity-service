@@ -1,8 +1,8 @@
 ﻿using DataIntegrityService.Core.Configuration;
-using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Services.Http;
+using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Services.Local;
 using System;
 using System.Collections;
@@ -15,7 +15,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataIntegrityService.Core.Services
 {
-  public class QualityAreaService : IDataService, ILocalDbService
+    public class QualityAreaService : IDataService, ILocalDbService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
