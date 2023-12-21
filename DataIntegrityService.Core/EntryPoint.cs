@@ -31,6 +31,24 @@ namespace DataIntegrityService.Core
       // Get values from the config given their key and their target type.
       ServiceConfiguration? settings = config.GetRequiredSection("serviceConfiguration").Get<ServiceConfiguration>();
 
+      // todo: define model to hold tracked changes...DONE
+      // todo: ref dataset empty? hydrate from server...(first time use)...
+
+      // todo: fetch server tracked changes...
+      // todo: push local changes to server...
+      // todo: order server changes by dependency, perform work in order...
+
+      // todo: ref service: order by dependencies (0 first)...model on existing behaviour...
+      // todo: changes service > (push then pull, pull then push)
+      // todo: changes service > order by Created (Utc)
+      // todo: iterate, calling appropriate provider, workflow...execute...
+
+      // todo: consider poison message queue, exponential backoff on certain Http responses...
+
+      // todo: consider how multi user/secondary officer would work...on switch user, update any pending changes on server with userId?
+      // todo: consider newly switched user...how to initialise local state based on all open visits etc...hwo to make application agnostic?
+      // todo: need this for a fresh user...'initialise'...check DIS for current implementation...
+
       Logger.Info("EntryPoint", $"Resolving data service for 'LocalChangeTrackingService'...");
       var localChangeTrackingService = changeTrackingFactory.GetChangeTrackingService("LocalChangeTrackingService");
 
@@ -90,53 +108,33 @@ namespace DataIntegrityService.Core
         }
       }
 
-      // todo: define model to hold tracked changes...DONE
-      // todo: ref dataset empty? hydrate from server...(first time use)...
+      //  if (settings != null)
+      //  {
+      //    Logger.Info("EntryPoint", " *** Data Integrity Service running ***");
+      //    Logger.Info("EntryPoint", "");
 
-      // todo: fetch server tracked changes...
-      // todo: push local changes to server...
-      // todo: order server changes by dependency, perform work in order...
+      //    foreach (var serviceConfiguration in settings.DataServices)
+      //    {
+      //      Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
+      //      var dataService = serviceFactory.GetDataService(serviceConfiguration);
 
-      // todo: ref service: order by dependencies (0 first)...model on existing behaviour...
-      // todo: changes service > (push then pull, pull then push)
-      // todo: changes service > order by Created (Utc)
-      // todo: iterate, calling appropriate provider, workflow...execute...
+      //      Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
+      //      var workflow = workflowFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
 
-      // todo: consider poison message queue, exponential backoff on certain Http responses...
+      //      // initialise service...
+      //      Logger.Info("EntryPoint", $"Initialising data service...");
+      //      dataService.Initialise();
 
-      // todo: consider how multi user/secondary officer would work...on switch user, update any pending changes on server with userId?
-      // todo: consider newly switched user...how to initialise local state based on all open visits etc...hwo to make application agnostic?
-      // todo: need this for a fresh user...'initialise'...check DIS for current implementation...
+      //      // perform work using this workflow...
+      //      Logger.Info("EntryPoint", $"Performing workflow...");
+      //      //workflow.Execute(dataService, token);
 
-      if (settings != null)
-      {
-        Logger.Info("EntryPoint", " *** Data Integrity Service running ***");
-        Logger.Info("EntryPoint", "");
+      //      Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
+      //      Logger.Info("EntryPoint", "");
+      //    }
 
-
-
-        foreach (var serviceConfiguration in settings.DataServices)
-        {
-          Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
-          var dataService = serviceFactory.GetDataService(serviceConfiguration);
-
-          Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
-          var workflow = workflowFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
-
-          // initialise service...
-          Logger.Info("EntryPoint", $"Initialising data service...");
-          dataService.Initialise();
-
-          // perform work using this workflow...
-          Logger.Info("EntryPoint", $"Performing workflow...");
-          //workflow.Execute(dataService, token);
-
-          Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
-          Logger.Info("EntryPoint", "");
-        }
-
-        Logger.Info("EntryPoint", $"All work done! Stopping...");
-      }
+      //    Logger.Info("EntryPoint", $"All work done! Stopping...");
+      //  }
     }
 
     public static IServiceProvider CreateServiceProvider()
