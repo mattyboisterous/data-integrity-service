@@ -81,6 +81,21 @@ namespace DataIntegrityService.Core.Providers
       };
     }
 
+    public Task<IDataResponse<IDataModel>> CreateOnServer(IDataModel model, CancellationToken cancellationToken)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<IDataResponse<IDataModel>> UpdateOnServer(IDataModel model, CancellationToken cancellationToken)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<IDataResponse<bool>> DeleteFromServer(string key, CancellationToken cancellationToken)
+    {
+      throw new NotImplementedException();
+    }
+
     #endregion
 
     #region ILocalCacheService members
@@ -105,11 +120,6 @@ namespace DataIntegrityService.Core.Providers
     {
       // mock response for now...
       Logger.Info("ProvisionService", $"Inserting {data.Count()} item(s) into local cache with key '{key}'.");
-    }
-
-    public Task<IDataResponse<IDataModel>> PushToServer(IDataModel model, CancellationToken cancellationToken)
-    {
-      throw new NotImplementedException();
     }
 
     #endregion

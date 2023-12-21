@@ -16,7 +16,9 @@ namespace DataIntegrityService.Core.Interfaces
     IDataModel TransformData(IDataModel data);
     IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data);
 
-    Task<IDataResponse<IDataModel>> PushToServer(IDataModel model, CancellationToken cancellationToken);
+    Task<IDataResponse<IDataModel>> CreateOnServer(IDataModel model, CancellationToken cancellationToken);
+    Task<IDataResponse<IDataModel>> UpdateOnServer(IDataModel model, CancellationToken cancellationToken);
+    Task<IDataResponse<bool>> DeleteFromServer(string key, CancellationToken cancellationToken);
 
     Task<IDataResponse<IDataModel>> GetFromServer(string id, CancellationToken cancellationToken);
     Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(CancellationToken cancellationToken);

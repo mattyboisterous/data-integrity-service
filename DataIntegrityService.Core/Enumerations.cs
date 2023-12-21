@@ -14,4 +14,11 @@ namespace DataIntegrityService.Core
     PushPull,
     PullPush
   }
+
+  public enum ChangeAction
+  {
+    Create,
+    Update,
+    Delete
+  }
 }

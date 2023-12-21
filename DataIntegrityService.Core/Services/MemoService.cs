@@ -56,7 +56,17 @@ namespace DataIntegrityService.Core.Providers
       throw new NotImplementedException();
     }
 
-    public Task<IDataResponse<IDataModel>> PushToServer(IDataModel model, CancellationToken cancellationToken)
+    public Task<IDataResponse<IDataModel>> CreateOnServer(IDataModel model, CancellationToken cancellationToken)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<IDataResponse<IDataModel>> UpdateOnServer(IDataModel model, CancellationToken cancellationToken)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<IDataResponse<bool>> DeleteFromServer(string key, CancellationToken cancellationToken)
     {
       throw new NotImplementedException();
     }
