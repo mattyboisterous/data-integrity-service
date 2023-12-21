@@ -11,6 +11,6 @@ namespace DataIntegrityService.Core.Interfaces
   {
     string Key { get; }
 
-    Task Execute(IDataService dataService, HttpMessageHandler messageHandler, CancellationToken cancellationToken);
+    Task<IActionResponse> Execute(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken);
   }
 }

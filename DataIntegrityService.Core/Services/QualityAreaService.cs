@@ -18,6 +18,7 @@ namespace DataIntegrityService.Core.Services
   public class QualityAreaService : IDataService, ILocalDbService
   {
     private IHttpService HttpService { get; set; }
+    private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
 
     public string Key => "QualityArea";
 
@@ -27,9 +28,12 @@ namespace DataIntegrityService.Core.Services
 
     public required string Url { get; set; }
 
-    public QualityAreaService(IHttpService httpService)
-    { 
+    public QualityAreaService(
+      IHttpService httpService,
+      IHttpMessageHandlerService httpMessageHandlerService)
+    {
       HttpService = httpService;
+      HttpMessageHandlerService = httpMessageHandlerService;
     }
 
     #region IDataService Members
@@ -42,6 +46,13 @@ namespace DataIntegrityService.Core.Services
       Logger.Info("QualityAreaService", "Data service initialised.");
     }
 
+    public IDataModel TransformData(IDataModel data)
+    {
+      // no transformation required...
+      Logger.Info("QualityAreaService", "No transformation required, returning data.");
+      return data;
+    }
+
     public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
     {
       // no transformation required...
@@ -49,9 +60,14 @@ namespace DataIntegrityService.Core.Services
       return data;
     }
 
-    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(HttpMessageHandler messageHandler, CancellationToken cancellationToken)
+    public Task<IDataResponse<IDataModel>> GetFromServer(string id, CancellationToken cancellationToken)
     {
-      var result = await HttpService.GetAll<QualityAreaModel>(Url, messageHandler, cancellationToken);
+      throw new NotImplementedException();
+    }
+
+    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(CancellationToken cancellationToken)
+    {
+      var result = await HttpService.GetAll<QualityAreaModel>(Url, HttpMessageHandlerService.GetMessageHandler(), cancellationToken);
 
       return new DataResponse<IEnumerable<IDataModel>>
       {
@@ -60,7 +76,12 @@ namespace DataIntegrityService.Core.Services
       };
     }
 
-    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, HttpMessageHandler messageHandler, CancellationToken cancellationToken)
+    public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, CancellationToken cancellationToken)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<IDataResponse<IDataModel>> PushToServer(IDataModel model, CancellationToken cancellationToken)
     {
       throw new NotImplementedException();
     }
@@ -68,6 +89,11 @@ namespace DataIntegrityService.Core.Services
     #endregion
 
     #region ILocalDbService
+
+    public IDataModel GetLocal(string key)
+    {
+      throw new NotImplementedException();
+    }
 
     public int InsertAll(IEnumerable<IDataModel> data)
     {

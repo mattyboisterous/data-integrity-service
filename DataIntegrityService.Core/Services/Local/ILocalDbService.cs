@@ -9,6 +9,7 @@ namespace DataIntegrityService.Core.Services.Local
 {
   public interface ILocalDbService
   {
+    IDataModel GetLocal(string key);
     int DeleteAll<IDataModel>();
     int InsertAll(IEnumerable<IDataModel> data);
   }

@@ -7,12 +7,23 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataIntegrityService.Core.Models
 {
-  public interface IDataResponse<T>
+  public interface IActionResponse
   {
-    T Data { get; set; }
     bool ActionCancelled { get; set; }
     bool ActionSucceeded { get; set; }
     int HttpResponseCode { get; set; }
+  }
+
+  public interface IDataResponse<T> : IActionResponse
+  {
+    T Data { get; set; }
+  }
+
+  public class ActionResponse : IActionResponse
+  {
+    public bool ActionCancelled { get; set; }
+    public bool ActionSucceeded { get; set; } = true;
+    public int HttpResponseCode { get; set; }
   }
 
   public class DataResponse<T> : IDataResponse<T>

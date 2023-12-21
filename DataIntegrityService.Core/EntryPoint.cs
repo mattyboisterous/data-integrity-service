@@ -1,4 +1,5 @@
 ﻿using DataIntegrityService.Core.Configuration;
+using DataIntegrityService.Core.Factories;
 using DataIntegrityService.Core.Interfaces;
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
@@ -12,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace DataIntegrityService.Core
 {
-  public class EntryPoint
+    public class EntryPoint
   {
     public static void Run(IUserProfile user, CancellationToken token)
     {
@@ -64,7 +65,7 @@ namespace DataIntegrityService.Core
 
               // perform work using this workflow...
               Logger.Info("EntryPoint", $"Performing workflow...");
-              workflow.Execute(dataService, null, token);
+              workflow.Execute(pendingChange, dataService, token);
 
               Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
               Logger.Info("EntryPoint", "");
@@ -112,7 +113,7 @@ namespace DataIntegrityService.Core
 
           // perform work using this workflow...
           Logger.Info("EntryPoint", $"Performing workflow...");
-          workflow.Execute(dataService, null, token);
+          //workflow.Execute(dataService, token);
 
           Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
           Logger.Info("EntryPoint", "");

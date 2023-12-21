@@ -15,7 +15,7 @@ namespace DataIntegrityService.Core.Workflows
   {
     public string Key => "DeleteInsertAllByKey";
 
-    public async Task Execute(IDataService dataService, HttpMessageHandler messageHandler, CancellationToken cancellationToken)
+    public async Task<IActionResponse> Execute(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken)
     {
       try
       {
@@ -24,7 +24,7 @@ namespace DataIntegrityService.Core.Workflows
           Logger.Info("DeleteInsertAllByKeyFlow", $"Data service '{dataService.Key}' initialised, fetching data from backend Api...");
 
           // fetch all data from the server...
-          var dataResponseAllKeys = await dataService.GetAllFromServer(messageHandler, cancellationToken);
+          var dataResponseAllKeys = await dataService.GetAllFromServer(cancellationToken);
 
           if (dataResponseAllKeys != null && dataResponseAllKeys.ActionSucceeded)
           {
@@ -33,7 +33,7 @@ namespace DataIntegrityService.Core.Workflows
             foreach (var item in dataResponseAllKeys.Data)
             {
               // fetch all data using the item key...
-              var dataResponseByKey = await dataService.GetAllFromServerByKey(item.Key, messageHandler, cancellationToken);
+              var dataResponseByKey = await dataService.GetAllFromServerByKey(item.Key, cancellationToken);
 
               if (dataResponseByKey != null && dataResponseByKey.ActionSucceeded)
               {
@@ -62,20 +62,32 @@ namespace DataIntegrityService.Core.Workflows
                   ((ILocalDbService)dataService).InsertAll(data);
                 }
               }
+              else
+              {
+                Logger.Error("DeleteInsertAllByKey", "Api error, no data returned.");
+                return dataResponseByKey!;
+              }
             }
           }
           else
+          {
             Logger.Error("DeleteInsertAllByKey", "Api error, no  data returned.");
+            return dataResponseAllKeys!;
+          }
 
           Logger.Info("DeleteInsertAllByKey", "DeleteInsertAllByKey completed.");
+          return new ActionResponse();
 
           //CurrentRunState.BytesDownloaded += Utilities.GetObjectSize(qas);
           //dataSet.Count = qas.Count;
         }
+        else
+          throw new InvalidOperationException("Please initialise 'DeleteInsertAllByKey' before calling 'Execute'.");
       }
       catch (Exception ex)
       {
         Logger.Error("DeleteInsertAllByKey", ex.ToString());
+        throw;
       }
     }
   }

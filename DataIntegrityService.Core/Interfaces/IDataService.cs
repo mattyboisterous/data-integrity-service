@@ -13,9 +13,13 @@ namespace DataIntegrityService.Core.Interfaces
   {
     DataServiceConfiguration Settings { get; set; }
 
+    IDataModel TransformData(IDataModel data);
     IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data);
 
-    Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(HttpMessageHandler messageHandler, CancellationToken cancellationToken);
-    Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, HttpMessageHandler messageHandler, CancellationToken cancellationToken);
+    Task<IDataResponse<IDataModel>> PushToServer(IDataModel model, CancellationToken cancellationToken);
+
+    Task<IDataResponse<IDataModel>> GetFromServer(string id, CancellationToken cancellationToken);
+    Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(CancellationToken cancellationToken);
+    Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, CancellationToken cancellationToken);
   }
 }
