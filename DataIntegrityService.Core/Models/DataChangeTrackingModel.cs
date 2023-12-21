@@ -16,6 +16,8 @@ namespace DataIntegrityService.Core.Models
     public required string DatasetName { get; set; }
     public required string Action { get; set; }
     public string? Version { get; set; }
+    public required int Attempts { get; set; }
+    public DateTime LastAttempt { get; set; }
     public required DateTime Created { get; set; }
     public IEnumerable<PropertyBagItem>? PropertyBag { get; set; }
   }

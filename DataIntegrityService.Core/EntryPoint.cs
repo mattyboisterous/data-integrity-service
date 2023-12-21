@@ -13,9 +13,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace DataIntegrityService.Core
 {
-    public class EntryPoint
+  public class EntryPoint
   {
-    public static void Run(IUserProfile user, CancellationToken token)
+    public static async void Run(IUserProfile user, CancellationToken token)
     {
       var serviceProvider = CreateServiceProvider();
       var serviceFactory = serviceProvider.GetService<DataServiceFactory>()!;
@@ -40,7 +40,7 @@ namespace DataIntegrityService.Core
       if (localChangeTrackingService.IsInitialised)
       {
         // 'compress' changes...
-        localChangeTrackingService.CompressPendingChanges();
+        await localChangeTrackingService.CompressPendingChanges();
 
         while (localChangeTrackingService.ChangesExist() && !token.IsCancellationRequested)
         {
@@ -48,6 +48,9 @@ namespace DataIntegrityService.Core
 
           if (pendingChange != null)
           {
+            // we are attempting to process you...
+            await localChangeTrackingService.IncrementAttempt(pendingChange);
+
             // fetch configuration, then call up matching data service...
             var serviceConfiguration = settings!.DataServices.FirstOrDefault(ds => ds.DatasetName == pendingChange.DatasetName);
 
@@ -65,7 +68,20 @@ namespace DataIntegrityService.Core
 
               // perform work using this workflow...
               Logger.Info("EntryPoint", $"Performing workflow...");
-              workflow.Execute(pendingChange, dataService, token);
+              var actionReponse = await workflow.Execute(pendingChange, dataService, token);
+
+              // todo: hooks into check Api status, back off, poison message?
+              if (actionReponse.ActionSucceeded)
+                await localChangeTrackingService.FlagAsCompleted(pendingChange);
+              else
+              {
+                // if we have a 400 Http response or attempted too many times, move to poison messages...
+                if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500) || (pendingChange.Attempts > settings.ChangeTrackingService.BackOff.Count))
+                {
+                  await localChangeTrackingService.FlagAsPoison(pendingChange);
+
+                }
+              }
 
               Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
               Logger.Info("EntryPoint", "");
