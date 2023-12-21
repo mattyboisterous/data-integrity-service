@@ -108,33 +108,66 @@ namespace DataIntegrityService.Core
         }
       }
 
-      //  if (settings != null)
-      //  {
-      //    Logger.Info("EntryPoint", " *** Data Integrity Service running ***");
-      //    Logger.Info("EntryPoint", "");
+      Logger.Info("EntryPoint", $"Resolving data service for 'HttpChangeTrackingService'...");
+      var serverChangeTrackingService = changeTrackingFactory.GetChangeTrackingService("HttpChangeTrackingService");
 
-      //    foreach (var serviceConfiguration in settings.DataServices)
-      //    {
-      //      Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
-      //      var dataService = serviceFactory.GetDataService(serviceConfiguration);
+      // fetch server tracked changes...
+      serverChangeTrackingService.Initialise();
 
-      //      Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
-      //      var workflow = workflowFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
+      if (serverChangeTrackingService.IsInitialised)
+      {
+        // 'compress' changes...
+        await serverChangeTrackingService.CompressPendingChanges();
 
-      //      // initialise service...
-      //      Logger.Info("EntryPoint", $"Initialising data service...");
-      //      dataService.Initialise();
+        while (serverChangeTrackingService.ChangesExist() && !token.IsCancellationRequested)
+        {
+          var pendingChange = serverChangeTrackingService.GetNextChange();
 
-      //      // perform work using this workflow...
-      //      Logger.Info("EntryPoint", $"Performing workflow...");
-      //      //workflow.Execute(dataService, token);
+          if (pendingChange != null)
+          {
+            // we are attempting to process you...
+            await serverChangeTrackingService.IncrementAttempt(pendingChange);
 
-      //      Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
-      //      Logger.Info("EntryPoint", "");
-      //    }
+            // fetch configuration, then call up matching data service...
+            var serviceConfiguration = settings!.DataServices.FirstOrDefault(ds => ds.DatasetName == pendingChange.DatasetName);
 
-      //    Logger.Info("EntryPoint", $"All work done! Stopping...");
-      //  }
+            if (serviceConfiguration != null)
+            {
+              Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
+              var dataService = serviceFactory.GetDataService(serviceConfiguration);
+
+              Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
+              var workflow = workflowFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
+
+              // initialise service...
+              Logger.Info("EntryPoint", $"Initialising data service...");
+              dataService.Initialise();
+
+              // perform work using this workflow...
+              Logger.Info("EntryPoint", $"Performing workflow...");
+              var actionReponse = await workflow.Execute(pendingChange, dataService, token);
+
+              // todo: hooks into check Api status, back off, poison message?
+              if (actionReponse.ActionSucceeded)
+                await serverChangeTrackingService.FlagAsCompleted(pendingChange);
+              else
+              {
+                // if we have a 400 Http response or attempted too many times, move to poison messages...
+                if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500) || (pendingChange.Attempts > settings.ChangeTrackingService.BackOff.Count))
+                {
+                  await serverChangeTrackingService.FlagAsPoison(pendingChange);
+
+                }
+              }
+
+              Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
+              Logger.Info("EntryPoint", "");
+            }
+          }
+        }
+      }
+
+      Logger.Info("EntryPoint", $"All work done! Stopping...");
     }
 
     public static IServiceProvider CreateServiceProvider()
