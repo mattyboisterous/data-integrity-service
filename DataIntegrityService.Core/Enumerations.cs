@@ -21,4 +21,10 @@ namespace DataIntegrityService.Core
     Update,
     Delete
   }
+
+  public enum SynchronisationMode
+  {
+    Push,
+    Pull
+  }
 }

@@ -9,4 +9,6 @@ IUserProfile user = new UserProfile();
 
 CancellationTokenSource cts = new CancellationTokenSource();
 
-EntryPoint.Run(user, cts.Token);
+var entryPoint = new EntryPoint();
+
+await entryPoint.Run(user, cts.Token);
