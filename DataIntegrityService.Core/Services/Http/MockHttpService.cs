@@ -1,5 +1,6 @@
 ﻿using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
+using DataIntegrityService.Core.Models.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataIntegrityService.Core.Services.Http
 {
-  public class MockHttpService : IHttpService
+    public class MockHttpService : IHttpService
   {
     public required IUserProfile User { get; set; }
 

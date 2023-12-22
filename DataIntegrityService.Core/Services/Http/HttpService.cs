@@ -1,4 +1,5 @@
 ﻿using DataIntegrityService.Core.Models;
+using DataIntegrityService.Core.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataIntegrityService.Core.Services.Http
 {
-  public class HttpService : IHttpService
+    public class HttpService : IHttpService
   {
     public IUserProfile User { get; set; }
 

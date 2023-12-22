@@ -1,4 +1,5 @@
 ﻿using DataIntegrityService.Core.Models;
+using DataIntegrityService.Core.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Services.Http
 {
-  public interface IHttpService
+    public interface IHttpService
   {
     IUserProfile User { get; set; }
     Task<IDataResponse<int>> Get(string url, HttpMessageHandler messageHandler, CancellationToken token);

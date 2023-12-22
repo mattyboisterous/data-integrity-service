@@ -1,5 +1,6 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Models;
+using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Http;
 using DataIntegrityService.Core.Services.Interfaces;
 using System;

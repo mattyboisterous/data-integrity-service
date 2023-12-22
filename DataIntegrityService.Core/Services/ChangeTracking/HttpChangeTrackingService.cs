@@ -1,4 +1,5 @@
 ﻿using DataIntegrityService.Core.Models;
+using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Http;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace DataIntegrityService.Core.Services.ChangeTracking
 {
-  public class HttpChangeTrackingService : IChangeTrackingService
+    public class HttpChangeTrackingService : IChangeTrackingService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }

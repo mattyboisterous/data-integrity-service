@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core;
-using DataIntegrityService.Core.Models;
 using DataIntegrityService.Console.Models;
+using DataIntegrityService.Core.Models.Interfaces;
 
 // dummy a new user and pass to entry point...
 IUserProfile user = new UserProfile();

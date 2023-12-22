@@ -1,4 +1,4 @@
-﻿using DataIntegrityService.Core.Models;
+﻿using DataIntegrityService.Core.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Services.Local
 {
-  public interface ILocalCacheService
+    public interface ILocalCacheService
   {
     IDataModel GetLocal(string key);
     IEnumerable<IDataModel> GetAllLocal(string key);

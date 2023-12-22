@@ -1,4 +1,4 @@
-﻿using DataIntegrityService.Core.Models;
+﻿using DataIntegrityService.Core.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Console.Models
 {
-  internal class UserProfile : IUserProfile
+    internal class UserProfile : IUserProfile
   {
     public UserProfile() 
     {

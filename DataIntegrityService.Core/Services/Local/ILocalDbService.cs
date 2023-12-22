@@ -1,4 +1,4 @@
-﻿using DataIntegrityService.Core.Models;
+﻿using DataIntegrityService.Core.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Services.Local
 {
-  public interface ILocalDbService
+    public interface ILocalDbService
   {
     IDataModel GetLocal(string key);
     int DeleteAll<IDataModel>();

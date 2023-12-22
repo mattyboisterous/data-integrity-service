@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataIntegrityService.Core.Models.Interfaces;
 
 namespace DataIntegrityService.Core.Models
 {
-  public class DataChangeTrackingModel : IDataModel
+    public class DataChangeTrackingModel : IDataModel
   {
     public string Key => Id;
 

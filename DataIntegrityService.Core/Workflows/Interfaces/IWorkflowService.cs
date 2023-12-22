@@ -1,4 +1,5 @@
 ﻿using DataIntegrityService.Core.Models;
+using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;

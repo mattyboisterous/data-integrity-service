@@ -1,18 +1,14 @@
 ﻿using DataIntegrityService.Core.Models.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Models
 {
-  public class DataResponse<T> : IDataResponse<T>
+  public class ActionResponse : IActionResponse
   {
-    public DataResponse()
-    { }
-
-    public DataResponse(T data)
-    {
-      Data = data;
-    }
-
-    public T Data { get; set; }
     public bool ActionCancelled { get; set; }
     public bool ActionSucceeded { get; set; } = true;
     public int HttpResponseCode { get; set; }

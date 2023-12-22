@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataIntegrityService.Core.Models.Interfaces;
 
 namespace DataIntegrityService.Core.Models
 {
-  public class QualityAreaModel : IDataModel
+    public class QualityAreaModel : IDataModel
   {
     public string Key => QualityAreaId.ToString();
 
