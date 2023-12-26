@@ -16,6 +16,7 @@ namespace DataIntegrityService.Core.Services
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
+    public CancellationToken CancellationToken { get; set; }
     public string Key => "StaticChangeTracking";
     public bool IsInitialised { get; set; }
     public List<StaticDataChangeTrackingModel> LocalReferenceDataSetState { get; set; }
@@ -32,78 +33,61 @@ namespace DataIntegrityService.Core.Services
 
     public async Task Initialise()
     {
-      //// fetch tracked local changes...
-      //LocalReferenceDataSetState = (List<StaticDataChangeTrackingModel>)GetAllChangesFromLocalCache();
+      // fetch tracked local changes...
+      LocalReferenceDataSetState = (List<StaticDataChangeTrackingModel>)GetAllLocal(Key);
 
-      //// fetch tracked changes from server...
-      //var serverResponse = await GetAllChangesFromServer(UserId, null, null);
+      // fetch tracked changes from server...
+      var serverResponse = await GetAllFromServer(CancellationToken);
 
-      //if (serverResponse != null && serverResponse.ActionSucceeded)
-      //{
-      //  ServerReferenceDataSetState = (List<StaticDataChangeTrackingModel>)serverResponse.Data;
-      //}
+      if (serverResponse != null && serverResponse.ActionSucceeded)
+      {
+        ServerReferenceDataSetState = (List<StaticDataChangeTrackingModel>)serverResponse.Data;
+      }
 
       IsInitialised = true;
+      await Task.CompletedTask;
     }
 
     #region IDataService Members
 
     public IDataModel TransformData(IDataModel data)
     {
-      throw new NotImplementedException();
+      return data;
     }
 
     public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
     {
-      throw new NotImplementedException();
+      return data;
     }
 
     public Task<IDataResponse<IDataModel>> CreateOnServer(IDataModel model, CancellationToken cancellationToken) => throw new NotImplementedException();
 
-    public Task<IDataResponse<IDataModel>> UpdateOnServer(IDataModel model, CancellationToken cancellationToken)
-    {
-      throw new NotImplementedException();
-    }
+    public Task<IDataResponse<IDataModel>> UpdateOnServer(IDataModel model, CancellationToken cancellationToken) => throw new NotImplementedException();
 
-    public Task<IDataResponse<bool>> DeleteFromServer(string key, CancellationToken cancellationToken)
-    {
-      throw new NotImplementedException();
-    }
+    public Task<IDataResponse<bool>> DeleteFromServer(string key, CancellationToken cancellationToken) => throw new NotImplementedException();
 
-    public Task<IDataResponse<IDataModel>> GetFromServer(string id, CancellationToken cancellationToken)
-    {
-      throw new NotImplementedException();
-    }
+    public Task<IDataResponse<IDataModel>> GetFromServer(string id, CancellationToken cancellationToken) => throw new NotImplementedException();
 
     public Task<Models.Interfaces.IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(CancellationToken cancellationToken)
     {
       throw new NotImplementedException();
     }
 
-    public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, CancellationToken cancellationToken)
-    {
-      throw new NotImplementedException();
-    }
+    public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, CancellationToken cancellationToken) => throw new NotImplementedException();
 
     #endregion
 
     #region ILocalCacheService
 
-    public IDataModel GetLocal(string key)
-    {
-      throw new NotImplementedException();
-    }
+    public IDataModel GetLocal(string key) => throw new NotImplementedException();
 
     public IEnumerable<IDataModel> GetAllLocal(string key)
     {
       throw new NotImplementedException();
     }
 
-    public void RemoveIfExists(string key)
-    {
-      throw new NotImplementedException();
-    }
-
+    public void RemoveIfExists(string key) => throw new NotImplementedException();
+      
     public void InsertOrReplace(string key, IEnumerable<IDataModel> data)
     {
       throw new NotImplementedException();

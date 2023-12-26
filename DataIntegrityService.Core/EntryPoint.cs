@@ -73,8 +73,12 @@ namespace DataIntegrityService.Core
       // todo: .Initialise() gets dataset from both local and server...
       // todo: service needs public collections for both local and server...if local is empty or we are refreshing, do it!
 
-
-
+      if (!token.IsCancellationRequested)
+      {
+        Logger.Info("EntryPoint", $"Resolving data service for 'LocalChangeTrackingService'...");
+        //IDataService referenceDataService = DataServiceFactory.GetDataService("LocalChangeTrackingService");
+      }
+      
       if (!token.IsCancellationRequested)
       {
         await SynchroniseStates(SynchronisationMode.Push, user, token);
@@ -170,6 +174,7 @@ namespace DataIntegrityService.Core
 
     private void ConfigureServices(IServiceCollection services)
     {
+      services.AddTransient<IDataService, StaticChangeTrackingService>();
       services.AddTransient<IDataService, EvidenceNoteService>();
       services.AddTransient<IDataService, MemoService>();
       services.AddTransient<IDataService, ProvisionService>();
