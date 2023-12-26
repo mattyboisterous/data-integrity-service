@@ -12,15 +12,15 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Services
 {
-  public class StaticChangeTrackingService : IDataService, ILocalCacheService
+  public class StaticChangeTrackingService : IDataService, IStaticDataService, ILocalCacheService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
     public CancellationToken CancellationToken { get; set; }
     public string Key => "StaticChangeTracking";
     public bool IsInitialised { get; set; }
-    public List<StaticDataChangeTrackingModel> LocalReferenceDataSetState { get; set; }
-    public List<StaticDataChangeTrackingModel> ServerReferenceDataSetState { get; set; }
+    public List<StaticDataChangeTrackingModel> LocalReferenceDataSetState { get; set; } = new List<StaticDataChangeTrackingModel>();  
+    public List<StaticDataChangeTrackingModel> ServerReferenceDataSetState { get; set; } = new List<StaticDataChangeTrackingModel>(); 
     public DataServiceConfiguration Settings { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public StaticChangeTrackingService(

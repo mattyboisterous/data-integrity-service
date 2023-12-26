@@ -43,7 +43,7 @@ namespace DataIntegrityService.Core
       Logger.Info("EntryPoint", $"Factories and configuration initialised.");
     }
 
-    public async Task Run(IUserProfile user, CancellationToken token)
+    public async Task Run(IUserProfile user, bool ForceRehydrateAll, CancellationToken token)
     {
       // todo: define model to hold tracked changes...DONE
       // todo: ref dataset empty? hydrate from server...(first time use)...
@@ -69,16 +69,50 @@ namespace DataIntegrityService.Core
       // ReferenceDataChangeService
       // todo: get both local and server...
       // todo: iterate over server...on change or no local, get data server and workflow baby! Execute!!!!
-      // todo: there is only one data service we know we need...intsantiate it...
-      // todo: .Initialise() gets dataset from both local and server...
+      // todo: there is only one data service we know we need...instantiate it...
+      // todo: Initialise() gets dataset from both local and server...
       // todo: service needs public collections for both local and server...if local is empty or we are refreshing, do it!
 
       if (!token.IsCancellationRequested)
       {
-        Logger.Info("EntryPoint", $"Resolving data service for 'LocalChangeTrackingService'...");
-        //IDataService referenceDataService = DataServiceFactory.GetDataService("LocalChangeTrackingService");
+        // fetch configuration, then call up matching data service...
+        var serviceConfiguration = Configuration.DataServices.FirstOrDefault(ds => ds.DatasetName == Configuration.ReferenceDataService);
+
+        if (serviceConfiguration != null)
+        {
+          Logger.Info("EntryPoint", $"Resolving data service for '{Configuration.ReferenceDataService}'...");
+          IDataService referenceDataService = DataServiceFactory.GetDataService(serviceConfiguration);
+
+          if (referenceDataService != null)
+          {
+            // initialise service...
+            Logger.Info("EntryPoint", $"Initialising reference data service...");
+            await referenceDataService.Initialise();
+
+            if (referenceDataService.IsInitialised)
+            {
+              // iterate over server dataset state, if no local version or version mismatch, fetch from server and overwrite locally...
+              foreach (var serverDataSet in ((IStaticDataService)referenceDataService).ServerReferenceDataSetState)
+              {
+                // look for local match...
+                var localDataSet = ((IStaticDataService)referenceDataService).LocalReferenceDataSetState.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
+
+                // refresh locally if we need to...
+                if (ForceRehydrateAll || localDataSet == null || localDataSet!.Version != serverDataSet.Version)
+                {
+                  Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
+                  var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
+
+                  // perform work using this workflow...
+                  Logger.Info("EntryPoint", $"Performing workflow...");
+                  var actionReponse = await workflow.Execute(null, referenceDataService, token);
+                }
+              }
+            }
+          }
+        }
       }
-      
+
       if (!token.IsCancellationRequested)
       {
         await SynchroniseStates(SynchronisationMode.Push, user, token);
@@ -137,7 +171,7 @@ namespace DataIntegrityService.Core
 
               // initialise service...
               Logger.Info("EntryPoint", $"Initialising data service...");
-              dataService.Initialise();
+              await dataService.Initialise();
 
               // perform work using this workflow...
               Logger.Info("EntryPoint", $"Performing workflow...");

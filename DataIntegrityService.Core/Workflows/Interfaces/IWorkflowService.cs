@@ -13,6 +13,6 @@ namespace DataIntegrityService.Core.Workflows.Interfaces
     {
         string Key { get; }
 
-        Task<IActionResponse> Execute(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken);
+        Task<IActionResponse> Execute(DataChangeTrackingModel? message, IDataService dataService, CancellationToken cancellationToken);
     }
 }

@@ -11,4 +11,4 @@ CancellationTokenSource cts = new CancellationTokenSource();
 
 var entryPoint = new EntryPoint();
 
-await entryPoint.Run(user, cts.Token);
+await entryPoint.Run(user, false, cts.Token);

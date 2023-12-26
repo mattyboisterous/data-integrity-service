@@ -10,6 +10,7 @@ namespace DataIntegrityService.Core.Configuration
   {
     public required string Environment { get; set; }
     public required string Version { get; set; }
+    public required string ReferenceDataService { get; set; }
     public required ChangeTrackingConfiguration ChangeTrackingService { get; set; }
     public required List<DataServiceConfiguration> DataServices { get; set; }
   }
