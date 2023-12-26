@@ -43,15 +43,28 @@ namespace DataIntegrityService.Core
       Logger.Info("EntryPoint", $"Factories and configuration initialised.");
     }
 
-    public async Task Run(IUserProfile user, bool ForceRehydrateAll, CancellationToken token)
+    public async Task Run(IUserProfile user, bool forceRehydrateAll, CancellationToken token)
     {
+      Logger.Info("EntryPoint", $"Let's do some work....");
+
       // todo: order server changes by dependency, perform work in order...
 
       // todo: consider how multi user/secondary officer would work...on switch user, update any pending changes on server with userId?
       // todo: consider newly switched user...how to initialise local state based on all open visits etc...hwo to make application agnostic?
       // todo: need this for a fresh user...'initialise'...check DIS for current implementation...
 
-       if (!token.IsCancellationRequested)
+      await SynchroniseStaticData(forceRehydrateAll, token);
+
+      await SynchroniseStates(SynchronisationMode.Push, user, token);
+
+      await SynchroniseStates(SynchronisationMode.Pull, user, token);
+
+      Logger.Info("EntryPoint", $"All work done! Stopping...");
+    }
+
+    public async Task SynchroniseStaticData(bool forceRehydrateAll, CancellationToken token)
+    {
+      if (!token.IsCancellationRequested)
       {
         // fetch configuration, then call up matching data service...
         var serviceConfiguration = Configuration.DataServices.FirstOrDefault(ds => ds.DatasetName == Configuration.ReferenceDataService);
@@ -76,7 +89,7 @@ namespace DataIntegrityService.Core
                 var localDataSet = ((IStaticDataService)referenceDataService).LocalReferenceDataSetState.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
 
                 // refresh locally if we need to...
-                if (ForceRehydrateAll || localDataSet == null || localDataSet!.Version != serverDataSet.Version)
+                if (forceRehydrateAll || localDataSet == null || localDataSet!.Version != serverDataSet.Version)
                 {
                   Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
                   var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
@@ -90,85 +103,76 @@ namespace DataIntegrityService.Core
           }
         }
       }
-
-      if (!token.IsCancellationRequested)
-      {
-        await SynchroniseStates(SynchronisationMode.Push, user, token);
-      }
-
-      if (!token.IsCancellationRequested)
-      {
-        await SynchroniseStates(SynchronisationMode.Pull, user, token);
-      }
-
-      Logger.Info("EntryPoint", $"All work done! Stopping...");
     }
 
     public async Task SynchroniseStates(SynchronisationMode mode, IUserProfile user, CancellationToken token)
     {
-      IChangeTrackingService changeTrackingService;
-
-      if (mode == SynchronisationMode.Push)
+      if (!token.IsCancellationRequested)
       {
-        Logger.Info("EntryPoint", $"Resolving data service for 'LocalChangeTrackingService'...");
-        changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("LocalChangeTrackingService");
-      }
-      else
-      {
-        Logger.Info("EntryPoint", $"Resolving data service for 'HttpChangeTrackingService'...");
-        changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("HttpChangeTrackingService");
-      }
+        IChangeTrackingService changeTrackingService;
 
-      // fetch tracked changes...
-      await changeTrackingService.Initialise();
-
-      if (changeTrackingService.IsInitialised)
-      {
-        // 'compress' changes...
-        await changeTrackingService.CompressPendingChanges();
-
-        while (changeTrackingService.ChangesExist() && !token.IsCancellationRequested)
+        if (mode == SynchronisationMode.Push)
         {
-          var pendingChange = changeTrackingService.GetNextChange();
+          Logger.Info("EntryPoint", $"Resolving data service for 'LocalChangeTrackingService'...");
+          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("LocalChangeTrackingService");
+        }
+        else
+        {
+          Logger.Info("EntryPoint", $"Resolving data service for 'HttpChangeTrackingService'...");
+          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("HttpChangeTrackingService");
+        }
 
-          if (pendingChange != null)
+        // fetch tracked changes...
+        await changeTrackingService.Initialise();
+
+        if (changeTrackingService.IsInitialised)
+        {
+          // 'compress' changes...
+          await changeTrackingService.CompressPendingChanges();
+
+          while (changeTrackingService.ChangesExist() && !token.IsCancellationRequested)
           {
-            // we are attempting to process you...
-            await changeTrackingService.IncrementAttempt(pendingChange);
+            var pendingChange = changeTrackingService.GetNextChange();
 
-            // fetch configuration, then call up matching data service...
-            var serviceConfiguration = Configuration.DataServices.FirstOrDefault(ds => ds.DatasetName == pendingChange.DatasetName);
-
-            if (serviceConfiguration != null)
+            if (pendingChange != null)
             {
-              Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
-              var dataService = DataServiceFactory.GetDataService(serviceConfiguration);
+              // we are attempting to process you...
+              await changeTrackingService.IncrementAttempt(pendingChange);
 
-              Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
-              var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
+              // fetch configuration, then call up matching data service...
+              var serviceConfiguration = Configuration.DataServices.FirstOrDefault(ds => ds.DatasetName == pendingChange.DatasetName);
 
-              // initialise service...
-              Logger.Info("EntryPoint", $"Initialising data service...");
-              await dataService.Initialise();
-
-              // perform work using this workflow...
-              Logger.Info("EntryPoint", $"Performing workflow...");
-              var actionReponse = await workflow.Execute(pendingChange, dataService, token);
-
-              // flag as completed if all is well...
-              if (actionReponse.ActionSucceeded)
-                await changeTrackingService.FlagAsCompleted(pendingChange);
-              else
+              if (serviceConfiguration != null)
               {
-                // if we have a 400 Http response or attempted too many times, move to poison messages...
-                if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500) || (pendingChange.Attempts > Configuration.ChangeTrackingService.BackOff.Count))
-                {
-                  await changeTrackingService.FlagAsPoison(pendingChange);
-                }
-              }
+                Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
+                var dataService = DataServiceFactory.GetDataService(serviceConfiguration);
 
-              Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
-              Logger.Info("EntryPoint", "");
+                Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
+                var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
+
+                // initialise service...
+                Logger.Info("EntryPoint", $"Initialising data service...");
+                await dataService.Initialise();
+
+                // perform work using this workflow...
+                Logger.Info("EntryPoint", $"Performing workflow...");
+                var actionReponse = await workflow.Execute(pendingChange, dataService, token);
+
+                // flag as completed if all is well...
+                if (actionReponse.ActionSucceeded)
+                  await changeTrackingService.FlagAsCompleted(pendingChange);
+                else
+                {
+                  // if we have a 400 Http response or attempted too many times, move to poison messages...
+                  if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500) || (pendingChange.Attempts > Configuration.ChangeTrackingService.BackOff.Count))
+                  {
+                    await changeTrackingService.FlagAsPoison(pendingChange);
+                  }
+                }
+
+                Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
+                Logger.Info("EntryPoint", "");
+              }
             }
           }
         }
