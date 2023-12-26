@@ -35,10 +35,11 @@ namespace DataIntegrityService.Core.Providers
       HttpMessageHandlerService = httpMessageHandlerService;
     }
 
-    public void Initialise()
+    public async Task Initialise()
     {
       // do nothing...
       IsInitialised = true;
+      await Task.CompletedTask;
     }
 
     #region IDataService members

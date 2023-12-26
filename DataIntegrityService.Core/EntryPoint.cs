@@ -15,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace DataIntegrityService.Core
 {
-    public class EntryPoint
+  public class EntryPoint
   {
     private ServiceConfiguration Configuration { get; }
     private DataServiceFactory DataServiceFactory { get; set; }
@@ -64,6 +64,16 @@ namespace DataIntegrityService.Core
       // todo: need this for a fresh user...'initialise'...check DIS for current implementation...
 
       // todo: ref data first, always...
+      // todo: flag to hydrate all, pass in variable?
+
+      // ReferenceDataChangeService
+      // todo: get both local and server...
+      // todo: iterate over server...on change or no local, get data server and workflow baby! Execute!!!!
+      // todo: there is only one data service we know we need...intsantiate it...
+      // todo: .Initialise() gets dataset from both local and server...
+      // todo: service needs public collections for both local and server...if local is empty or we are refreshing, do it!
+
+
 
       if (!token.IsCancellationRequested)
       {

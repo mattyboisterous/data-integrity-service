@@ -11,6 +11,6 @@ namespace DataIntegrityService.Core.Services.Interfaces
     {
         bool IsInitialised { get; set; }
         string Key { get; }
-        void Initialise();
+        Task Initialise();
     }
 }

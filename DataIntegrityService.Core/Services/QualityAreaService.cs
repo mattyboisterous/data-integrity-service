@@ -39,12 +39,13 @@ namespace DataIntegrityService.Core.Services
 
     #region IDataService Members
 
-    public void Initialise()
+    public async Task Initialise()
     {
       Url = Settings.Http.Get!;
       IsInitialised = true;
 
       Logger.Info("QualityAreaService", "Data service initialised.");
+      await Task.CompletedTask;
     }
 
     public IDataModel TransformData(IDataModel data)

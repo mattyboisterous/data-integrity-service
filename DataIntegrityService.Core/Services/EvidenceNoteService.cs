@@ -28,9 +28,9 @@ namespace DataIntegrityService.Core.Providers
       HttpMessageHandlerService = httpMessageHandlerService;
     }
 
-    public void Initialise()
+    public async Task Initialise()
     {
-      throw new NotImplementedException();
+      await Task.CompletedTask;
     }
 
     public IDataModel TransformData(IDataModel data)

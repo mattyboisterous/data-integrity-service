@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Services\ChangeTracking\Static\" />
     <Folder Include="Services\Local\Base\" />
   </ItemGroup>
 

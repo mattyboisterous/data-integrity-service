@@ -34,7 +34,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
     /// <summary>
     /// Get a collection of pending changes for this user from the server.
     /// </summary>
-    public async void Initialise()
+    public async Task Initialise()
     {
       // fetch tracked changes from server...
       var serverResponse = await GetAllTrackedChanges();
@@ -45,6 +45,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       }
 
       IsInitialised = true;
+      await Task.CompletedTask;
     }
 
     public Task CompressPendingChanges()
