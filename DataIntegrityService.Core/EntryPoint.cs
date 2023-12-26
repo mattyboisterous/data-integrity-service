@@ -4,7 +4,7 @@ using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
-using DataIntegrityService.Core.Services.ChangeTracking;
+using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
 using DataIntegrityService.Core.Services.Http;
 using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Workflows;
@@ -15,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace DataIntegrityService.Core
 {
-  public class EntryPoint
+    public class EntryPoint
   {
     private ServiceConfiguration Configuration { get; }
     private DataServiceFactory DataServiceFactory { get; set; }

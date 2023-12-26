@@ -1,8 +1,8 @@
-﻿using DataIntegrityService.Core.Services.ChangeTracking;
+﻿using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
 
 namespace DataIntegrityService.Core.Factories
 {
-  public class ChangeTrackingServiceFactory
+    public class ChangeTrackingServiceFactory
     {
         private readonly IEnumerable<IChangeTrackingService> _changeTrackingServices;
 

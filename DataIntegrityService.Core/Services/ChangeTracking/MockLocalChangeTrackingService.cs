@@ -8,24 +8,20 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Services.ChangeTracking
 {
-    public class LocalChangeTrackingService : IChangeTrackingService
+  public class MockLocalChangeTrackingService : IChangeTrackingService
   {
-    public string Key => "LocalChangeTrackingService";
     public bool IsInitialised { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    public async Task Initialise()
+    public string Key => throw new NotImplementedException();
+
+    public bool ChangesExist()
     {
-      await Task.CompletedTask;
+      throw new NotImplementedException();
     }
 
     public Task CompressPendingChanges()
     {
       throw new NotImplementedException();
-    }
-
-    public bool ChangesExist()
-    {
-      return false;
     }
 
     public Task FlagAsCompleted(DataChangeTrackingModel item)
@@ -49,6 +45,11 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
     }
 
     public Task IncrementAttempt(DataChangeTrackingModel item)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task Initialise()
     {
       throw new NotImplementedException();
     }
