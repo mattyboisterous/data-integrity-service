@@ -120,7 +120,7 @@ namespace DataIntegrityService.Core
       }
 
       // fetch tracked changes...
-      changeTrackingService.Initialise();
+      await changeTrackingService.Initialise();
 
       if (changeTrackingService.IsInitialised)
       {
