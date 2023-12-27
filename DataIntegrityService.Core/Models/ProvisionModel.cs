@@ -9,6 +9,8 @@ namespace DataIntegrityService.Core.Models
 {
     public class ProvisionModel : IDataModel
   {
-    public string Key => throw new NotImplementedException();
+    public string Key => ProvisionId.ToString();
+
+    public int ProvisionId { get; set; }
   }
 }

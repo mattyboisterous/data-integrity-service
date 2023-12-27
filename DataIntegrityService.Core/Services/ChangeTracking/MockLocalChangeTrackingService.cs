@@ -77,7 +77,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
           UserId = Guid.NewGuid().ToString(),
           Attempts = 0,
           Created = DateTime.UtcNow,
-          DatasetName = "Visit"
+          DatasetName = "Visits"
         });
       }
       else if (num > 40 && num <= 60)
@@ -90,7 +90,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
           UserId = Guid.NewGuid().ToString(),
           Attempts = 0,
           Created = DateTime.UtcNow,
-          DatasetName = "Memo"
+          DatasetName = "Memos"
         });
       }
       else if (num > 60 && num <= 80)
@@ -103,7 +103,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
           UserId = Guid.NewGuid().ToString(),
           Attempts = 0,
           Created = DateTime.UtcNow,
-          DatasetName = "EvidenceNote"
+          DatasetName = "EvidenceNotes"
         });
       }
       else
@@ -116,7 +116,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
           UserId = Guid.NewGuid().ToString(),
           Attempts = 0,
           Created = DateTime.UtcNow,
-          DatasetName = "Visit"
+          DatasetName = "Visits"
         });
         TrackedChanges.Add(new DataChangeTrackingModel()
         {
@@ -126,7 +126,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
           UserId = Guid.NewGuid().ToString(),
           Attempts = 0,
           Created = DateTime.UtcNow,
-          DatasetName = "Visit"
+          DatasetName = "Visits"
         });
         TrackedChanges.Add(new DataChangeTrackingModel()
         {
@@ -136,7 +136,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
           UserId = Guid.NewGuid().ToString(),
           Attempts = 0,
           Created = DateTime.UtcNow,
-          DatasetName = "Memo"
+          DatasetName = "Memos"
         });
       }
 

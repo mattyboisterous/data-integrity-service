@@ -5,16 +5,10 @@ using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Http;
 using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Services.Local;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Providers
 {
-    public class ProvisionService : IDataService, ILocalCacheService
+  public class ProvisionService : IDataService, ILocalCacheService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
@@ -46,7 +40,8 @@ namespace DataIntegrityService.Core.Providers
 
     public IDataModel TransformData(IDataModel data)
     {
-      throw new NotImplementedException();
+      // no transformations...
+      return data;
     }
 
     public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
