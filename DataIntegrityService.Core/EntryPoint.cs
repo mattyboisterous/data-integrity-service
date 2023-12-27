@@ -4,6 +4,7 @@ using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
+using DataIntegrityService.Core.Services.ChangeTracking;
 using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
 using DataIntegrityService.Core.Services.Http;
 using DataIntegrityService.Core.Services.Interfaces;
@@ -114,12 +115,12 @@ namespace DataIntegrityService.Core
         if (mode == SynchronisationMode.Push)
         {
           Logger.Info("EntryPoint", $"Resolving data service for 'LocalChangeTrackingService'...");
-          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("LocalChangeTrackingService");
+          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("MockHttpChangeTrackingService");
         }
         else
         {
           Logger.Info("EntryPoint", $"Resolving data service for 'HttpChangeTrackingService'...");
-          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("HttpChangeTrackingService");
+          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("MockHttpChangeTrackingService");
         }
 
         // fetch tracked changes...
@@ -190,6 +191,9 @@ namespace DataIntegrityService.Core
 
     private void ConfigureServices(IServiceCollection services)
     {
+      services.AddTransient<IChangeTrackingService, MockLocalChangeTrackingService>();
+      services.AddTransient<IChangeTrackingService, MockHttpChangeTrackingService>();
+
       services.AddTransient<IDataService, StaticChangeTrackingService>();
       services.AddTransient<IDataService, EvidenceNoteService>();
       services.AddTransient<IDataService, MemoService>();

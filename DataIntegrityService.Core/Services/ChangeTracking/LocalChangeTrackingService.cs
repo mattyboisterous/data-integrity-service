@@ -13,6 +13,8 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
     public string Key => "LocalChangeTrackingService";
     public bool IsInitialised { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+    public List<DataChangeTrackingModel> TrackedChanges { get; set; } = new List<DataChangeTrackingModel>();
+
     public async Task Initialise()
     {
       await Task.CompletedTask;

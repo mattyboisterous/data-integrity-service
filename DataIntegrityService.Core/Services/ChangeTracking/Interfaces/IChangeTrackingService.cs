@@ -8,14 +8,16 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Services.ChangeTracking.Interfaces
 {
-    public interface IChangeTrackingService : IService
-    {
-        bool ChangesExist();
-        Task CompressPendingChanges();
-        DataChangeTrackingModel GetNextChange();
-        Task IncrementAttempt(DataChangeTrackingModel item);
-        Task FlagAsCompleted(DataChangeTrackingModel item);
-        Task FlagAsPoison(DataChangeTrackingModel item);
-        Task FlushAllPendingChanges();
-    }
+  public interface IChangeTrackingService : IService
+  {
+    List<DataChangeTrackingModel> TrackedChanges { get; set; }
+
+    bool ChangesExist();
+    Task CompressPendingChanges();
+    DataChangeTrackingModel GetNextChange();
+    Task IncrementAttempt(DataChangeTrackingModel item);
+    Task FlagAsCompleted(DataChangeTrackingModel item);
+    Task FlagAsPoison(DataChangeTrackingModel item);
+    Task FlushAllPendingChanges();
+  }
 }

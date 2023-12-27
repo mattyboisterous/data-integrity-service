@@ -10,48 +10,139 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 {
   public class MockLocalChangeTrackingService : IChangeTrackingService
   {
-    public bool IsInitialised { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string Key => "MockLocalChangeTrackingService";
+    public bool IsInitialised { get; set; }
 
-    public string Key => throw new NotImplementedException();
+    public List<DataChangeTrackingModel> TrackedChanges { get; set; } = new List<DataChangeTrackingModel>();
 
     public bool ChangesExist()
     {
-      throw new NotImplementedException();
+      return TrackedChanges.Any();
     }
 
-    public Task CompressPendingChanges()
+    public async Task CompressPendingChanges()
     {
-      throw new NotImplementedException();
+      // do nothing...
+      await Task.CompletedTask;
     }
 
-    public Task FlagAsCompleted(DataChangeTrackingModel item)
+    public async Task FlagAsCompleted(DataChangeTrackingModel item)
     {
-      throw new NotImplementedException();
+      // do nothing...
+      TrackedChanges.Remove(item);
+      await Task.CompletedTask;
     }
 
-    public Task FlagAsPoison(DataChangeTrackingModel item)
+    public async Task FlagAsPoison(DataChangeTrackingModel item)
     {
-      throw new NotImplementedException();
+      // do nothing...
+      await Task.CompletedTask;
     }
 
-    public Task FlushAllPendingChanges()
+    public async Task FlushAllPendingChanges()
     {
-      throw new NotImplementedException();
+      TrackedChanges.Clear();
+      await Task.CompletedTask;
     }
 
     public DataChangeTrackingModel GetNextChange()
     {
-      throw new NotImplementedException();
+      return TrackedChanges.First();
     }
 
-    public Task IncrementAttempt(DataChangeTrackingModel item)
+    public async Task IncrementAttempt(DataChangeTrackingModel item)
     {
-      throw new NotImplementedException();
+      // do nothing...
+      await Task.CompletedTask;
     }
 
-    public Task Initialise()
+    public async Task Initialise()
     {
-      throw new NotImplementedException();
+      // todo: 20% -> Nada...
+      // todo: 20% -> 1 visit update...
+      // todo: 20% -> Memo update...
+      // todo: 20% -> 1 note update...
+      // todo: 20% -> 2 visit and memo update...
+
+      Random rnd = new Random();
+      int num = rnd.Next(0, 100);
+
+      if (num > 20 && num <= 40)
+      {
+        TrackedChanges.Add(new DataChangeTrackingModel()
+        {
+          Id = Guid.NewGuid().ToString(),
+          ItemKey = Guid.NewGuid().ToString(),
+          Action = "Create",
+          UserId = Guid.NewGuid().ToString(),
+          Attempts = 0,
+          Created = DateTime.UtcNow,
+          DatasetName = "Visit"
+        });
+      }
+      else if (num > 40 && num <= 60)
+      {
+        TrackedChanges.Add(new DataChangeTrackingModel()
+        {
+          Id = Guid.NewGuid().ToString(),
+          ItemKey = Guid.NewGuid().ToString(),
+          Action = "Update",
+          UserId = Guid.NewGuid().ToString(),
+          Attempts = 0,
+          Created = DateTime.UtcNow,
+          DatasetName = "Memo"
+        });
+      }
+      else if (num > 60 && num <= 80)
+      {
+        TrackedChanges.Add(new DataChangeTrackingModel()
+        {
+          Id = Guid.NewGuid().ToString(),
+          ItemKey = Guid.NewGuid().ToString(),
+          Action = "Update",
+          UserId = Guid.NewGuid().ToString(),
+          Attempts = 0,
+          Created = DateTime.UtcNow,
+          DatasetName = "EvidenceNote"
+        });
+      }
+      else
+      {
+        TrackedChanges.Add(new DataChangeTrackingModel()
+        {
+          Id = Guid.NewGuid().ToString(),
+          ItemKey = Guid.NewGuid().ToString(),
+          Action = "Create",
+          UserId = Guid.NewGuid().ToString(),
+          Attempts = 0,
+          Created = DateTime.UtcNow,
+          DatasetName = "Visit"
+        });
+        TrackedChanges.Add(new DataChangeTrackingModel()
+        {
+          Id = Guid.NewGuid().ToString(),
+          ItemKey = Guid.NewGuid().ToString(),
+          Action = "Update",
+          UserId = Guid.NewGuid().ToString(),
+          Attempts = 0,
+          Created = DateTime.UtcNow,
+          DatasetName = "Visit"
+        });
+        TrackedChanges.Add(new DataChangeTrackingModel()
+        {
+          Id = Guid.NewGuid().ToString(),
+          ItemKey = Guid.NewGuid().ToString(),
+          Action = "Update",
+          UserId = Guid.NewGuid().ToString(),
+          Attempts = 0,
+          Created = DateTime.UtcNow,
+          DatasetName = "Memo"
+        });
+      }
+
+      IsInitialised = true;
+
+      await Task.CompletedTask;
     }
   }
 }
