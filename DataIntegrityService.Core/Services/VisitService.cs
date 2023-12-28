@@ -58,7 +58,7 @@ namespace DataIntegrityService.Core.Providers
 
       return new DataResponse<IDataModel>
       {
-        Data = (IDataModel)result,
+        Data = (IDataModel)result.Data,
         ActionSucceeded = result.ActionSucceeded
       };
     }
@@ -79,7 +79,7 @@ namespace DataIntegrityService.Core.Providers
 
       return new DataResponse<IDataModel>
       {
-        Data = (IDataModel)result,
+        Data = (IDataModel)result.Data,
         ActionSucceeded = result.ActionSucceeded
       };
     }
@@ -90,7 +90,7 @@ namespace DataIntegrityService.Core.Providers
 
       return new DataResponse<IDataModel>
       {
-        Data = (IDataModel)result,
+        Data = (IDataModel)result.Data,
         ActionSucceeded = result.ActionSucceeded
       };
     }

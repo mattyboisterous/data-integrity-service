@@ -28,12 +28,18 @@ namespace DataIntegrityService.Core.Configuration
     public required string Key { get; set; }
     public required string DatasetName { get; set; }
     public required string DatasetGroup { get; set; }
-    public required string DataWorkflow { get; set; }
-    public required List<string> Dependencies { get; set; }
+    public WorkflowConfiguration? Push { get; set; }
+    public WorkflowConfiguration? Pull { get; set; }
     public required HttpServiceConfiguration Http { get; set; }
     public required LocalCacheServiceConfiguration Cache { get; set; }
   }
-  
+
+  public sealed class WorkflowConfiguration
+  {
+    public required string DataWorkflow { get; set; }
+    public required List<string> Dependencies { get; set; }
+  }
+
   public sealed class HttpServiceConfiguration
   {
     public string? Get { get; set; }

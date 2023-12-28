@@ -92,8 +92,8 @@ namespace DataIntegrityService.Core
                 // refresh locally if we need to...
                 if (forceRehydrateAll || localDataSet == null || localDataSet!.Version != serverDataSet.Version)
                 {
-                  Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
-                  var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
+                  Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.Pull!.DataWorkflow}'...");
+                  var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.Pull!.DataWorkflow);
 
                   // perform work using this workflow...
                   Logger.Info("EntryPoint", $"Performing workflow...");
@@ -148,8 +148,8 @@ namespace DataIntegrityService.Core
                 Logger.Info("EntryPoint", $"Resolving data service for '{serviceConfiguration.DatasetName}'...");
                 var dataService = DataServiceFactory.GetDataService(serviceConfiguration);
 
-                Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DataWorkflow}'...");
-                var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.DataWorkflow);
+                Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.DatasetName}'...");
+                var workflow = WorkflowServiceFactory.GetDataWorkflow(mode == SynchronisationMode.Push ? serviceConfiguration.Push!.DataWorkflow : serviceConfiguration.Pull!.DataWorkflow);
 
                 // initialise service...
                 Logger.Info("EntryPoint", $"Initialising data service...");

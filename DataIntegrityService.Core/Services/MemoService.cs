@@ -1,4 +1,5 @@
 ﻿using DataIntegrityService.Core.Configuration;
+using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Http;
@@ -30,17 +31,21 @@ namespace DataIntegrityService.Core.Providers
 
     public async Task Initialise()
     {
+      IsInitialised = true;
       await Task.CompletedTask;
     }
 
     public IDataModel TransformData(IDataModel data)
     {
-      throw new NotImplementedException();
+      // no transformations...
+      return data;
     }
 
     public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
     {
-      throw new NotImplementedException();
+      // no transformation required...
+      Logger.Info("MemoService", "No transformation required, returning data.");
+      return data;
     }
 
     public Task<IDataResponse<IDataModel>> GetFromServer(string id, CancellationToken cancellationToken)
