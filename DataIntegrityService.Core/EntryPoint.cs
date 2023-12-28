@@ -204,6 +204,7 @@ namespace DataIntegrityService.Core
       services.AddTransient<IWorkflowService, DeleteInsertAllFlow>();
       services.AddTransient<IWorkflowService, DeleteInsertAllByKeyFlow>();
       services.AddTransient<IWorkflowService, PushToServerFlow>();
+      services.AddTransient<IWorkflowService, PullFromServerFlow>();
 
       services.AddTransient<IHttpService, MockHttpService>();
       services.AddTransient<IHttpMessageHandlerService, HttpMessageHandlerService>();
