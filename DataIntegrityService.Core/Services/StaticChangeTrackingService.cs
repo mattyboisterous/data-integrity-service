@@ -87,7 +87,12 @@ namespace DataIntegrityService.Core.Services
     }
 
     public void RemoveIfExists(string key) => throw new NotImplementedException();
-      
+
+    public void InsertOrReplace(string key, IDataModel data)
+    {
+      throw new NotImplementedException();
+    }
+
     public void InsertOrReplace(string key, IEnumerable<IDataModel> data)
     {
       throw new NotImplementedException();

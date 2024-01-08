@@ -19,53 +19,78 @@ namespace DataIntegrityService.Core.Workflows
 
         if (dataService.IsInitialised)
         {
+          Logger.Info("PullFromServer", $"Data service '{dataService.Key}' initialised, determining action to perform...");
+
           if (message.Action == ChangeAction.Delete.ToString())
           {
-            Logger.Info("PullFromServer", $"Deleting data from back end...");
-            return await dataService.DeleteFromServer(message.Key, cancellationToken);
-          }
-          else
-          {
-            Logger.Info("PullFromServer", $"Data service '{dataService.Key}' initialised, fetching data from local device...");
+            Logger.Info("PullFromServer", $"Deleting data from local store...");
 
-            IDataModel? dataModel = null;
-
-            // fetch model from local store...
             if (dataService is ILocalCacheService)
             {
-              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, fetching data...");
+              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, deleting data...");
 
-              dataModel = ((ILocalCacheService)dataService).GetLocal(message.Key);
+              ((ILocalCacheService)dataService).RemoveIfExists(message.Key);
             }
             if (dataService is ILocalDbService)
             {
-              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, fetching data...");
+              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, deleting data...");
 
-              dataModel = ((ILocalDbService)dataService).GetLocal(message.Key);
+              ((ILocalDbService)dataService).Delete<IDataModel>(message.Key);
             }
 
-            if (dataModel != null)
+            Logger.Error("PullFromServer", $"Work complete.");
+            return new ActionResponse();
+          }
+          else
+          {
+            // fetch model from server...
+            var dataResponse = await dataService.GetFromServer(message.Key, cancellationToken);
+
+            if (dataResponse.ActionSucceeded && dataResponse.Data != null)
             {
               Logger.Info("PullFromServer", "Data received, looking to perform any necessary transformations...");
 
-              // perform any data tranformation before attempting to push data to server...
-              var data = dataService.TransformData(dataModel);
+              // perform any data tranformation before attempting to push data to local store...
+              var data = dataService.TransformData(dataResponse.Data);
 
               if (message.Action == ChangeAction.Create.ToString())
               {
-                Logger.Info("PullFromServer", $"Creating data in back end...");
-                return await dataService.CreateOnServer(data, cancellationToken);
+                if (dataService is ILocalCacheService)
+                {
+                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, inserting data...");
+
+                  ((ILocalCacheService)dataService).InsertOrReplace(message.Key, data);
+                }
+                if (dataService is ILocalDbService)
+                {
+                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, inserting data...");
+
+                  ((ILocalDbService)dataService).Insert(data);
+                }
               }
               else
               {
-                Logger.Info("PullFromServer", $"Updating data in back end...");
-                return await dataService.UpdateOnServer(data, cancellationToken);
+                if (dataService is ILocalCacheService)
+                {
+                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, updating data...");
+
+                  ((ILocalCacheService)dataService).InsertOrReplace(message.Key, data);
+                }
+                if (dataService is ILocalDbService)
+                {
+                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, updating data...");
+
+                  ((ILocalDbService)dataService).Update(data);
+                }
               }
+
+              Logger.Error("PullFromServer", $"Work complete.");
+              return new ActionResponse();
             }
-            else
+            else 
             {
-              Logger.Error("PullFromServer", $"Local data model '{message.DatasetName}' not found with key {message.Key}. Unable to push to server.");
-              return new ActionResponse() { ActionSucceeded = false };
+              Logger.Error("PullFromServer", $"Server data model '{message.DatasetName}' not found with key {message.Key}. Unable to update locally.");
+              return dataResponse;
             }
           }
 

@@ -120,6 +120,11 @@ namespace DataIntegrityService.Console.Providers
       Logger.Info("ProvisionService", $"Inserting {data.Count()} item(s) into local cache with key '{key}'.");
     }
 
+    public void InsertOrReplace(string key, IDataModel data)
+    {
+      throw new NotImplementedException();
+    }
+
     #endregion
   }
 }

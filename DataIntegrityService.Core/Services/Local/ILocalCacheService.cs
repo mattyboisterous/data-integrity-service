@@ -12,6 +12,7 @@ namespace DataIntegrityService.Core.Services.Local
     IDataModel GetLocal(string key);
     IEnumerable<IDataModel> GetAllLocal(string key);
     void RemoveIfExists(string key);
+    void InsertOrReplace(string key, IDataModel data);
     void InsertOrReplace(string key, IEnumerable<IDataModel> data);
   }
 }

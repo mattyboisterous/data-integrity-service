@@ -10,6 +10,11 @@ namespace DataIntegrityService.Console.Services.Local
 {
   public class MockLocalDbService : ILocalDbService
   {
+    public int Delete<IDataModel>(string key)
+    {
+      throw new NotImplementedException();
+    }
+
     public int DeleteAll<IDataModel>()
     {
       return 3;
@@ -20,7 +25,17 @@ namespace DataIntegrityService.Console.Services.Local
       throw new NotImplementedException();
     }
 
+    public int Insert(IDataModel data)
+    {
+      throw new NotImplementedException();
+    }
+
     public int InsertAll(IEnumerable<IDataModel> data)
+    {
+      throw new NotImplementedException();
+    }
+
+    public int Update(IDataModel data)
     {
       throw new NotImplementedException();
     }

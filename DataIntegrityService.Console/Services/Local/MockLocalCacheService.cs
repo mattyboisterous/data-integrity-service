@@ -25,6 +25,11 @@ namespace DataIntegrityService.Console.Services.Local
       throw new NotImplementedException();
     }
 
+    public void InsertOrReplace(string key, IDataModel data)
+    {
+      throw new NotImplementedException();
+    }
+
     public void RemoveIfExists(string key)
     {
       throw new NotImplementedException();

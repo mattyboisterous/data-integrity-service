@@ -122,6 +122,21 @@ namespace DataIntegrityService.Console.Services
       return 3;
     }
 
+    public int Delete<IDataModel>(string key)
+    {
+      throw new NotImplementedException();
+    }
+
+    public int Insert(IDataModel data)
+    {
+      throw new NotImplementedException();
+    }
+
+    public int Update(IDataModel data)
+    {
+      throw new NotImplementedException();
+    }
+
     #endregion
   }
 }
