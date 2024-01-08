@@ -203,18 +203,12 @@ namespace DataIntegrityService.Core
       services.AddTransient<IChangeTrackingService, MockHttpChangeTrackingService>();
 
       services.AddTransient<IDataService, StaticChangeTrackingService>();
-      //services.AddTransient<IDataService, EvidenceNoteService>();
-      //services.AddTransient<IDataService, MemoService>();
-      //services.AddTransient<IDataService, ProvisionService>();
-      //services.AddTransient<IDataService, QualityAreaService>();
-      //services.AddTransient<IDataService, VisitService>();
 
       services.AddTransient<IWorkflowService, DeleteInsertAllFlow>();
       services.AddTransient<IWorkflowService, DeleteInsertAllByKeyFlow>();
       services.AddTransient<IWorkflowService, PushToServerFlow>();
       services.AddTransient<IWorkflowService, PullFromServerFlow>();
 
-      //services.AddTransient<IHttpService, MockHttpService>();
       services.AddTransient<IHttpMessageHandlerService, HttpMessageHandlerService>();
 
       services.AddTransient<DataServiceFactory>();
@@ -228,7 +222,6 @@ namespace DataIntegrityService.Core
           services.Add(dependency);
         }
       }
-        //services.AddRange(ExternalDependencies);
     }
   }
 }
