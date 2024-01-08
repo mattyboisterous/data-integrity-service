@@ -1,27 +1,20 @@
-﻿using DataIntegrityService.Core.Configuration;
+﻿using DataIntegrityService.Console.Models;
+using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Http;
 using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Services.Local;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace DataIntegrityService.Core.Services
+namespace DataIntegrityService.Console.Providers
 {
-    public class QualityAreaService : IDataService, ILocalDbService
+  public class ProvisionService : IDataService, ILocalCacheService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
 
-    public string Key => "QualityArea";
+    public string Key => "Provision";
 
     public required DataServiceConfiguration Settings { get; set; }
 
@@ -29,7 +22,7 @@ namespace DataIntegrityService.Core.Services
 
     public required string Url { get; set; }
 
-    public QualityAreaService(
+    public ProvisionService(
       IHttpService httpService,
       IHttpMessageHandlerService httpMessageHandlerService)
     {
@@ -37,28 +30,25 @@ namespace DataIntegrityService.Core.Services
       HttpMessageHandlerService = httpMessageHandlerService;
     }
 
-    #region IDataService Members
-
     public async Task Initialise()
     {
-      Url = Settings.Http.Get!;
+      // do nothing...
       IsInitialised = true;
-
-      Logger.Info("QualityAreaService", "Data service initialised.");
       await Task.CompletedTask;
     }
 
+    #region IDataService members
+
     public IDataModel TransformData(IDataModel data)
     {
-      // no transformation required...
-      Logger.Info("QualityAreaService", "No transformation required, returning data.");
+      // no transformations...
       return data;
     }
 
     public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
     {
       // no transformation required...
-      Logger.Info("QualityAreaService", "No transformation required, returning data.");
+      Logger.Info("ProvisionService", "No transformation required, returning data.");
       return data;
     }
 
@@ -80,7 +70,13 @@ namespace DataIntegrityService.Core.Services
 
     public async Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      var result = await HttpService.GetAll<QualityAreaModel>(string.Format(Settings.Http.GetAllByKey, key), HttpMessageHandlerService.GetMessageHandler(), cancellationToken);
+
+      return new DataResponse<IEnumerable<IDataModel>>
+      {
+        Data = result.Data.Cast<IDataModel>(),
+        ActionSucceeded = result.ActionSucceeded
+      };
     }
 
     public Task<IDataResponse<IDataModel>> CreateOnServer(IDataModel model, CancellationToken cancellationToken)
@@ -100,25 +96,28 @@ namespace DataIntegrityService.Core.Services
 
     #endregion
 
-    #region ILocalDbService
+    #region ILocalCacheService members
 
     public IDataModel GetLocal(string key)
     {
       throw new NotImplementedException();
     }
 
-    public int InsertAll(IEnumerable<IDataModel> data)
+    public IEnumerable<IDataModel> GetAllLocal(string key)
     {
-      // mock response for now...
-      Logger.Info("QualityAreaService", $"Inserting {data.Count()} item(s) into local DB.");
-      return data.Count();
+      throw new NotImplementedException();
     }
 
-    public int DeleteAll<T>()
+    public void RemoveIfExists(string key)
     {
       // mock response for now...
-      Logger.Info("QualityAreaService", $"Deleting all from local DB.");
-      return 3;
+      Logger.Info("ProvisionService", $"Deleting all from local cache with key '{key}'.");
+    }
+
+    public void InsertOrReplace(string key, IEnumerable<IDataModel> data)
+    {
+      // mock response for now...
+      Logger.Info("ProvisionService", $"Inserting {data.Count()} item(s) into local cache with key '{key}'.");
     }
 
     #endregion

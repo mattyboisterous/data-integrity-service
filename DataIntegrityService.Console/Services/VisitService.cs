@@ -1,4 +1,5 @@
-﻿using DataIntegrityService.Core.Configuration;
+﻿using DataIntegrityService.Console.Models;
+using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Models.Interfaces;
@@ -12,7 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataIntegrityService.Core.Providers
+namespace DataIntegrityService.Console.Providers
 {
     public class VisitService : IDataService, ILocalDbService
   {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataIntegrityService.Core.Models
+namespace DataIntegrityService.Console.Models
 {
   public class VisitModel : IDataModel
   {

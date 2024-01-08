@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataIntegrityService.Core.Providers
+namespace DataIntegrityService.Console.Providers
 {
     public class EvidenceNoteService : IDataService
   {

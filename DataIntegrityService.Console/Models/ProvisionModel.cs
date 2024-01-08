@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataIntegrityService.Core.Models.Interfaces;
 
-namespace DataIntegrityService.Core.Models
+namespace DataIntegrityService.Console.Models
 {
     public class ProvisionModel : IDataModel
   {

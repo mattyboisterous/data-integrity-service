@@ -2,7 +2,6 @@
 using DataIntegrityService.Core.Factories;
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models.Interfaces;
-using DataIntegrityService.Core.Providers;
 using DataIntegrityService.Core.Services;
 using DataIntegrityService.Core.Services.ChangeTracking;
 using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
@@ -16,21 +15,23 @@ using Microsoft.Extensions.Hosting;
 
 namespace DataIntegrityService.Core
 {
-    public class EntryPoint
+  public class EntryPoint
   {
-    private ServiceConfiguration Configuration { get; }
+    private IServiceProvider ServiceProvider { get; set; }
+    private IServiceCollection ExternalDependencies { get; set; }
+    private ServiceConfiguration Configuration { get; set; }
     private DataServiceFactory DataServiceFactory { get; set; }
     private WorkflowServiceFactory WorkflowServiceFactory { get; set; }
     private ChangeTrackingServiceFactory ChangeTrackingServiceFactory { get; set; }
 
-    public EntryPoint()
+    public async Task Initialise()
     {
-      Logger.Info("EntryPoint", $"DataIntegrityService.ctor() called...let's roll. Initialising factories...");
+      Logger.Info("EntryPoint", $"DataIntegrityService.Initialise() called...let's roll. Initialising factories...");
 
-      var serviceProvider = CreateServiceProvider();
-      DataServiceFactory = serviceProvider.GetService<DataServiceFactory>()!;
-      WorkflowServiceFactory = serviceProvider.GetService<WorkflowServiceFactory>()!;
-      ChangeTrackingServiceFactory = serviceProvider.GetService<ChangeTrackingServiceFactory>()!;
+      ServiceProvider = CreateServiceProvider();
+      DataServiceFactory = ServiceProvider.GetService<DataServiceFactory>()!;
+      WorkflowServiceFactory = ServiceProvider.GetService<WorkflowServiceFactory>()!;
+      ChangeTrackingServiceFactory = ServiceProvider.GetService<ChangeTrackingServiceFactory>()!;
 
       // Build a config object, using env vars and JSON providers.
       IConfigurationRoot config = new ConfigurationBuilder()
@@ -42,6 +43,8 @@ namespace DataIntegrityService.Core
       Configuration = config.GetRequiredSection("serviceConfiguration").Get<ServiceConfiguration>()!;
 
       Logger.Info("EntryPoint", $"Factories and configuration initialised.");
+
+      await Task.CompletedTask;
     }
 
     public async Task Run(IUserProfile user, bool forceRehydrateAll, CancellationToken token)
@@ -183,35 +186,49 @@ namespace DataIntegrityService.Core
     public IServiceProvider CreateServiceProvider()
     {
       var host = Host.CreateDefaultBuilder()
-          .ConfigureServices(ConfigureServices)
+          .ConfigureServices(ConfigureBaseServices)
           .Build();
 
       return host.Services;
     }
 
-    private void ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services)
+    {
+      ExternalDependencies = services;
+    }
+
+    private void ConfigureBaseServices(IServiceCollection services)
     {
       services.AddTransient<IChangeTrackingService, MockLocalChangeTrackingService>();
       services.AddTransient<IChangeTrackingService, MockHttpChangeTrackingService>();
 
       services.AddTransient<IDataService, StaticChangeTrackingService>();
-      services.AddTransient<IDataService, EvidenceNoteService>();
-      services.AddTransient<IDataService, MemoService>();
-      services.AddTransient<IDataService, ProvisionService>();
-      services.AddTransient<IDataService, QualityAreaService>();
-      services.AddTransient<IDataService, VisitService>();
+      //services.AddTransient<IDataService, EvidenceNoteService>();
+      //services.AddTransient<IDataService, MemoService>();
+      //services.AddTransient<IDataService, ProvisionService>();
+      //services.AddTransient<IDataService, QualityAreaService>();
+      //services.AddTransient<IDataService, VisitService>();
 
       services.AddTransient<IWorkflowService, DeleteInsertAllFlow>();
       services.AddTransient<IWorkflowService, DeleteInsertAllByKeyFlow>();
       services.AddTransient<IWorkflowService, PushToServerFlow>();
       services.AddTransient<IWorkflowService, PullFromServerFlow>();
 
-      services.AddTransient<IHttpService, MockHttpService>();
+      //services.AddTransient<IHttpService, MockHttpService>();
       services.AddTransient<IHttpMessageHandlerService, HttpMessageHandlerService>();
 
       services.AddTransient<DataServiceFactory>();
       services.AddTransient<WorkflowServiceFactory>();
       services.AddTransient<ChangeTrackingServiceFactory>();
+
+      if (ExternalDependencies != null && ExternalDependencies.Count > 0)
+      {
+        foreach (var dependency in ExternalDependencies)
+        {
+          services.Add(dependency);
+        }
+      }
+        //services.AddRange(ExternalDependencies);
     }
   }
 }
