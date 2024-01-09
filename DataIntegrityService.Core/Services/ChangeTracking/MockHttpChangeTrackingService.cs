@@ -1,4 +1,5 @@
-﻿using DataIntegrityService.Core.Models;
+﻿using DataIntegrityService.Core.Logging;
+using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -58,16 +59,17 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public async Task Initialise()
     {
-      // todo: 20% -> Nada...
-      // todo: 20% -> 1 visit update...
+      // todo: 40% -> Nada...
+      // todo: 20% -> 1 visit create...
       // todo: 20% -> Memo update...
-      // todo: 20% -> 1 note update...
       // todo: 20% -> 2 visit and memo update...
+
+      Logger.Info("MockHttpChangeTrackingService", $"Initialising, looking for pending changes...");
 
       Random rnd = new Random();
       int num = rnd.Next(0, 100);
 
-      if (num > 20 && num <= 40)
+      if (num > 40 && num <= 60)
       {
         TrackedChanges.Add(new DataChangeTrackingModel()
         {
@@ -80,19 +82,6 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
           DatasetName = "Visits"
         });
       }
-      else if (num > 40 && num <= 60)
-      {
-        TrackedChanges.Add(new DataChangeTrackingModel()
-        {
-          Id = Guid.NewGuid().ToString(),
-          ItemKey = Guid.NewGuid().ToString(),
-          Action = "Update",
-          UserId = Guid.NewGuid().ToString(),
-          Attempts = 0,
-          Created = DateTime.UtcNow,
-          DatasetName = "Memos"
-        });
-      }
       else if (num > 60 && num <= 80)
       {
         TrackedChanges.Add(new DataChangeTrackingModel()
@@ -103,7 +92,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
           UserId = Guid.NewGuid().ToString(),
           Attempts = 0,
           Created = DateTime.UtcNow,
-          DatasetName = "EvidenceNotes"
+          DatasetName = "Memos"
         });
       }
       else
@@ -138,6 +127,13 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
           Created = DateTime.UtcNow,
           DatasetName = "Memos"
         });
+      }
+
+      Logger.Info("MockHttpChangeTrackingService", $"{TrackedChanges.Count} pending changes found...");
+
+      foreach(var change in TrackedChanges)
+      {
+        Logger.Info("MockHttpChangeTrackingService", $"{change.Action.ToUpper()} {change.DatasetName} with key {change.Key}. Attempts: {change.Attempts}");
       }
 
       IsInitialised = true;

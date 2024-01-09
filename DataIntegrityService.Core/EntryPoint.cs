@@ -57,7 +57,7 @@ namespace DataIntegrityService.Core
       // todo: consider newly switched user...how to initialise local state based on all open visits etc...hwo to make application agnostic?
       // todo: need this for a fresh user...'initialise'...check DIS for current implementation...
 
-      await SynchroniseStaticData(forceRehydrateAll, token);
+      //await SynchroniseStaticData(forceRehydrateAll, token);
 
       await SynchroniseStates(SynchronisationMode.Push, user, token);
 
@@ -107,6 +107,8 @@ namespace DataIntegrityService.Core
           }
         }
       }
+      else
+        Logger.Info("EntryPoint", $"Action cancelled by user, returning...");
     }
 
     public async Task SynchroniseStates(SynchronisationMode mode, IUserProfile user, CancellationToken token)
@@ -124,7 +126,7 @@ namespace DataIntegrityService.Core
         if (mode == SynchronisationMode.Push)
         {
           Logger.Info("EntryPoint", $"Resolving data service for 'LocalChangeTrackingService'...");
-          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("MockHttpChangeTrackingService");
+          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("MockLocalChangeTrackingService");
         }
         else
         {
