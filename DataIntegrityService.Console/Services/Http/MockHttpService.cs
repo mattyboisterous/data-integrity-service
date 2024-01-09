@@ -17,10 +17,10 @@ namespace DataIntegrityService.Console.Services.Http
       {
         var data = new ProvisionModel() { ProvisionId = 1 };
 
-        Logger.Info("MockHttpService", $"Returning 1 item from server.");
-
         var result = new DataResponse<T>((T)(object)data);
         result.HttpResponseCode = GenerateHttpResponseCode();
+
+        Logger.Info("MockHttpService", $"GET => Returning model from server. HttpResponseCode => {result.HttpResponseCode}");
 
         return await Task.FromResult(result);
       }
@@ -28,10 +28,10 @@ namespace DataIntegrityService.Console.Services.Http
       {
         var data = new QualityAreaModel() { QualityAreaId = 1, Code = "QA1", Description = "Quality Area 1" };
 
-        Logger.Info("MockHttpService", $"Returning 1 item from server.");
-
         var result = new DataResponse<T>((T)(object)data);
         result.HttpResponseCode = GenerateHttpResponseCode();
+
+        Logger.Info("MockHttpService", $"GET => Returning model from server. HttpResponseCode => {result.HttpResponseCode}");
 
         return await Task.FromResult(result);
       }
@@ -39,10 +39,10 @@ namespace DataIntegrityService.Console.Services.Http
       {
         var data = new VisitModel() { VisitId = Guid.NewGuid().ToString() };
 
-        Logger.Info("MockHttpService", $"Returning 1 item from server.");
-
         var result = new DataResponse<T>((T)(object)data);
         result.HttpResponseCode = GenerateHttpResponseCode();
+
+        Logger.Info("MockHttpService", $"GET => Returning model from server. HttpResponseCode => {result.HttpResponseCode}");
 
         return await Task.FromResult(result);
       }
@@ -52,7 +52,12 @@ namespace DataIntegrityService.Console.Services.Http
 
     public async Task<IDataResponse<int>> Get(string url, HttpMessageHandler messageHandler, CancellationToken token)
     {
-      return await Task.FromResult(new DataResponse<int>(1));
+      var result = new DataResponse<int>(1);
+      result.HttpResponseCode = GenerateHttpResponseCode();
+
+      Logger.Info("MockHttpService", $"GET => Returning model from server. HttpResponseCode => {result.HttpResponseCode}");
+
+      return await Task.FromResult(result);
     }
 
     //public async Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler messageHandler, CancellationTokenSource tokenSource = null)
@@ -75,11 +80,12 @@ namespace DataIntegrityService.Console.Services.Http
       {
         var data = new List<QualityAreaModel>() { new QualityAreaModel() { QualityAreaId = 1, Code = "QA1", Description = "Quality Area 1" }, new QualityAreaModel() { QualityAreaId = 2, Code = "QA2", Description = "Quality Area 2" } };
 
-        Logger.Info("MockHttpService", $"Http 200, returning 2 items.");
+        var result = new DataResponse<IEnumerable<T>>((IEnumerable<T>)(object)data);
+        result.HttpResponseCode = GenerateHttpResponseCode();
 
-        var testData = (IEnumerable<T>)(object)data;
+        Logger.Info("MockHttpService", $"GET => Returning models from server. HttpResponseCode => {result.HttpResponseCode}");
 
-        return await Task.FromResult(new DataResponse<IEnumerable<T>>(testData));
+        return await Task.FromResult(result);
       }
 
       return await Task.FromResult(new DataResponse<IEnumerable<T>>());
@@ -87,17 +93,32 @@ namespace DataIntegrityService.Console.Services.Http
 
     public async Task<IDataResponse<T>> Post<T>(string url, T item, HttpMessageHandler messageHandler) where T : IDataModel
     {
-      return await Task.FromResult(new DataResponse<T>(item));
+      var result = new DataResponse<T>((T)(object)item);
+      result.HttpResponseCode = GenerateHttpResponseCode();
+
+      Logger.Info("MockHttpService", $"POST => Returning model from server. HttpResponseCode => {result.HttpResponseCode}");
+
+      return await Task.FromResult(result);
     }
 
     public async Task<IDataResponse<T>> Put<T>(string url, T item, HttpMessageHandler messageHandler) where T : IDataModel
     {
-      return await Task.FromResult(new DataResponse<T>(item));
+      var result = new DataResponse<T>((T)(object)item);
+      result.HttpResponseCode = GenerateHttpResponseCode();
+
+      Logger.Info("MockHttpService", $"PUT => Returning model from server. HttpResponseCode => {result.HttpResponseCode}");
+
+      return await Task.FromResult(result);
     }
 
     public async Task<IDataResponse<int>> Delete(string url, HttpMessageHandler messageHandler)
     {
-      return await Task.FromResult(new DataResponse<int>(1));
+      var result = new DataResponse<int>(1);
+      result.HttpResponseCode = GenerateHttpResponseCode();
+
+      Logger.Info("MockHttpService", $"DELETE => Returning count of deleted items from server. HttpResponseCode => {result.HttpResponseCode}");
+
+      return await Task.FromResult(result);
     }
 
     /// <summary>
