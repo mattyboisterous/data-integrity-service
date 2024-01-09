@@ -27,7 +27,7 @@ namespace DataIntegrityService.Console.Services.Local
       }
       if (typeof(T) == typeof(VisitModel))
       {
-        var data = new VisitModel() { VisitId = int.Parse(key) };
+        var data = new VisitModel() { VisitId = key };
 
         Logger.Info("MockLocalCacheService", $"Returning 1 item from local cache.");
 
@@ -57,7 +57,7 @@ namespace DataIntegrityService.Console.Services.Local
       }
       if (typeof(T) == typeof(VisitModel))
       {
-        var data = new List<VisitModel>() { new VisitModel() { VisitId = 1 }, new VisitModel() { VisitId = 2 }, new VisitModel() { VisitId = 3 } };
+        var data = new List<VisitModel>() { new VisitModel() { VisitId = Guid.NewGuid().ToString() }, new VisitModel() { VisitId = Guid.NewGuid().ToString() }, new VisitModel() { VisitId = Guid.NewGuid().ToString() } };
 
         Logger.Info("MockLocalCacheService", $"Returning 3 items from local cache.");
 

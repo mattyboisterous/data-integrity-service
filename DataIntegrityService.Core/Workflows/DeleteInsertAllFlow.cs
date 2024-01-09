@@ -20,6 +20,7 @@ namespace DataIntegrityService.Core.Workflows
 
     public async Task<IActionResponse> ExecuteNonGeneric(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken, string typeName)
     {
+      Logger.Info("DeleteInsertAll", "DeleteInsertAllFlow running...");
       Logger.Info("DeleteInsertAll", $"Resolving type '{typeName}'...");
 
       Type dataType = Type.GetType(typeName);
@@ -35,8 +36,6 @@ namespace DataIntegrityService.Core.Workflows
     {
       try
       {
-        Logger.Info("DeleteInsertAll", "DeleteInsertAllFlow running...");
-
         if (dataService.IsInitialised)
         {
           Logger.Info("DeleteInsertAll", $"Data service '{dataService.Key}' initialised, fetching data from backend Api...");

@@ -33,7 +33,7 @@ namespace DataIntegrityService.Console.Services.Local
       }
       if (typeof(T) == typeof(VisitModel))
       {
-        var data = new VisitModel() { VisitId = int.Parse(key) };
+        var data = new VisitModel() { VisitId = key };
 
         Logger.Info("MockLocalDbService", $"Returning 1 item from local Db.");
 

@@ -31,7 +31,7 @@ namespace DataIntegrityService.Console.Services.Http
       }
       if (typeof(T) == typeof(VisitModel))
       {
-        var data = new VisitModel() { VisitId = 1 };
+        var data = new VisitModel() { VisitId = Guid.NewGuid().ToString() };
 
         Logger.Info("MockHttpService", $"Returning 1 item from server.");
 
@@ -60,7 +60,7 @@ namespace DataIntegrityService.Console.Services.Http
     //  return await Task.FromResult(new DataResponse<T>(default));
     //}
 
-    public async Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler messageHandler, CancellationToken token)
+    public async Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler messageHandler, CancellationToken token) where T : IDataModel
     {
       if (typeof(T) == typeof(QualityAreaModel))
       {
@@ -76,17 +76,17 @@ namespace DataIntegrityService.Console.Services.Http
       return await Task.FromResult(new DataResponse<IEnumerable<T>>());
     }
 
-    public async Task<IDataResponse<T>> Post<T>(string url, T item, HttpMessageHandler messageHandler)
+    public async Task<IDataResponse<T>> Post<T>(string url, T item, HttpMessageHandler messageHandler) where T : IDataModel
     {
       return await Task.FromResult(new DataResponse<T>(item));
     }
 
-    public async Task<IDataResponse<T>> Put<T>(string url, T item, HttpMessageHandler messageHandler)
+    public async Task<IDataResponse<T>> Put<T>(string url, T item, HttpMessageHandler messageHandler) where T : IDataModel
     {
       return await Task.FromResult(new DataResponse<T>(item));
     }
 
-    public async Task<IDataResponse<int>> Delete<T>(string url, HttpMessageHandler messageHandler)
+    public async Task<IDataResponse<int>> Delete(string url, HttpMessageHandler messageHandler)
     {
       return await Task.FromResult(new DataResponse<int>(1));
     }

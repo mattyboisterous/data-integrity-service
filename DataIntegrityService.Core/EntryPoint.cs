@@ -26,7 +26,8 @@ namespace DataIntegrityService.Core
 
     public async Task Initialise()
     {
-      Logger.Info("EntryPoint", $"DataIntegrityService.Initialise() called...let's roll. Initialising factories...");
+      Logger.Info("EntryPoint", $"DataIntegrityService.Initialise() called...let's roll.");
+      Logger.Info("EntryPoint", $"Initialising factories...");
 
       ServiceProvider = CreateServiceProvider();
       DataServiceFactory = ServiceProvider.GetService<DataServiceFactory>()!;
@@ -63,7 +64,7 @@ namespace DataIntegrityService.Core
 
       await SynchroniseStates(SynchronisationMode.Pull, user, token);
 
-      Logger.Info("EntryPoint", $"All work done! Stopping...");
+      Logger.Info("EntryPoint", $"All work done.");
     }
 
     public async Task SynchroniseStaticData(bool forceRehydrateAll, CancellationToken token)
@@ -113,13 +114,9 @@ namespace DataIntegrityService.Core
 
     public async Task SynchroniseStates(SynchronisationMode mode, IUserProfile user, CancellationToken token)
     {
+      Logger.Info("EntryPoint", $"**************************************************");
       Logger.Info("EntryPoint", $"SynchroniseStates() called with mode '{mode.ToString()}'");
-
-      //var dataType = new Type[] { typeof(string) };
-      //var genericBase = typeof(List<>);
-      //var combinedType = genericBase.MakeGenericType(dataType);
-      //dynamic listStringInstance = Activator.CreateInstance(combinedType);
-      //listStringInstance.Add("Hello World");
+      Logger.Info("EntryPoint", $"**************************************************");
 
       if (!token.IsCancellationRequested)
       {

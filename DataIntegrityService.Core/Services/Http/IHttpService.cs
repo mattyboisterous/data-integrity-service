@@ -13,9 +13,9 @@ namespace DataIntegrityService.Core.Services.Http
     IUserProfile User { get; set; }
     Task<IDataResponse<int>> Get(string url, HttpMessageHandler messageHandler, CancellationToken token);
     Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler messageHandler, CancellationToken token) where T : IDataModel;
-    Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler messageHandler, CancellationToken token);
-    Task<IDataResponse<T>> Put<T>(string url, T item, HttpMessageHandler messageHandler);
-    Task<IDataResponse<T>> Post<T>(string url, T item, HttpMessageHandler messageHandler);
-    Task<IDataResponse<int>> Delete<T>(string url, HttpMessageHandler messageHandler);
+    Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler messageHandler, CancellationToken token) where T : IDataModel;
+    Task<IDataResponse<T>> Put<T>(string url, T item, HttpMessageHandler messageHandler) where T : IDataModel;
+    Task<IDataResponse<T>> Post<T>(string url, T item, HttpMessageHandler messageHandler) where T : IDataModel;
+    Task<IDataResponse<int>> Delete(string url, HttpMessageHandler messageHandler);
   }
 }

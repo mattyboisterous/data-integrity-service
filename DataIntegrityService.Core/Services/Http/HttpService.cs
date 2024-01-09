@@ -20,22 +20,22 @@ namespace DataIntegrityService.Core.Services.Http
       throw new NotImplementedException();
     }
 
-    public Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler handler, CancellationToken token)
+    public Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler handler, CancellationToken token) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public Task<IDataResponse<T>> Post<T>(string url, T item, HttpMessageHandler handler)
+    public Task<IDataResponse<T>> Post<T>(string url, T item, HttpMessageHandler handler) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public Task<IDataResponse<T>> Put<T>(string url, T item, HttpMessageHandler handler)
+    public Task<IDataResponse<T>> Put<T>(string url, T item, HttpMessageHandler handler) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public Task<IDataResponse<int>> Delete<T>(string url, HttpMessageHandler handler)
+    public Task<IDataResponse<int>> Delete(string url, HttpMessageHandler handler)
     {
       throw new NotImplementedException();
     }

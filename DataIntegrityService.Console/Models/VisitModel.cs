@@ -9,8 +9,8 @@ namespace DataIntegrityService.Console.Models
 {
   public class VisitModel : IDataModel
   {
-    public string Key => VisitId.ToString();
+    public string Key => VisitId;
 
-    public int VisitId { get; set; }
+    public required string VisitId { get; set; }
   }
 }

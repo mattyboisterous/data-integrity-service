@@ -83,7 +83,7 @@ namespace DataIntegrityService.Console.Providers
 
     public T GetLocal<T>(string key) where T : IDataModel
     {
-      throw new NotImplementedException();
+      return DbService.GetLocal<T>(key);
     }
 
     public int InsertLocal<T>(T data) where T : IDataModel

@@ -100,7 +100,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public async Task FlagAsCompleted(DataChangeTrackingModel item)
     {
-      await HttpService.Delete<int>($"api/v1/ChangeTracking/FlagAsCompleted/{item.Id}", HttpMessageHandlerService.GetMessageHandler());
+      await HttpService.Delete($"api/v1/ChangeTracking/FlagAsCompleted/{item.Id}", HttpMessageHandlerService.GetMessageHandler());
     }
 
     public async Task FlagAsPoison(DataChangeTrackingModel item)
@@ -110,7 +110,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public async Task FlushAllPendingChanges()
     {
-      await HttpService.Delete<int>($"api/v1/ChangeTracking/FlushAll", HttpMessageHandlerService.GetMessageHandler());
+      await HttpService.Delete($"api/v1/ChangeTracking/FlushAll", HttpMessageHandlerService.GetMessageHandler());
     }
 
     public DataChangeTrackingModel GetNextChange()

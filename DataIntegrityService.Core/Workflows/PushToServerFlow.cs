@@ -13,14 +13,12 @@ namespace DataIntegrityService.Core.Workflows
 
     public async Task<IActionResponse> ExecuteNonGeneric(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken, string typeName)
     {
+      Logger.Info("PushToServer", "PushToServer running...");
       Logger.Info("PushToServer", $"Resolving type '{typeName}'...");
 
-      //Type dataType = Type.GetType(typeName);
-      Type dataType = Type.GetType("DataIntegrityService.Console.Models.VisitModel, DataIntegrityService.Console");
-      
+      Type dataType = Type.GetType(typeName);
 
       // Call the generic method indirectly
-      
       var method = typeof(PushToServerFlow).GetMethod("Execute").MakeGenericMethod(dataType);
       var resultTask = (Task<IActionResponse>)method.Invoke(this, new object[] { message, dataService, cancellationToken });
 
@@ -31,8 +29,6 @@ namespace DataIntegrityService.Core.Workflows
     {
       try
       {
-        Logger.Info("PushToServer", "PushToServer running...");
-
         if (dataService.IsInitialised)
         {
           if (message.Action == ChangeAction.Delete.ToString())
@@ -44,21 +40,8 @@ namespace DataIntegrityService.Core.Workflows
           {
             Logger.Info("PushToServer", $"Data service '{dataService.Key}' initialised, fetching model from local device...");
 
-            IDataModel? dataModel = null;
-
             // fetch model from local store...
-            if (dataService is ILocalCacheService)
-            {
-              Logger.Info("PushToServer", $"Data service '{dataService.Key}' uses a local cache service, fetching model...");
-
-              T dataModelTest = ((ILocalCacheService)dataService).GetLocal<T>(message.Key);
-            }
-            if (dataService is ILocalDbService)
-            {
-              Logger.Info("PushToServer", $"Data service '{dataService.Key}' uses a local DB service, fetching model...");
-
-              dataModel = ((ILocalDbService)dataService).GetLocal<T>(message.Key);
-            }
+            var dataModel = dataService.GetLocal<T>(message.Key);
 
             if (dataModel != null)
             {
