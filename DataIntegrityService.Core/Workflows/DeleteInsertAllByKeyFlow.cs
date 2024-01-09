@@ -17,7 +17,20 @@ namespace DataIntegrityService.Core.Workflows
   {
     public string Key => "DeleteInsertAllByKey";
 
-    public async Task<IActionResponse> Execute(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken)
+    public async Task<IActionResponse> ExecuteNonGeneric(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken, string typeName)
+    {
+      Logger.Info("DeleteInsertAllByKey", $"Resolving type '{typeName}'...");
+
+      Type dataType = Type.GetType(typeName);
+
+      // Call the generic method indirectly
+      var method = typeof(DeleteInsertAllByKeyFlow).GetMethod("Execute").MakeGenericMethod(dataType);
+      var resultTask = (Task<IActionResponse>)method.Invoke(this, new object[] { message, dataService, cancellationToken });
+
+      return await resultTask;
+    }
+
+    public async Task<IActionResponse> Execute<T>(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken) where T : IDataModel
     {
       try
       {

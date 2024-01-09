@@ -11,7 +11,23 @@ namespace DataIntegrityService.Core.Workflows
   {
     public string Key => "PushToServer";
 
-    public async Task<IActionResponse> Execute(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken)
+    public async Task<IActionResponse> ExecuteNonGeneric(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken, string typeName)
+    {
+      Logger.Info("PushToServer", $"Resolving type '{typeName}'...");
+
+      //Type dataType = Type.GetType(typeName);
+      Type dataType = Type.GetType("DataIntegrityService.Console.Models.VisitModel, DataIntegrityService.Console");
+      
+
+      // Call the generic method indirectly
+      
+      var method = typeof(PushToServerFlow).GetMethod("Execute").MakeGenericMethod(dataType);
+      var resultTask = (Task<IActionResponse>)method.Invoke(this, new object[] { message, dataService, cancellationToken });
+
+      return await resultTask;
+    }
+
+    public async Task<IActionResponse> Execute<T>(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken) where T : IDataModel
     {
       try
       {
@@ -35,7 +51,7 @@ namespace DataIntegrityService.Core.Workflows
             {
               Logger.Info("PushToServer", $"Data service '{dataService.Key}' uses a local cache service, fetching data...");
 
-              dataModel = ((ILocalCacheService)dataService).GetLocal(message.Key);
+              T dataModelTest = ((ILocalCacheService)dataService).GetLocal<T>(message.Key);
             }
             if (dataService is ILocalDbService)
             {

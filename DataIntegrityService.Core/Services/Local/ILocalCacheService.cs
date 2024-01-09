@@ -9,10 +9,10 @@ namespace DataIntegrityService.Core.Services.Local
 {
     public interface ILocalCacheService
   {
-    IDataModel GetLocal(string key);
-    IEnumerable<IDataModel> GetAllLocal(string key);
+    T GetLocal<T>(string key) where T : IDataModel;
+    IEnumerable<T> GetAllLocal<T>(string key) where T : IDataModel;
+    void InsertOrReplace<T>(string key, T data) where T : IDataModel;
+    void InsertOrReplace<T>(string key, IEnumerable<T> data) where T : IDataModel;
     void RemoveIfExists(string key);
-    void InsertOrReplace(string key, IDataModel data);
-    void InsertOrReplace(string key, IEnumerable<IDataModel> data);
   }
 }

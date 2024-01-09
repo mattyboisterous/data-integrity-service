@@ -100,7 +100,7 @@ namespace DataIntegrityService.Core
 
                   // perform work using this workflow...
                   Logger.Info("EntryPoint", $"Performing workflow...");
-                  var actionReponse = await workflow.Execute(null, referenceDataService, token);
+                  var actionReponse = await workflow.ExecuteNonGeneric(null, referenceDataService, token, serviceConfiguration.ModelType);
                 }
               }
             }
@@ -111,6 +111,12 @@ namespace DataIntegrityService.Core
 
     public async Task SynchroniseStates(SynchronisationMode mode, IUserProfile user, CancellationToken token)
     {
+      //var dataType = new Type[] { typeof(string) };
+      //var genericBase = typeof(List<>);
+      //var combinedType = genericBase.MakeGenericType(dataType);
+      //dynamic listStringInstance = Activator.CreateInstance(combinedType);
+      //listStringInstance.Add("Hello World");
+
       if (!token.IsCancellationRequested)
       {
         IChangeTrackingService changeTrackingService;
@@ -160,7 +166,7 @@ namespace DataIntegrityService.Core
 
                 // perform work using this workflow...
                 Logger.Info("EntryPoint", $"Performing workflow...");
-                var actionReponse = await workflow.Execute(pendingChange, dataService, token);
+                var actionReponse = await workflow.ExecuteNonGeneric(pendingChange, dataService, token, serviceConfiguration.ModelType);
 
                 // flag as completed if all is well...
                 if (actionReponse.ActionSucceeded)

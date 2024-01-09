@@ -34,7 +34,7 @@ namespace DataIntegrityService.Core.Services
     public async Task Initialise()
     {
       // fetch tracked local changes...
-      LocalReferenceDataSetState = (List<StaticDataChangeTrackingModel>)GetAllLocal(Key);
+      LocalReferenceDataSetState = (List<StaticDataChangeTrackingModel>)GetAllLocal<StaticDataChangeTrackingModel>(Key);
 
       // fetch tracked changes from server...
       var serverResponse = await GetAllFromServer(CancellationToken);
@@ -79,21 +79,27 @@ namespace DataIntegrityService.Core.Services
 
     #region ILocalCacheService
 
-    public IDataModel GetLocal(string key) => throw new NotImplementedException();
-
-    public IEnumerable<IDataModel> GetAllLocal(string key)
+    public T GetLocal<T>(string key) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public void RemoveIfExists(string key) => throw new NotImplementedException();
-
-    public void InsertOrReplace(string key, IDataModel data)
+    public IEnumerable<T> GetAllLocal<T>(string key) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public void InsertOrReplace(string key, IEnumerable<IDataModel> data)
+    public void InsertOrReplace<T>(string key, T data) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public void InsertOrReplace<T>(string key, IEnumerable<T> data) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public void RemoveIfExists(string key)
     {
       throw new NotImplementedException();
     }

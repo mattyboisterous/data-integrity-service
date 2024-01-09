@@ -125,6 +125,26 @@ namespace DataIntegrityService.Console.Providers
       throw new NotImplementedException();
     }
 
+    public T GetLocal<T>(string key) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public IEnumerable<T> GetAllLocal<T>(string key) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public void InsertOrReplace<T>(string key, T data) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public void InsertOrReplace<T>(string key, IEnumerable<T> data) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
     #endregion
   }
 }

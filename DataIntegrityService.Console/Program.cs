@@ -9,6 +9,8 @@ using DataIntegrityService.Console.Services;
 using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Console.Services.Http;
 using DataIntegrityService.Core.Services.Http;
+using DataIntegrityService.Core.Services.Local;
+using DataIntegrityService.Console.Services.Local;
 
 // dummy a new user and pass to entry point...
 IUserProfile user = new UserProfile();
@@ -20,12 +22,14 @@ var entryPoint = new EntryPoint();
 
 // create our local/app specific services here and inject...
 IServiceCollection services = new ServiceCollection();
-services.AddTransient<IDataService, EvidenceNoteService>();
 services.AddTransient<IDataService, MemoService>();
 services.AddTransient<IDataService, ProvisionService>();
 services.AddTransient<IDataService, QualityAreaService>();
 services.AddTransient<IDataService, VisitService>();
+
 services.AddTransient<IHttpService, MockHttpService>();
+services.AddTransient<ILocalCacheService, MockLocalCacheService>();
+services.AddTransient<ILocalDbService, MockLocalDbService>();
 
 // configure, initialise...
 entryPoint.ConfigureServices(services);

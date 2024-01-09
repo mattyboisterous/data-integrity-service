@@ -28,6 +28,7 @@ namespace DataIntegrityService.Core.Configuration
     public required string Key { get; set; }
     public required string DatasetName { get; set; }
     public required string DatasetGroup { get; set; }
+    public required string ModelType { get; set; }
     public WorkflowConfiguration? Push { get; set; }
     public WorkflowConfiguration? Pull { get; set; }
     public required HttpServiceConfiguration Http { get; set; }
