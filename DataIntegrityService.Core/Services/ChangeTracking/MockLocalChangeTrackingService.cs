@@ -152,7 +152,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
       foreach (var change in TrackedChanges)
       {
-        Logger.Info("MockLocalChangeTrackingService", $"{change.Action.ToUpper()} {change.DatasetName} with key {change.Key}. Attempts: {change.Attempts}");
+        Logger.Info("MockLocalChangeTrackingService", $"{change.Action.ToUpper()} {change.DatasetName} with key {change.ItemKey}. Attempts: {change.Attempts}");
       }
 
       IsInitialised = true;

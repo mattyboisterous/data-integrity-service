@@ -14,7 +14,7 @@ namespace DataIntegrityService.Core.Workflows
 
     public async Task<IActionResponse> ExecuteNonGeneric(DataChangeTrackingModel message, IDataService dataService, CancellationToken cancellationToken, string typeName)
     {
-      Logger.Info("PullFromServer", "PullFromServer running...");
+      Logger.Info("PullFromServer", "Workflow 'PullFromServer' running...");
       Logger.Info("PullFromServer", $"Resolving type '{typeName}'...");
 
       Type dataType = Type.GetType(typeName);
