@@ -46,6 +46,8 @@ namespace DataIntegrityService.Core.Services.ChangeTracking.Static
       {
         ServerReferenceDataSetState = (List<StaticDataChangeTrackingModel>)serverResponse.Data;
       }
+      else if (Settings.AbortOnFailure)
+        throw new InvalidOperationException($"Unable to syncronise static data and AbortOnFailure is true. Stopping all work.");
 
       IsInitialised = true;
       await Task.CompletedTask;

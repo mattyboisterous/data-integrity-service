@@ -18,6 +18,7 @@ namespace DataIntegrityService.Core.Configuration
   public sealed class StaticChangeTrackingConfiguration
   {
     public required string Key { get; set; }
+    public required bool AbortOnFailure { get; set; }
     public required string ModelType { get; set; }
     public required HttpServiceConfiguration Http { get; set; }
     public required LocalCacheServiceConfiguration Cache { get; set; }
