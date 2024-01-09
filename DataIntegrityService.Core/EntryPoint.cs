@@ -71,44 +71,39 @@ namespace DataIntegrityService.Core
     {
       if (!token.IsCancellationRequested)
       {
-        // fetch configuration, then call up matching data service...
-        var serviceConfiguration = Configuration.DataServices.FirstOrDefault(ds => ds.DatasetName == Configuration.ReferenceDataService);
+        // fetch static data change configuration...
+        var serviceConfiguration = Configuration.StaticChangeTrackingService;
 
-        if (serviceConfiguration != null)
-        {
-          Logger.Info("EntryPoint", $"Resolving data service for '{Configuration.ReferenceDataService}'...");
-          IDataService referenceDataService = DataServiceFactory.GetDataService(serviceConfiguration);
+        ////Logger.Info("EntryPoint", $"Resolving data service for '{Configuration.ReferenceDataService}'...");
+        ////IDataService referenceDataService = DataServiceFactory.GetDataService(serviceConfiguration);
 
-          if (referenceDataService != null)
-          {
-            // initialise service...
-            Logger.Info("EntryPoint", $"Initialising reference data service...");
-            await referenceDataService.Initialise();
+        //if (referenceDataService != null)
+        //{
+        //  // initialise service...
+        //  Logger.Info("EntryPoint", $"Initialising reference data service...");
+        //  await referenceDataService.Initialise();
 
-            if (referenceDataService.IsInitialised)
-            {
-              // iterate over server dataset state, if no local version or version mismatch, fetch from server and overwrite locally...
-              foreach (var serverDataSet in ((IStaticDataService)referenceDataService).ServerReferenceDataSetState)
-              {
-                // look for local match...
-                var localDataSet = ((IStaticDataService)referenceDataService).LocalReferenceDataSetState.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
+        //  if (referenceDataService.IsInitialised)
+        //  {
+        //    // iterate over server dataset state, if no local version or version mismatch, fetch from server and overwrite locally...
+        //    foreach (var serverDataSet in ((IStaticDataService)referenceDataService).ServerReferenceDataSetState)
+        //    {
+        //      // look for local match...
+        //      var localDataSet = ((IStaticDataService)referenceDataService).LocalReferenceDataSetState.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
 
-                // refresh locally if we need to...
-                if (forceRehydrateAll || localDataSet == null || localDataSet!.Version != serverDataSet.Version)
-                {
-                  Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.Pull!.DataWorkflow}'...");
-                  var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.Pull!.DataWorkflow);
+        //      // refresh locally if we need to...
+        //      if (forceRehydrateAll || localDataSet == null || localDataSet!.Version != serverDataSet.Version)
+        //      {
+        //        Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.Pull!.DataWorkflow}'...");
+        //        var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.Pull!.DataWorkflow);
 
-                  // perform work using this workflow...
-                  Logger.Info("EntryPoint", $"Executing workflow '{workflow.Key}'...");
-                  var actionReponse = await workflow.ExecuteNonGeneric(null, referenceDataService, token, serviceConfiguration.ModelType);
-                }
-              }
-            }
-          }
-        }
-        else
-          throw new InvalidOperationException($"Please ensure data service '{Configuration.ReferenceDataService}' has been configured before calling 'Execute'.");
+        //        // perform work using this workflow...
+        //        Logger.Info("EntryPoint", $"Executing workflow '{workflow.Key}'...");
+        //        var actionReponse = await workflow.ExecuteNonGeneric(null, referenceDataService, token, serviceConfiguration.ModelType);
+        //      }
+        //    }
+        //  }
+        //}
       }
       else
         Logger.Info("EntryPoint", $"Action cancelled by user, returning...");
@@ -214,7 +209,7 @@ namespace DataIntegrityService.Core
       services.AddTransient<IChangeTrackingService, MockLocalChangeTrackingService>();
       services.AddTransient<IChangeTrackingService, MockHttpChangeTrackingService>();
 
-      services.AddTransient<IDataService, StaticChangeTrackingService>();
+      services.AddTransient<IStaticDataService, StaticChangeTrackingService>();
 
       services.AddTransient<IWorkflowService, DeleteInsertAllFlow>();
       services.AddTransient<IWorkflowService, DeleteInsertAllByKeyFlow>();

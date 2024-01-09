@@ -10,9 +10,16 @@ namespace DataIntegrityService.Core.Configuration
   {
     public required string Environment { get; set; }
     public required string Version { get; set; }
-    public required string ReferenceDataService { get; set; }
+    public required StaticChangeTrackingConfiguration StaticChangeTrackingService { get; set; }
     public required ChangeTrackingConfiguration ChangeTrackingService { get; set; }
     public required List<DataServiceConfiguration> DataServices { get; set; }
+  }
+
+  public sealed class StaticChangeTrackingConfiguration
+  {
+    public required string ModelType { get; set; }
+    public required HttpServiceConfiguration Http { get; set; }
+    public required LocalCacheServiceConfiguration Cache { get; set; }
   }
 
   public sealed class ChangeTrackingConfiguration
