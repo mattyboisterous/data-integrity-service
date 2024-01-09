@@ -63,7 +63,7 @@ namespace DataIntegrityService.Console.Providers
       return new DataResponse<IDataModel>
       {
         Data = (IDataModel)result.Data,
-        ActionSucceeded = result.ActionSucceeded
+        HttpResponseCode = result.HttpResponseCode
       };
     }
 
@@ -84,7 +84,7 @@ namespace DataIntegrityService.Console.Providers
       return new DataResponse<IDataModel>
       {
         Data = (IDataModel)result.Data,
-        ActionSucceeded = result.ActionSucceeded
+        HttpResponseCode = result.HttpResponseCode
       };
     }
 
@@ -95,7 +95,7 @@ namespace DataIntegrityService.Console.Providers
       return new DataResponse<IDataModel>
       {
         Data = (IDataModel)result.Data,
-        ActionSucceeded = result.ActionSucceeded
+        HttpResponseCode = result.HttpResponseCode
       };
     }
 

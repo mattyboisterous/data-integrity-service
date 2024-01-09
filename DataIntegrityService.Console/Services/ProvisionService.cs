@@ -67,7 +67,7 @@ namespace DataIntegrityService.Console.Providers
       return new DataResponse<IEnumerable<IDataModel>>
       {
         Data = result.Data.Cast<IDataModel>(),
-        ActionSucceeded = result.ActionSucceeded
+        HttpResponseCode = result.HttpResponseCode
       };
     }
 
@@ -78,7 +78,7 @@ namespace DataIntegrityService.Console.Providers
       return new DataResponse<IEnumerable<IDataModel>>
       {
         Data = result.Data.Cast<IDataModel>(),
-        ActionSucceeded = result.ActionSucceeded
+        HttpResponseCode = result.HttpResponseCode
       };
     }
 

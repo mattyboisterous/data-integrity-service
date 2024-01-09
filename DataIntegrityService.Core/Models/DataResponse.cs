@@ -14,7 +14,7 @@ namespace DataIntegrityService.Core.Models
 
     public T Data { get; set; }
     public bool ActionCancelled { get; set; }
-    public bool ActionSucceeded { get; set; } = true;
+    public bool ActionSucceeded => HttpResponseCode >= 200 && HttpResponseCode < 300;
     public int HttpResponseCode { get; set; }
   }
 }

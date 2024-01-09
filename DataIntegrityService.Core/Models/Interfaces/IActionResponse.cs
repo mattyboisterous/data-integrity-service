@@ -9,7 +9,7 @@ namespace DataIntegrityService.Core.Models.Interfaces
   public interface IActionResponse
   {
     bool ActionCancelled { get; set; }
-    bool ActionSucceeded { get; set; }
+    bool ActionSucceeded { get; }
     int HttpResponseCode { get; set; }
   }
 }

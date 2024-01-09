@@ -19,7 +19,10 @@ namespace DataIntegrityService.Console.Services.Http
 
         Logger.Info("MockHttpService", $"Returning 1 item from server.");
 
-        return await Task.FromResult(new DataResponse<T>((T)(object)data));
+        var result = new DataResponse<T>((T)(object)data);
+        result.HttpResponseCode = GenerateHttpResponseCode();
+
+        return await Task.FromResult(result);
       }
       if (typeof(T) == typeof(QualityAreaModel))
       {
@@ -27,7 +30,10 @@ namespace DataIntegrityService.Console.Services.Http
 
         Logger.Info("MockHttpService", $"Returning 1 item from server.");
 
-        return await Task.FromResult(new DataResponse<T>((T)(object)data));
+        var result = new DataResponse<T>((T)(object)data);
+        result.HttpResponseCode = GenerateHttpResponseCode();
+
+        return await Task.FromResult(result);
       }
       if (typeof(T) == typeof(VisitModel))
       {
@@ -35,7 +41,10 @@ namespace DataIntegrityService.Console.Services.Http
 
         Logger.Info("MockHttpService", $"Returning 1 item from server.");
 
-        return await Task.FromResult(new DataResponse<T>((T)(object)data));
+        var result = new DataResponse<T>((T)(object)data);
+        result.HttpResponseCode = GenerateHttpResponseCode();
+
+        return await Task.FromResult(result);
       }
 
       return default;
@@ -89,6 +98,23 @@ namespace DataIntegrityService.Console.Services.Http
     public async Task<IDataResponse<int>> Delete(string url, HttpMessageHandler messageHandler)
     {
       return await Task.FromResult(new DataResponse<int>(1));
+    }
+
+    /// <summary>
+    /// Seeing as we are mocking lets simulate the occasional call failing...
+    /// </summary>
+    /// <returns></returns>
+    private int GenerateHttpResponseCode()
+    {
+      Random rnd = new Random();
+      int num = rnd.Next(0, 100);
+
+      if (num <= 90)
+        return 200;
+      else if (num <= 95)
+        return 400;
+      else
+        return 500;
     }
   }
 }

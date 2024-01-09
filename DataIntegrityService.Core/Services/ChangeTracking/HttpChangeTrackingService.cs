@@ -94,7 +94,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       return new DataResponse<IEnumerable<IDataModel>>
       {
         Data = result.Data.Cast<IDataModel>(),
-        ActionSucceeded = result.ActionSucceeded
+        HttpResponseCode = result.HttpResponseCode
       };
     }
 
