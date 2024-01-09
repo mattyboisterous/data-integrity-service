@@ -34,14 +34,14 @@ namespace DataIntegrityService.Core.Workflows
           if (message.Action == ChangeAction.Delete.ToString())
           {
             Logger.Info("PushToServer", $"Deleting model on server...");
-            return await dataService.DeleteFromServer(message.Key, cancellationToken);
+            return await dataService.DeleteFromServer(message.ItemKey, cancellationToken);
           }
           else
           {
             Logger.Info("PushToServer", $"Data service '{dataService.Key}' initialised, fetching model from local device...");
 
             // fetch model from local store...
-            var dataModel = dataService.GetLocal<T>(message.Key);
+            var dataModel = dataService.GetLocal<T>(message.ItemKey);
 
             if (dataModel != null)
             {
@@ -63,7 +63,7 @@ namespace DataIntegrityService.Core.Workflows
             }
             else
             {
-              Logger.Error("PushToServer", $"Local data model '{message.DatasetName}' not found with key {message.Key}. Unable to push to server.");
+              Logger.Error("PushToServer", $"Local data model '{message.DatasetName}' not found with key {message.ItemKey}. Unable to push to server.");
               return new ActionResponse() { ActionSucceeded = false };
             }
           }

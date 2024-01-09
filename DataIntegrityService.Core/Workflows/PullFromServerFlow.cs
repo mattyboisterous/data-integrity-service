@@ -37,19 +37,7 @@ namespace DataIntegrityService.Core.Workflows
           if (message.Action == ChangeAction.Delete.ToString())
           {
             Logger.Info("PullFromServer", $"Deleting data from local store...");
-
-            if (dataService is ILocalCacheService)
-            {
-              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, deleting model...");
-
-              ((ILocalCacheService)dataService).RemoveIfExists(message.Key);
-            }
-            if (dataService is ILocalDbService)
-            {
-              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, deleting model...");
-
-              ((ILocalDbService)dataService).Delete<IDataModel>(message.Key);
-            }
+            dataService.DeleteLocal<T>(message.ItemKey);
 
             Logger.Error("PullFromServer", $"Work complete.");
             return new ActionResponse();
@@ -57,7 +45,7 @@ namespace DataIntegrityService.Core.Workflows
           else
           {
             // fetch model from server...
-            var dataResponse = await dataService.GetFromServer(message.Key, cancellationToken);
+            var dataResponse = await dataService.GetFromServer(message.ItemKey, cancellationToken);
 
             if (dataResponse.ActionSucceeded && dataResponse.Data != null)
             {
@@ -68,37 +56,17 @@ namespace DataIntegrityService.Core.Workflows
 
               if (message.Action == ChangeAction.Create.ToString())
               {
-                if (dataService is ILocalCacheService)
-                {
-                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, inserting model...");
-
-                  ((ILocalCacheService)dataService).InsertOrReplace(message.Key, data);
-                }
-                if (dataService is ILocalDbService)
-                {
-                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, inserting model...");
-
-                  ((ILocalDbService)dataService).Insert(data);
-                }
+                Logger.Info("PullFromServer", $"Creating model on local store...");
+                dataService.InsertLocal((T)data);
               }
               else
               {
-                if (dataService is ILocalCacheService)
-                {
-                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, updating model...");
-
-                  ((ILocalCacheService)dataService).InsertOrReplace(message.Key, data);
-                }
-                if (dataService is ILocalDbService)
-                {
-                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, updating model...");
-
-                  ((ILocalDbService)dataService).Update(data);
-                }
+                Logger.Info("PullFromServer", $"Updating model on local store...");
+                dataService.UpdateLocal((T)data);
               }
 
               Logger.Error("PullFromServer", $"Work complete.");
-              return new ActionResponse();
+              return dataResponse;
             }
             else 
             {

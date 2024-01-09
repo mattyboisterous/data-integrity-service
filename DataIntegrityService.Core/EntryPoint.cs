@@ -100,7 +100,7 @@ namespace DataIntegrityService.Core
                   var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.Pull!.DataWorkflow);
 
                   // perform work using this workflow...
-                  Logger.Info("EntryPoint", $"Performing workflow...");
+                  Logger.Info("EntryPoint", $"Executing workflow '{workflow.Key}'...");
                   var actionReponse = await workflow.ExecuteNonGeneric(null, referenceDataService, token, serviceConfiguration.ModelType);
                 }
               }
@@ -168,7 +168,7 @@ namespace DataIntegrityService.Core
                 await dataService.Initialise();
 
                 // perform work using this workflow...
-                Logger.Info("EntryPoint", $"Performing workflow...");
+                Logger.Info("EntryPoint", $"Executing workflow '{workflow.Key}'...");
                 var actionReponse = await workflow.ExecuteNonGeneric(pendingChange, dataService, token, serviceConfiguration.ModelType);
 
                 // flag as completed if all is well...

@@ -112,12 +112,12 @@ namespace DataIntegrityService.Console.Providers
 
     public int InsertLocal<T>(T data) where T : IDataModel
     {
-      throw new NotImplementedException();
+      return DbService.Insert<T>(data);
     }
 
     public int UpdateLocal<T>(T data) where T : IDataModel
     {
-      throw new NotImplementedException();
+      return DbService.Update<T>(data);
     }
 
     public int InsertAllLocal<T>(IEnumerable<T> data) where T : IDataModel

@@ -106,7 +106,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
         TrackedChanges.Add(new DataChangeTrackingModel()
         {
           Id = Guid.NewGuid().ToString(),
-          ItemKey = Guid.NewGuid().ToString(),
+          ItemKey = "1",
           Action = "Update",
           UserId = Guid.NewGuid().ToString(),
           Attempts = 0,
@@ -139,7 +139,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
         TrackedChanges.Add(new DataChangeTrackingModel()
         {
           Id = Guid.NewGuid().ToString(),
-          ItemKey = Guid.NewGuid().ToString(),
+          ItemKey = "1",
           Action = "Update",
           UserId = Guid.NewGuid().ToString(),
           Attempts = 0,
@@ -148,7 +148,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
         });
       }
 
-      Logger.Info("MockLocalChangeTrackingService", $"{TrackedChanges.Count} pending local changes found...");
+      Logger.Info("MockLocalChangeTrackingService", $"{TrackedChanges.Count} pending local change(s) found...");
 
       foreach (var change in TrackedChanges)
       {

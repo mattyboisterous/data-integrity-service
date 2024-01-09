@@ -2,12 +2,6 @@
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Local;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataIntegrityService.Console.Services.Local
 {

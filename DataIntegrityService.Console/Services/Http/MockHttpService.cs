@@ -3,7 +3,6 @@ using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Http;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataIntegrityService.Console.Services.Http
 {
@@ -70,20 +69,6 @@ namespace DataIntegrityService.Console.Services.Http
 
       return await Task.FromResult(result);
     }
-
-    //public async Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler messageHandler, CancellationTokenSource tokenSource = null)
-    //{
-    //  if (typeof(T) == typeof(QualityAreaModel))
-    //  {
-    //    var testData = (T)(object)new QualityAreaModel() { QualityAreaId = 1, Code = "QA1", Description = "Quality Area 1" };
-
-    //    Logger.Info("MockHttpService", $"Http 200, returning 1 item.");
-
-    //    return await Task.FromResult(new DataResponse<T>(testData));
-    //  }
-
-    //  return await Task.FromResult(new DataResponse<T>(default));
-    //}
 
     public async Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler messageHandler, CancellationToken token) where T : IDataModel
     {

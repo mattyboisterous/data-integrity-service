@@ -85,9 +85,15 @@ namespace DataIntegrityService.Console.Providers
       };
     }
 
-    public Task<IDataResponse<IDataModel>> UpdateOnServer(IDataModel model, CancellationToken cancellationToken)
+    public async Task<IDataResponse<IDataModel>> UpdateOnServer(IDataModel model, CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      var result = await HttpService.Put(Settings.Http.Put, (MemoModel)model, HttpMessageHandlerService.GetMessageHandler());
+
+      return new DataResponse<IDataModel>
+      {
+        Data = (IDataModel)result.Data,
+        HttpResponseCode = result.HttpResponseCode
+      };
     }
 
     public Task<IDataResponse<bool>> DeleteFromServer(string key, CancellationToken cancellationToken)
@@ -102,12 +108,12 @@ namespace DataIntegrityService.Console.Providers
 
     public int InsertLocal<T>(T data) where T : IDataModel
     {
-      throw new NotImplementedException();
+      return DbService.Insert<T>(data);
     }
 
     public int UpdateLocal<T>(T data) where T : IDataModel
     {
-      throw new NotImplementedException();
+      return DbService.Update<T>(data);
     }
 
     public int InsertAllLocal<T>(IEnumerable<T> data) where T : IDataModel
