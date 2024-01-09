@@ -177,12 +177,12 @@ namespace DataIntegrityService.Core
         if (mode == SynchronisationMode.Push)
         {
           Logger.Info("EntryPoint", $"Resolving data service for 'LocalChangeTrackingService'...");
-          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("MockLocalChangeTrackingService");
+          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService(Configuration.ChangeTrackingService.LocalKey);
         }
         else
         {
           Logger.Info("EntryPoint", $"Resolving data service for 'HttpChangeTrackingService'...");
-          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService("MockHttpChangeTrackingService");
+          changeTrackingService = ChangeTrackingServiceFactory.GetChangeTrackingService(Configuration.ChangeTrackingService.ServerKey);
         }
 
         // fetch tracked changes...

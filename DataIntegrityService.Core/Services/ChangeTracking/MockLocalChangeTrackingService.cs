@@ -1,4 +1,5 @@
-﻿using DataIntegrityService.Core.Logging;
+﻿using DataIntegrityService.Core.Configuration;
+using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
 using System;

@@ -26,8 +26,10 @@ namespace DataIntegrityService.Core.Configuration
 
   public sealed class ChangeTrackingConfiguration
   {
-    public required string Key { get; set; }
-    public required bool posionMessages { get; set; }
+    public required string LocalKey { get; set; }
+    public required string ServerKey { get; set; }
+    public required string ModelType { get; set; }
+    public required bool PosionMessages { get; set; }
     public List<int> BackOff { get; set; } = [];
     public required HttpServiceConfiguration Http { get; set; }
     public required LocalCacheServiceConfiguration Cache { get; set; }
