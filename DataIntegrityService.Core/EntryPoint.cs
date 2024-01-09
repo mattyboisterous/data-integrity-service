@@ -60,9 +60,9 @@ namespace DataIntegrityService.Core
 
       //await SynchroniseStaticData(forceRehydrateAll, token);
 
-      await SynchroniseStates(SynchronisationMode.Push, user, token);
+      await SynchroniseStates(SynchronisationMode.Push, forceRehydrateAll, user, token);
 
-      await SynchroniseStates(SynchronisationMode.Pull, user, token);
+      await SynchroniseStates(SynchronisationMode.Pull, forceRehydrateAll, user, token);
 
       Logger.Info("EntryPoint", $"All work done.");
     }
@@ -76,6 +76,14 @@ namespace DataIntegrityService.Core
 
         ////Logger.Info("EntryPoint", $"Resolving data service for '{Configuration.ReferenceDataService}'...");
         ////IDataService referenceDataService = DataServiceFactory.GetDataService(serviceConfiguration);
+        ///
+
+        // todo: instantiate the service, pass config...
+        // todo: initialise...
+        // todo: interate over server changes...
+        // todo: compare to local...same logic as below...
+        // todo: if difference, look up data service by dataset name...get service and workflow and execute...
+        // todo: on success ensure local has same version as server...
 
         //if (referenceDataService != null)
         //{
@@ -109,7 +117,7 @@ namespace DataIntegrityService.Core
         Logger.Info("EntryPoint", $"Action cancelled by user, returning...");
     }
 
-    public async Task SynchroniseStates(SynchronisationMode mode, IUserProfile user, CancellationToken token)
+    public async Task SynchroniseStates(SynchronisationMode mode, bool forceRehydrateAll, IUserProfile user, CancellationToken token)
     {
       Logger.Info("EntryPoint", $"**************************************************");
       Logger.Info("EntryPoint", $"SynchroniseStates() called with mode '{mode.ToString()}'");
