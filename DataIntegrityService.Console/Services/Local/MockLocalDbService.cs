@@ -39,6 +39,14 @@ namespace DataIntegrityService.Console.Services.Local
 
         return (T)(object)data;
       }
+      if (typeof(T) == typeof(MemoModel))
+      {
+        var data = new MemoModel() { MemoId = int.Parse(key) };
+
+        Logger.Info("MockLocalDbService", $"Returning 1 item from local Db.");
+
+        return (T)(object)data;
+      }
 
       return default;
     }

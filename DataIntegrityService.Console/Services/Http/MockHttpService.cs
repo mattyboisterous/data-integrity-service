@@ -46,6 +46,17 @@ namespace DataIntegrityService.Console.Services.Http
 
         return await Task.FromResult(result);
       }
+      if (typeof(T) == typeof(MemoModel))
+      {
+        var data = new MemoModel() { MemoId = 1 };
+
+        var result = new DataResponse<T>((T)(object)data);
+        result.HttpResponseCode = GenerateHttpResponseCode();
+
+        Logger.Info("MockHttpService", $"GET => Returning model from server. HttpResponseCode => {result.HttpResponseCode}");
+
+        return await Task.FromResult(result);
+      }
 
       return default;
     }

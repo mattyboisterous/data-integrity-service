@@ -34,6 +34,8 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
     {
       Logger.Info("MockLocalChangeTrackingService", $"Flagging this item as complete, removing...");
 
+      TrackedChanges.Remove(item);
+
       // do nothing...
       await Task.CompletedTask;
     }
@@ -41,6 +43,8 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
     public async Task FlagAsPoison(DataChangeTrackingModel item)
     {
       Logger.Warn("MockLocalChangeTrackingService", $"Flagging this item as POISON, removing...");
+
+      TrackedChanges.Remove(item);
 
       // do nothing...
       await Task.CompletedTask;
@@ -57,7 +61,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       Logger.Warn("MockLocalChangeTrackingService", $"Fetching next change...");
       
       var change = TrackedChanges.First();
-      TrackedChanges.Remove(change);
+      //TrackedChanges.Remove(change);
 
       return change;
     }

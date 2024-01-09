@@ -1,4 +1,5 @@
-﻿using DataIntegrityService.Core.Configuration;
+﻿using DataIntegrityService.Console.Models;
+using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Logging;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Models.Interfaces;
@@ -42,19 +43,26 @@ namespace DataIntegrityService.Console.Providers
     public IDataModel TransformData(IDataModel data)
     {
       // no transformations...
+      Logger.Info("MemoService", "No transformation required, returning data as is.");
       return data;
     }
 
     public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
     {
       // no transformation required...
-      Logger.Info("MemoService", "No transformation required, returning data.");
+      Logger.Info("MemoService", "No transformation required, returning data as is.");
       return data;
     }
 
-    public Task<IDataResponse<IDataModel>> GetFromServer(string id, CancellationToken cancellationToken)
+    public async Task<IDataResponse<IDataModel>> GetFromServer(string id, CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      var result = await HttpService.Get<MemoModel>(string.Format(Settings.Http.Get, id), HttpMessageHandlerService.GetMessageHandler(), cancellationToken);
+
+      return new DataResponse<IDataModel>
+      {
+        Data = (IDataModel)result.Data,
+        HttpResponseCode = result.HttpResponseCode
+      };
     }
 
     public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServer(CancellationToken cancellationToken)
@@ -66,9 +74,15 @@ namespace DataIntegrityService.Console.Providers
       throw new NotImplementedException();
     }
 
-    public Task<IDataResponse<IDataModel>> CreateOnServer(IDataModel model, CancellationToken cancellationToken)
+    public async Task<IDataResponse<IDataModel>> CreateOnServer(IDataModel model, CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      var result = await HttpService.Post(Settings.Http.Post, (MemoModel)model, HttpMessageHandlerService.GetMessageHandler());
+
+      return new DataResponse<IDataModel>
+      {
+        Data = (IDataModel)result.Data,
+        HttpResponseCode = result.HttpResponseCode
+      };
     }
 
     public Task<IDataResponse<IDataModel>> UpdateOnServer(IDataModel model, CancellationToken cancellationToken)

@@ -33,6 +33,14 @@ namespace DataIntegrityService.Console.Services.Local
 
         return (T)(object)data;
       }
+      if (typeof(T) == typeof(MemoModel))
+      {
+        var data = new MemoModel() { MemoId = int.Parse(key) };
+
+        Logger.Info("MockLocalCacheService", $"Returning 1 item from local cache.");
+
+        return (T)(object)data;
+      }
 
       return default;
     }
@@ -58,6 +66,14 @@ namespace DataIntegrityService.Console.Services.Local
       if (typeof(T) == typeof(VisitModel))
       {
         var data = new List<VisitModel>() { new VisitModel() { VisitId = Guid.NewGuid().ToString() }, new VisitModel() { VisitId = Guid.NewGuid().ToString() }, new VisitModel() { VisitId = Guid.NewGuid().ToString() } };
+
+        Logger.Info("MockLocalCacheService", $"Returning 3 items from local cache.");
+
+        return (IEnumerable<T>)(object)data;
+      }
+      if (typeof(T) == typeof(MemoModel))
+      {
+        var data = new List<MemoModel>() { new MemoModel() { MemoId = 1 }, new MemoModel() { MemoId = 3 }, new MemoModel() { MemoId = 3 } };
 
         Logger.Info("MockLocalCacheService", $"Returning 3 items from local cache.");
 

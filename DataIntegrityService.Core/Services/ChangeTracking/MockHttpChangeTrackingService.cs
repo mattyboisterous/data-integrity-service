@@ -43,6 +43,8 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
     {
       Logger.Warn("MockHttpChangeTrackingService", $"Flagging this item as POISON, removing...");
 
+      TrackedChanges.Remove(item);
+
       // do nothing...
       await Task.CompletedTask;
     }
@@ -58,7 +60,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       Logger.Warn("MockHttpChangeTrackingService", $"Fetching next change...");
       
       var change = TrackedChanges.First();
-      TrackedChanges.Remove(change);
+      //TrackedChanges.Remove(change);
 
       return change;
     }

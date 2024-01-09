@@ -107,6 +107,8 @@ namespace DataIntegrityService.Core
             }
           }
         }
+        else
+          throw new InvalidOperationException($"Please ensure data service '{Configuration.ReferenceDataService}' has been configured before calling 'Execute'.");
       }
       else
         Logger.Info("EntryPoint", $"Action cancelled by user, returning...");
@@ -183,6 +185,8 @@ namespace DataIntegrityService.Core
 
                 Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
               }
+              else
+                throw new InvalidOperationException($"Please ensure data service '{pendingChange.DatasetName}' has been configured before calling 'Execute'.");
             }
           }
         }

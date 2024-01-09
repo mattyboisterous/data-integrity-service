@@ -46,13 +46,14 @@ namespace DataIntegrityService.Console.Providers
     public IDataModel TransformData(IDataModel data)
     {
       // no transformations...
+      Logger.Info("VisitService", "No transformation required, returning data as is.");
       return data;
     }
 
     public IEnumerable<IDataModel> TransformData(IEnumerable<IDataModel> data)
     {
       // no transformation required...
-      Logger.Info("VisitService", "No transformation required, returning data.");
+      Logger.Info("VisitService", "No transformation required, returning data as is.");
       return data;
     }
 
@@ -135,41 +136,5 @@ namespace DataIntegrityService.Console.Providers
     }
 
     #endregion
-
-    //#region ILocalDbService Members
-
-    //public IDataModel GetLocal(string key)
-    //{
-    //  // mock response for now...
-    //  Logger.Info("VisitService", $"Fetching record with id '{key}' from local Db...");
-    //  return new VisitModel() { VisitId = 1 };
-    //}
-
-    //public int DeleteAll<IDataModel>()
-    //{
-    //  throw new NotImplementedException();
-    //}
-
-    //public int InsertAll(IEnumerable<IDataModel> data)
-    //{
-    //  throw new NotImplementedException();
-    //}
-
-    //public int Delete<IDataModel>(string key)
-    //{
-    //  throw new NotImplementedException();
-    //}
-
-    //public int Insert(IDataModel data)
-    //{
-    //  throw new NotImplementedException();
-    //}
-
-    //public int Update(IDataModel data)
-    //{
-    //  throw new NotImplementedException();
-    //}
-
-    //#endregion
   }
 }
