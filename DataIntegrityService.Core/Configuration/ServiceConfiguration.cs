@@ -17,6 +17,7 @@ namespace DataIntegrityService.Core.Configuration
 
   public sealed class StaticChangeTrackingConfiguration
   {
+    public required string Key { get; set; }
     public required string ModelType { get; set; }
     public required HttpServiceConfiguration Http { get; set; }
     public required LocalCacheServiceConfiguration Cache { get; set; }
@@ -24,6 +25,7 @@ namespace DataIntegrityService.Core.Configuration
 
   public sealed class ChangeTrackingConfiguration
   {
+    public required string Key { get; set; }
     public required bool posionMessages { get; set; }
     public List<int> BackOff { get; set; } = [];
     public required HttpServiceConfiguration Http { get; set; }
@@ -51,6 +53,7 @@ namespace DataIntegrityService.Core.Configuration
   public sealed class HttpServiceConfiguration
   {
     public string? Get { get; set; }
+    public string? GetAll { get; set; }
     public string? GetAllByKey { get; set; }
     public string? Put { get; set; }
     public string? Post { get; set; }

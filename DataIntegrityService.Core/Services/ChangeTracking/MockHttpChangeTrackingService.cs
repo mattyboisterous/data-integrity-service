@@ -59,15 +59,13 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
     {
       Logger.Warn("MockHttpChangeTrackingService", $"Fetching next change...");
       
-      var change = TrackedChanges.First();
-      //TrackedChanges.Remove(change);
-
-      return change;
+      return TrackedChanges.First();
     }
 
     public async Task IncrementAttempt(DataChangeTrackingModel item)
     {
       item.Attempts++;
+      item.LastAttempt = DateTime.UtcNow;
 
       Logger.Warn("MockHttpChangeTrackingService", $"Incrementing attempt at processing this change, value is {item.Attempts}");
 

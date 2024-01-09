@@ -1,18 +1,14 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Models.Interfaces;
+using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
 using DataIntegrityService.Core.Services.Http;
-using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Services.Local;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DataIntegrityService.Core.Services
+namespace DataIntegrityService.Core.Services.ChangeTracking.Static
 {
-  public class StaticChangeTrackingService : IStaticDataService
+  public class StaticChangeTrackingService : IStaticChangeTrackingService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
@@ -23,7 +19,7 @@ namespace DataIntegrityService.Core.Services
     public string Key => "StaticChangeTracking";
     public bool IsInitialised { get; set; }
 
-    public List<StaticDataChangeTrackingModel> LocalReferenceDataSetState { get; set; } = new List<StaticDataChangeTrackingModel>();  
+    public List<StaticDataChangeTrackingModel> LocalReferenceDataSetState { get; set; } = new List<StaticDataChangeTrackingModel>();
     public List<StaticDataChangeTrackingModel> ServerReferenceDataSetState { get; set; } = new List<StaticDataChangeTrackingModel>();
     public required StaticChangeTrackingConfiguration Settings { get; set; }
     public bool ForceRehydrateAll { get; set; }
@@ -55,9 +51,15 @@ namespace DataIntegrityService.Core.Services
       await Task.CompletedTask;
     }
 
-    public Task<IDataResponse<IEnumerable<StaticDataChangeTrackingModel>>> GetAllFromServer(CancellationToken cancellationToken)
+    public async Task<IDataResponse<IEnumerable<StaticDataChangeTrackingModel>>> GetAllFromServer(CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      var result = await HttpService.GetAll<StaticDataChangeTrackingModel>(Settings.Http.GetAll, HttpMessageHandlerService.GetMessageHandler(), cancellationToken);
+
+      return new DataResponse<IEnumerable<StaticDataChangeTrackingModel>>
+      {
+        Data = result.Data,
+        HttpResponseCode = result.HttpResponseCode
+      };
     }
 
     public IEnumerable<StaticDataChangeTrackingModel> GetAllLocal(string key)

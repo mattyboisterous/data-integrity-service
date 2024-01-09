@@ -1,10 +1,11 @@
 ﻿using DataIntegrityService.Core.Configuration;
 using DataIntegrityService.Core.Factories;
 using DataIntegrityService.Core.Logging;
+using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Models.Interfaces;
-using DataIntegrityService.Core.Services;
 using DataIntegrityService.Core.Services.ChangeTracking;
 using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
+using DataIntegrityService.Core.Services.ChangeTracking.Static;
 using DataIntegrityService.Core.Services.Http;
 using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Workflows;
@@ -22,6 +23,7 @@ namespace DataIntegrityService.Core
     private ServiceConfiguration Configuration { get; set; }
     private DataServiceFactory DataServiceFactory { get; set; }
     private WorkflowServiceFactory WorkflowServiceFactory { get; set; }
+    private StaticChangeTrackingServiceFactory StaticChangeTrackingServiceFactory { get; set; }
     private ChangeTrackingServiceFactory ChangeTrackingServiceFactory { get; set; }
 
     public async Task Initialise()
@@ -32,6 +34,7 @@ namespace DataIntegrityService.Core
       ServiceProvider = CreateServiceProvider();
       DataServiceFactory = ServiceProvider.GetService<DataServiceFactory>()!;
       WorkflowServiceFactory = ServiceProvider.GetService<WorkflowServiceFactory>()!;
+      StaticChangeTrackingServiceFactory = ServiceProvider.GetService<StaticChangeTrackingServiceFactory>()!;
       ChangeTrackingServiceFactory = ServiceProvider.GetService<ChangeTrackingServiceFactory>()!;
 
       // Build a config object, using env vars and JSON providers.
@@ -53,12 +56,11 @@ namespace DataIntegrityService.Core
       Logger.Info("EntryPoint", $"Let's do some work....");
 
       // todo: order server changes by dependency, perform work in order...
-
       // todo: consider how multi user/secondary officer would work...on switch user, update any pending changes on server with userId?
       // todo: consider newly switched user...how to initialise local state based on all open visits etc...hwo to make application agnostic?
       // todo: need this for a fresh user...'initialise'...check DIS for current implementation...
 
-      //await SynchroniseStaticData(forceRehydrateAll, token);
+      await SynchroniseStaticData(forceRehydrateAll, token);
 
       await SynchroniseStates(SynchronisationMode.Push, forceRehydrateAll, user, token);
 
@@ -74,44 +76,92 @@ namespace DataIntegrityService.Core
         // fetch static data change configuration...
         var serviceConfiguration = Configuration.StaticChangeTrackingService;
 
-        ////Logger.Info("EntryPoint", $"Resolving data service for '{Configuration.ReferenceDataService}'...");
-        ////IDataService referenceDataService = DataServiceFactory.GetDataService(serviceConfiguration);
-        ///
+        Logger.Info("EntryPoint", $"Resolving static data service for '{serviceConfiguration.Key}'...");
+        IStaticChangeTrackingService staticChangeTrackingDataService = StaticChangeTrackingServiceFactory.GetChangeTrackingService(serviceConfiguration);
 
-        // todo: instantiate the service, pass config...
-        // todo: initialise...
-        // todo: interate over server changes...
-        // todo: compare to local...same logic as below...
-        // todo: if difference, look up data service by dataset name...get service and workflow and execute...
-        // todo: on success ensure local has same version as server...
+        if (staticChangeTrackingDataService != null)
+        {
+          // initialise service...
+          Logger.Info("EntryPoint", $"Initialising static data service...");
+          await staticChangeTrackingDataService.Initialise();
 
-        //if (referenceDataService != null)
-        //{
-        //  // initialise service...
-        //  Logger.Info("EntryPoint", $"Initialising reference data service...");
-        //  await referenceDataService.Initialise();
+          if (staticChangeTrackingDataService.IsInitialised)
+          {
+            // iterate over server dataset state, if no local version or version mismatch, fetch from server and overwrite locally...
+            foreach (var serverDataSet in staticChangeTrackingDataService.ServerReferenceDataSetState)
+            {
+              // look for local match...
+              var localDataSet = staticChangeTrackingDataService.LocalReferenceDataSetState.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
 
-        //  if (referenceDataService.IsInitialised)
-        //  {
-        //    // iterate over server dataset state, if no local version or version mismatch, fetch from server and overwrite locally...
-        //    foreach (var serverDataSet in ((IStaticDataService)referenceDataService).ServerReferenceDataSetState)
-        //    {
-        //      // look for local match...
-        //      var localDataSet = ((IStaticDataService)referenceDataService).LocalReferenceDataSetState.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
+              // refresh locally if we need to...
+              if (forceRehydrateAll || localDataSet == null || localDataSet!.Version != serverDataSet.Version)
+              {
+                // fetch configuration, then locate the matching data service...
+                var staticDataServiceConfiguration = Configuration.DataServices.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
 
-        //      // refresh locally if we need to...
-        //      if (forceRehydrateAll || localDataSet == null || localDataSet!.Version != serverDataSet.Version)
-        //      {
-        //        Logger.Info("EntryPoint", $"Resolving workflow for '{serviceConfiguration.Pull!.DataWorkflow}'...");
-        //        var workflow = WorkflowServiceFactory.GetDataWorkflow(serviceConfiguration.Pull!.DataWorkflow);
+                if (staticDataServiceConfiguration != null)
+                {
+                  Logger.Info("EntryPoint", $"Resolving data service for '{staticDataServiceConfiguration.DatasetName}'...");
+                  var dataService = DataServiceFactory.GetDataService(staticDataServiceConfiguration);
 
-        //        // perform work using this workflow...
-        //        Logger.Info("EntryPoint", $"Executing workflow '{workflow.Key}'...");
-        //        var actionReponse = await workflow.ExecuteNonGeneric(null, referenceDataService, token, serviceConfiguration.ModelType);
-        //      }
-        //    }
-        //  }
-        //}
+                  Logger.Info("EntryPoint", $"Resolving workflow for '{staticDataServiceConfiguration.DatasetName}'...");
+                  var workflow = WorkflowServiceFactory.GetDataWorkflow(staticDataServiceConfiguration.Pull!.DataWorkflow);
+
+                  // initialise service...
+                  Logger.Info("EntryPoint", $"Initialising data service...");
+                  await dataService.Initialise();
+
+                  // perform work using this workflow...
+                  Logger.Info("EntryPoint", $"Executing workflow '{workflow.Key}'...");
+                  var actionReponse = await workflow.ExecuteNonGeneric(null, dataService, token, staticDataServiceConfiguration.ModelType);
+
+                  // flag as completed if all is well...
+                  if (actionReponse.ActionSucceeded)
+                  {
+                    Logger.Info("EntryPoint", $"Dataset update succeeded, ensuring local version matches the server version.");
+
+                    // ensure we have a matching local record, ensure last update and version matches the server version...
+                    if (localDataSet == null)
+                    {
+                      localDataSet = new StaticDataChangeTrackingModel()
+                      {
+                        Id = serverDataSet.Id,
+                        DatasetName = serverDataSet.DatasetName,
+                        Version = serverDataSet.Version
+                      };
+                    }
+                    else
+                      localDataSet.Version = serverDataSet.Version;
+                  }
+                  //await changeTrackingService.FlagAsCompleted(pendingChange);
+                  else
+                  {
+                    Logger.Info("EntryPoint", $"Action failed, number of attempts has been incremented.");
+
+                    // if we have a 400 Http response or attempted too many times, move to poison messages...
+                    //if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500) || (pendingChange.Attempts > Configuration.ChangeTrackingService.BackOff.Count))
+                    //{
+                    //  // if we have a malformed request then move to poison message queue...
+                    //  if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500))
+                    //    Logger.Info("EntryPoint", $"Malformed request (Http response {actionReponse.HttpResponseCode}) - moving message to poison message collection.");
+
+                    //  if (pendingChange.Attempts > Configuration.ChangeTrackingService.BackOff.Count)
+                    //    Logger.Info("EntryPoint", $"Number of attempts ({pendingChange.Attempts}) has exceeded the configured backoff amount ({Configuration.ChangeTrackingService.BackOff.Count}) - moving message to poison message collection.");
+
+                    //  await changeTrackingService.FlagAsPoison(pendingChange);
+                    //}
+                  }
+
+                  Logger.Info("EntryPoint", $"Workflow complete for data service '{staticDataServiceConfiguration.DatasetName}', iterating...");
+                }
+                else
+                  throw new InvalidOperationException($"Please ensure data service '{staticDataServiceConfiguration.DatasetName}' has been configured before calling 'Execute'.");
+              }
+            }
+
+            Logger.Info("EntryPoint", $"All work complete for static data.");
+          }
+        }
       }
       else
         Logger.Info("EntryPoint", $"Action cancelled by user, returning...");
@@ -179,9 +229,18 @@ namespace DataIntegrityService.Core
                   await changeTrackingService.FlagAsCompleted(pendingChange);
                 else
                 {
+                  Logger.Info("EntryPoint", $"Action failed, number of attempts has been incremented.");
+
                   // if we have a 400 Http response or attempted too many times, move to poison messages...
                   if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500) || (pendingChange.Attempts > Configuration.ChangeTrackingService.BackOff.Count))
                   {
+                    // if we have a malformed request then move to poison message queue...
+                    if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500))
+                      Logger.Info("EntryPoint", $"Malformed request (Http response {actionReponse.HttpResponseCode}) - moving message to poison message collection.");
+
+                    if (pendingChange.Attempts > Configuration.ChangeTrackingService.BackOff.Count)
+                      Logger.Info("EntryPoint", $"Number of attempts ({pendingChange.Attempts}) has exceeded the configured backoff amount ({Configuration.ChangeTrackingService.BackOff.Count}) - moving message to poison message collection.");
+
                     await changeTrackingService.FlagAsPoison(pendingChange);
                   }
                 }
@@ -214,10 +273,10 @@ namespace DataIntegrityService.Core
 
     private void ConfigureBaseServices(IServiceCollection services)
     {
+      services.AddTransient<IStaticChangeTrackingService, StaticChangeTrackingService>();
+
       services.AddTransient<IChangeTrackingService, MockLocalChangeTrackingService>();
       services.AddTransient<IChangeTrackingService, MockHttpChangeTrackingService>();
-
-      services.AddTransient<IStaticDataService, StaticChangeTrackingService>();
 
       services.AddTransient<IWorkflowService, DeleteInsertAllFlow>();
       services.AddTransient<IWorkflowService, DeleteInsertAllByKeyFlow>();
@@ -228,6 +287,7 @@ namespace DataIntegrityService.Core
 
       services.AddTransient<DataServiceFactory>();
       services.AddTransient<WorkflowServiceFactory>();
+      services.AddTransient<StaticChangeTrackingServiceFactory>();
       services.AddTransient<ChangeTrackingServiceFactory>();
 
       if (ExternalDependencies != null && ExternalDependencies.Count > 0)
