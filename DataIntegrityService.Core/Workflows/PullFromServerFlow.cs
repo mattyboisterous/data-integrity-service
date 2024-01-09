@@ -41,13 +41,13 @@ namespace DataIntegrityService.Core.Workflows
 
             if (dataService is ILocalCacheService)
             {
-              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, deleting data...");
+              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, deleting model...");
 
               ((ILocalCacheService)dataService).RemoveIfExists(message.Key);
             }
             if (dataService is ILocalDbService)
             {
-              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, deleting data...");
+              Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, deleting model...");
 
               ((ILocalDbService)dataService).Delete<IDataModel>(message.Key);
             }
@@ -62,7 +62,7 @@ namespace DataIntegrityService.Core.Workflows
 
             if (dataResponse.ActionSucceeded && dataResponse.Data != null)
             {
-              Logger.Info("PullFromServer", "Data received, looking to perform any necessary transformations...");
+              Logger.Info("PullFromServer", "Model received, looking to perform any necessary transformations...");
 
               // perform any data tranformation before attempting to push data to local store...
               var data = dataService.TransformData(dataResponse.Data);
@@ -71,13 +71,13 @@ namespace DataIntegrityService.Core.Workflows
               {
                 if (dataService is ILocalCacheService)
                 {
-                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, inserting data...");
+                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, inserting model...");
 
                   ((ILocalCacheService)dataService).InsertOrReplace(message.Key, data);
                 }
                 if (dataService is ILocalDbService)
                 {
-                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, inserting data...");
+                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, inserting model...");
 
                   ((ILocalDbService)dataService).Insert(data);
                 }
@@ -86,13 +86,13 @@ namespace DataIntegrityService.Core.Workflows
               {
                 if (dataService is ILocalCacheService)
                 {
-                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, updating data...");
+                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local cache service, updating model...");
 
                   ((ILocalCacheService)dataService).InsertOrReplace(message.Key, data);
                 }
                 if (dataService is ILocalDbService)
                 {
-                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, updating data...");
+                  Logger.Info("PullFromServer", $"Data service '{dataService.Key}' uses a local DB service, updating model...");
 
                   ((ILocalDbService)dataService).Update(data);
                 }

@@ -37,44 +37,44 @@ namespace DataIntegrityService.Core.Workflows
         {
           if (message.Action == ChangeAction.Delete.ToString())
           {
-            Logger.Info("PushToServer", $"Deleting data from back end...");
+            Logger.Info("PushToServer", $"Deleting model on server...");
             return await dataService.DeleteFromServer(message.Key, cancellationToken);
           }
           else
           {
-            Logger.Info("PushToServer", $"Data service '{dataService.Key}' initialised, fetching data from local device...");
+            Logger.Info("PushToServer", $"Data service '{dataService.Key}' initialised, fetching model from local device...");
 
             IDataModel? dataModel = null;
 
             // fetch model from local store...
             if (dataService is ILocalCacheService)
             {
-              Logger.Info("PushToServer", $"Data service '{dataService.Key}' uses a local cache service, fetching data...");
+              Logger.Info("PushToServer", $"Data service '{dataService.Key}' uses a local cache service, fetching model...");
 
               T dataModelTest = ((ILocalCacheService)dataService).GetLocal<T>(message.Key);
             }
             if (dataService is ILocalDbService)
             {
-              Logger.Info("PushToServer", $"Data service '{dataService.Key}' uses a local DB service, fetching data...");
+              Logger.Info("PushToServer", $"Data service '{dataService.Key}' uses a local DB service, fetching model...");
 
-              dataModel = ((ILocalDbService)dataService).GetLocal(message.Key);
+              dataModel = ((ILocalDbService)dataService).GetLocal<T>(message.Key);
             }
 
             if (dataModel != null)
             {
-              Logger.Info("PushToServer", "Data received, looking to perform any necessary transformations...");
+              Logger.Info("PushToServer", "Model received, looking to perform any necessary transformations...");
 
               // perform any data tranformation before attempting to push data to server...
               var data = dataService.TransformData(dataModel);
 
               if (message.Action == ChangeAction.Create.ToString())
               {
-                Logger.Info("PushToServer", $"Creating data in back end...");
+                Logger.Info("PushToServer", $"Creating model on server...");
                 return await dataService.CreateOnServer(data, cancellationToken);
               }
               else
               {
-                Logger.Info("PushToServer", $"Updating data in back end...");
+                Logger.Info("PushToServer", $"Updating model on server...");
                 return await dataService.UpdateOnServer(data, cancellationToken);
               }
             }

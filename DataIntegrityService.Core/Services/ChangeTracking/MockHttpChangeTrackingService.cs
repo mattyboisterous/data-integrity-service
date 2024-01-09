@@ -18,17 +18,22 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public bool ChangesExist()
     {
+      Logger.Info("MockHttpChangeTrackingService", TrackedChanges.Any() ? $"Further changes exist..." : "No further changes exist.");
       return TrackedChanges.Any();
     }
 
     public async Task CompressPendingChanges()
     {
+      Logger.Info("MockHttpChangeTrackingService", $"Compressing pending changes...");
+
       // do nothing...
       await Task.CompletedTask;
     }
 
     public async Task FlagAsCompleted(DataChangeTrackingModel item)
     {
+      Logger.Info("MockHttpChangeTrackingService", $"Flagging this item as complete, removing...");
+
       // do nothing...
       TrackedChanges.Remove(item);
       await Task.CompletedTask;
@@ -36,6 +41,8 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public async Task FlagAsPoison(DataChangeTrackingModel item)
     {
+      Logger.Warn("MockHttpChangeTrackingService", $"Flagging this item as POISON, removing...");
+
       // do nothing...
       await Task.CompletedTask;
     }
@@ -48,11 +55,20 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public DataChangeTrackingModel GetNextChange()
     {
-      return TrackedChanges.First();
+      Logger.Warn("MockHttpChangeTrackingService", $"Fetching next change...");
+      
+      var change = TrackedChanges.First();
+      TrackedChanges.Remove(change);
+
+      return change;
     }
 
     public async Task IncrementAttempt(DataChangeTrackingModel item)
     {
+      item.Attempts++;
+
+      Logger.Warn("MockHttpChangeTrackingService", $"Incrementing attempt at processing this change, value is {item.Attempts}");
+
       // do nothing...
       await Task.CompletedTask;
     }
@@ -129,7 +145,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
         });
       }
 
-      Logger.Info("MockHttpChangeTrackingService", $"{TrackedChanges.Count} pending changes found...");
+      Logger.Info("MockHttpChangeTrackingService", $"{TrackedChanges.Count} pending server changes found...");
 
       foreach(var change in TrackedChanges)
       {

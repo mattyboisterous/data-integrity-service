@@ -4,6 +4,7 @@ using DataIntegrityService.Core.Models;
 using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Http;
 using DataIntegrityService.Core.Services.Interfaces;
+using DataIntegrityService.Core.Services.Local;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace DataIntegrityService.Console.Providers
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
+    private ILocalDbService DbService { get; set; }
 
     public string Key => "Memo";
     public required DataServiceConfiguration Settings { get; set; }
@@ -23,10 +25,12 @@ namespace DataIntegrityService.Console.Providers
 
     public MemoService(
       IHttpService httpService,
-      IHttpMessageHandlerService httpMessageHandlerService)
+      IHttpMessageHandlerService httpMessageHandlerService,
+      ILocalDbService dbService)
     {
       HttpService = httpService;
       HttpMessageHandlerService = httpMessageHandlerService;
+      DbService = dbService;
     }
 
     public async Task Initialise()
@@ -73,6 +77,36 @@ namespace DataIntegrityService.Console.Providers
     }
 
     public Task<IDataResponse<bool>> DeleteFromServer(string key, CancellationToken cancellationToken)
+    {
+      throw new NotImplementedException();
+    }
+
+    public T GetLocal<T>(string key) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public int InsertLocal<T>(T data) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public int UpdateLocal<T>(T data) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public int InsertAllLocal<T>(IEnumerable<T> data) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public int DeleteLocal<T>(string key) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public int DeleteAllLocal<T>() where T : IDataModel
     {
       throw new NotImplementedException();
     }

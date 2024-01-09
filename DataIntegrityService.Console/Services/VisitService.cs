@@ -15,10 +15,11 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Console.Providers
 {
-    public class VisitService : IDataService, ILocalDbService
+    public class VisitService : IDataService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
+    private ILocalDbService DbService { get; set; }
 
     public string Key => "Visit";
     public required DataServiceConfiguration Settings { get; set; }
@@ -26,10 +27,12 @@ namespace DataIntegrityService.Console.Providers
 
     public VisitService(
       IHttpService httpService,
-      IHttpMessageHandlerService httpMessageHandlerService)
+      IHttpMessageHandlerService httpMessageHandlerService,
+      ILocalDbService dbService)
     {
       HttpService = httpService;
       HttpMessageHandlerService = httpMessageHandlerService;
+      DbService = dbService;
     }
 
     public async Task Initialise()
@@ -101,42 +104,72 @@ namespace DataIntegrityService.Console.Providers
       throw new NotImplementedException();
     }
 
-    #endregion
-
-    #region ILocalDbService Members
-
-    public IDataModel GetLocal(string key)
-    {
-      // mock response for now...
-      Logger.Info("VisitService", $"Fetching record with id '{key}' from local Db...");
-      return new VisitModel() { VisitId = 1 };
-    }
-
-    public int DeleteAll<IDataModel>()
+    public T GetLocal<T>(string key) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public int InsertAll(IEnumerable<IDataModel> data)
+    public int InsertLocal<T>(T data) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public int Delete<IDataModel>(string key)
+    public int UpdateLocal<T>(T data) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public int Insert(IDataModel data)
+    public int InsertAllLocal<T>(IEnumerable<T> data) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public int Update(IDataModel data)
+    public int DeleteLocal<T>(string key) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public int DeleteAllLocal<T>() where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
     #endregion
+
+    //#region ILocalDbService Members
+
+    //public IDataModel GetLocal(string key)
+    //{
+    //  // mock response for now...
+    //  Logger.Info("VisitService", $"Fetching record with id '{key}' from local Db...");
+    //  return new VisitModel() { VisitId = 1 };
+    //}
+
+    //public int DeleteAll<IDataModel>()
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public int InsertAll(IEnumerable<IDataModel> data)
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public int Delete<IDataModel>(string key)
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public int Insert(IDataModel data)
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public int Update(IDataModel data)
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //#endregion
   }
 }

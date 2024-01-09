@@ -1,43 +1,81 @@
-﻿using DataIntegrityService.Core.Models.Interfaces;
+﻿using DataIntegrityService.Console.Models;
+using DataIntegrityService.Core.Logging;
+using DataIntegrityService.Core.Models.Interfaces;
 using DataIntegrityService.Core.Services.Local;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataIntegrityService.Console.Services.Local
 {
   public class MockLocalDbService : ILocalDbService
   {
-    public int Delete<IDataModel>(string key)
+    public T GetLocal<T>(string key) where T : IDataModel
     {
-      throw new NotImplementedException();
+      if (typeof(T) == typeof(ProvisionModel))
+      {
+        var data = new ProvisionModel() { ProvisionId = int.Parse(key) };
+
+        Logger.Info("MockLocalDbService", $"Returning 1 item from local Db.");
+
+        return (T)(object)data;
+      }
+      if (typeof(T) == typeof(QualityAreaModel))
+      {
+        var data = new QualityAreaModel() { QualityAreaId = int.Parse(key), Code = "QA1", Description = "Quality Area 1" };
+
+        Logger.Info("MockLocalDbService", $"Returning 1 item from local Db.");
+
+        return (T)(object)data;
+      }
+      if (typeof(T) == typeof(VisitModel))
+      {
+        var data = new VisitModel() { VisitId = int.Parse(key) };
+
+        Logger.Info("MockLocalDbService", $"Returning 1 item from local Db.");
+
+        return (T)(object)data;
+      }
+
+      return default;
     }
 
-    public int DeleteAll<IDataModel>()
+    public int Insert<T>(T data) where T : IDataModel
     {
-      return 3;
+      Logger.Info("MockLocalDbService", $"Inserting item with key '{data.Key}' in local Db.");
+
+      return 1;
     }
 
-    public IDataModel GetLocal(string key)
+    public int InsertAll<T>(IEnumerable<T> data) where T : IDataModel
     {
-      throw new NotImplementedException();
+      Logger.Info("MockLocalDbService", $"Inserting items in local Db.");
+
+      return data.Count();
     }
 
-    public int Insert(IDataModel data)
+    public int Update<T>(T data) where T : IDataModel
     {
-      throw new NotImplementedException();
+      Logger.Info("MockLocalDbService", $"Updating item with key '{data.Key}' in local Db.");
+
+      return 1;
     }
 
-    public int InsertAll(IEnumerable<IDataModel> data)
+    public int Delete<T>(string key) where T : IDataModel
     {
-      throw new NotImplementedException();
+      Logger.Info("MockLocalDbService", $"Deleting item with key '{key}' in local Db.");
+
+      return 1;
     }
 
-    public int Update(IDataModel data)
+    public int DeleteAll<T>() where T : IDataModel
     {
-      throw new NotImplementedException();
+      Logger.Info("MockLocalDbService", $"Deleting all items in local Db.");
+
+      return 7;
     }
   }
 }

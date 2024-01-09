@@ -113,6 +113,8 @@ namespace DataIntegrityService.Core
 
     public async Task SynchroniseStates(SynchronisationMode mode, IUserProfile user, CancellationToken token)
     {
+      Logger.Info("EntryPoint", $"SynchroniseStates() called with mode '{mode.ToString()}'");
+
       //var dataType = new Type[] { typeof(string) };
       //var genericBase = typeof(List<>);
       //var combinedType = genericBase.MakeGenericType(dataType);
@@ -183,12 +185,13 @@ namespace DataIntegrityService.Core
                 }
 
                 Logger.Info("EntryPoint", $"Workflow complete for data service '{serviceConfiguration.DatasetName}', iterating...");
-                Logger.Info("EntryPoint", "");
               }
             }
           }
         }
       }
+      else
+        Logger.Info("EntryPoint", $"Action cancelled by user, returning...");
     }
 
     public IServiceProvider CreateServiceProvider()

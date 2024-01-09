@@ -9,11 +9,11 @@ namespace DataIntegrityService.Core.Services.Local
 {
     public interface ILocalDbService
   {
-    IDataModel GetLocal(string key);
-    int Delete<IDataModel>(string key);
-    int DeleteAll<IDataModel>();
-    int Insert(IDataModel data);
-    int Update(IDataModel data);
-    int InsertAll(IEnumerable<IDataModel> data);
+    T GetLocal<T>(string key) where T : IDataModel;
+    int Delete<T>(string key) where T : IDataModel;
+    int DeleteAll<T>() where T : IDataModel;
+    int Insert<T>(T data) where T : IDataModel;
+    int Update<T>(T data) where T : IDataModel;
+    int InsertAll<T>(IEnumerable<T> data) where T : IDataModel;
   }
 }

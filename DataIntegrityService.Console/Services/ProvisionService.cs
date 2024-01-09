@@ -9,10 +9,11 @@ using DataIntegrityService.Core.Services.Local;
 
 namespace DataIntegrityService.Console.Providers
 {
-  public class ProvisionService : IDataService, ILocalCacheService
+  public class ProvisionService : IDataService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
+    private ILocalDbService DbService { get; set; }
 
     public string Key => "Provision";
 
@@ -24,10 +25,12 @@ namespace DataIntegrityService.Console.Providers
 
     public ProvisionService(
       IHttpService httpService,
-      IHttpMessageHandlerService httpMessageHandlerService)
+      IHttpMessageHandlerService httpMessageHandlerService,
+      ILocalDbService dbService)
     {
       HttpService = httpService;
       HttpMessageHandlerService = httpMessageHandlerService;
+      DbService = dbService;
     }
 
     public async Task Initialise()
@@ -94,57 +97,87 @@ namespace DataIntegrityService.Console.Providers
       throw new NotImplementedException();
     }
 
-    #endregion
-
-    #region ILocalCacheService members
-
-    public IDataModel GetLocal(string key)
-    {
-      throw new NotImplementedException();
-    }
-
-    public IEnumerable<IDataModel> GetAllLocal(string key)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void RemoveIfExists(string key)
-    {
-      // mock response for now...
-      Logger.Info("ProvisionService", $"Deleting all from local cache with key '{key}'.");
-    }
-
-    public void InsertOrReplace(string key, IEnumerable<IDataModel> data)
-    {
-      // mock response for now...
-      Logger.Info("ProvisionService", $"Inserting {data.Count()} item(s) into local cache with key '{key}'.");
-    }
-
-    public void InsertOrReplace(string key, IDataModel data)
-    {
-      throw new NotImplementedException();
-    }
-
     public T GetLocal<T>(string key) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public IEnumerable<T> GetAllLocal<T>(string key) where T : IDataModel
+    public int InsertLocal<T>(T data) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public void InsertOrReplace<T>(string key, T data) where T : IDataModel
+    public int UpdateLocal<T>(T data) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public void InsertOrReplace<T>(string key, IEnumerable<T> data) where T : IDataModel
+    public int InsertAllLocal<T>(IEnumerable<T> data) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public int DeleteLocal<T>(string key) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public int DeleteAllLocal<T>() where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
     #endregion
+
+    //#region ILocalCacheService members
+
+    //public IDataModel GetLocal(string key)
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public IEnumerable<IDataModel> GetAllLocal(string key)
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public void RemoveIfExists(string key)
+    //{
+    //  // mock response for now...
+    //  Logger.Info("ProvisionService", $"Deleting all from local cache with key '{key}'.");
+    //}
+
+    //public void InsertOrReplace(string key, IEnumerable<IDataModel> data)
+    //{
+    //  // mock response for now...
+    //  Logger.Info("ProvisionService", $"Inserting {data.Count()} item(s) into local cache with key '{key}'.");
+    //}
+
+    //public void InsertOrReplace(string key, IDataModel data)
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public T GetLocal<T>(string key) where T : IDataModel
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public IEnumerable<T> GetAllLocal<T>(string key) where T : IDataModel
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public void InsertOrReplace<T>(string key, T data) where T : IDataModel
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //public void InsertOrReplace<T>(string key, IEnumerable<T> data) where T : IDataModel
+    //{
+    //  throw new NotImplementedException();
+    //}
+
+    //#endregion
   }
 }

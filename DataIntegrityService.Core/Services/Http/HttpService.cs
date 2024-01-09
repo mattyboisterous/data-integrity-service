@@ -15,7 +15,7 @@ namespace DataIntegrityService.Core.Services.Http
   {
     public IUserProfile User { get; set; }
 
-    public Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler handler, CancellationToken token)
+    public Task<IDataResponse<T>> Get<T>(string url, HttpMessageHandler handler, CancellationToken token) where T : IDataModel
     {
       throw new NotImplementedException();
     }

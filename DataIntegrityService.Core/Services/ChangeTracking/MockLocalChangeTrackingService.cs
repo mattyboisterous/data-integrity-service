@@ -18,24 +18,30 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public bool ChangesExist()
     {
+      Logger.Info("MockLocalChangeTrackingService", TrackedChanges.Any() ? $"Further changes exist..." : "No further changes exist.");
       return TrackedChanges.Any();
     }
 
     public async Task CompressPendingChanges()
     {
+      Logger.Info("MockLocalChangeTrackingService", $"Compressing pending changes...");
+
       // do nothing...
       await Task.CompletedTask;
     }
 
     public async Task FlagAsCompleted(DataChangeTrackingModel item)
     {
+      Logger.Info("MockLocalChangeTrackingService", $"Flagging this item as complete, removing...");
+
       // do nothing...
-      TrackedChanges.Remove(item);
       await Task.CompletedTask;
     }
 
     public async Task FlagAsPoison(DataChangeTrackingModel item)
     {
+      Logger.Warn("MockLocalChangeTrackingService", $"Flagging this item as POISON, removing...");
+
       // do nothing...
       await Task.CompletedTask;
     }
@@ -48,11 +54,20 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public DataChangeTrackingModel GetNextChange()
     {
-      return TrackedChanges.First();
+      Logger.Warn("MockLocalChangeTrackingService", $"Fetching next change...");
+      
+      var change = TrackedChanges.First();
+      TrackedChanges.Remove(change);
+
+      return change;
     }
 
     public async Task IncrementAttempt(DataChangeTrackingModel item)
     {
+      item.Attempts++;
+
+      Logger.Warn("MockLocalChangeTrackingService", $"Incrementing attempt at processing this change, value is {item.Attempts}");
+
       // do nothing...
       await Task.CompletedTask;
     }
@@ -129,7 +144,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
         });
       }
 
-      Logger.Info("MockLocalChangeTrackingService", $"{TrackedChanges.Count} pending changes found...");
+      Logger.Info("MockLocalChangeTrackingService", $"{TrackedChanges.Count} pending local changes found...");
 
       foreach (var change in TrackedChanges)
       {

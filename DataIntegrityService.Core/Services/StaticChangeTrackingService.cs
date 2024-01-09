@@ -12,10 +12,11 @@ using System.Threading.Tasks;
 
 namespace DataIntegrityService.Core.Services
 {
-  public class StaticChangeTrackingService : IDataService, IStaticDataService, ILocalCacheService
+  public class StaticChangeTrackingService : IDataService, IStaticDataService
   {
     private IHttpService HttpService { get; set; }
     private IHttpMessageHandlerService HttpMessageHandlerService { get; set; }
+    private ILocalCacheService CacheService { get; set; }
     public CancellationToken CancellationToken { get; set; }
     public string Key => "StaticChangeTracking";
     public bool IsInitialised { get; set; }
@@ -25,16 +26,18 @@ namespace DataIntegrityService.Core.Services
 
     public StaticChangeTrackingService(
       IHttpService httpService,
-      IHttpMessageHandlerService httpMessageHandlerService)
+      IHttpMessageHandlerService httpMessageHandlerService,
+      ILocalCacheService cacheService)
     {
       HttpService = httpService;
       HttpMessageHandlerService = httpMessageHandlerService;
+      CacheService = cacheService;
     }
 
     public async Task Initialise()
     {
       // fetch tracked local changes...
-      LocalReferenceDataSetState = (List<StaticDataChangeTrackingModel>)GetAllLocal<StaticDataChangeTrackingModel>(Key);
+      LocalReferenceDataSetState = CacheService.GetAllLocal<StaticDataChangeTrackingModel>(Key).ToList();
 
       // fetch tracked changes from server...
       var serverResponse = await GetAllFromServer(CancellationToken);
@@ -75,31 +78,32 @@ namespace DataIntegrityService.Core.Services
 
     public Task<IDataResponse<IEnumerable<IDataModel>>> GetAllFromServerByKey(string key, CancellationToken cancellationToken) => throw new NotImplementedException();
 
-    #endregion
-
-    #region ILocalCacheService
-
     public T GetLocal<T>(string key) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public IEnumerable<T> GetAllLocal<T>(string key) where T : IDataModel
+    public int InsertLocal<T>(T data) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public void InsertOrReplace<T>(string key, T data) where T : IDataModel
+    public int UpdateLocal<T>(T data) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public void InsertOrReplace<T>(string key, IEnumerable<T> data) where T : IDataModel
+    public int InsertAllLocal<T>(IEnumerable<T> data) where T : IDataModel
     {
       throw new NotImplementedException();
     }
 
-    public void RemoveIfExists(string key)
+    public int DeleteLocal<T>(string key) where T : IDataModel
+    {
+      throw new NotImplementedException();
+    }
+
+    public int DeleteAllLocal<T>() where T : IDataModel
     {
       throw new NotImplementedException();
     }
