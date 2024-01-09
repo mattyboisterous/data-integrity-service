@@ -72,6 +72,21 @@ namespace DataIntegrityService.Console.Services.Http
 
     public async Task<IDataResponse<IEnumerable<T>>> GetAll<T>(string url, HttpMessageHandler messageHandler, CancellationToken token) where T : IDataModel
     {
+      if (typeof(T) == typeof(StaticDataChangeTrackingModel))
+      {
+        var data = new List<StaticDataChangeTrackingModel>()
+        {
+          new StaticDataChangeTrackingModel() { Id = "1", DatasetName = "QualityAreas", Version = "a6417e4f-49c8-483f-aa61-9f722d700204" },
+          new StaticDataChangeTrackingModel() { Id = "2", DatasetName = "Provisions", Version = "fb5e9e8c-57b5-4180-93d8-7c5fff95abdc" }
+        };
+
+        var result = new DataResponse<IEnumerable<T>>((IEnumerable<T>)(object)data);
+        result.HttpResponseCode = GenerateHttpResponseCode();
+
+        Logger.Info("MockHttpService", $"GET => Returning models from server. HttpResponseCode => {result.HttpResponseCode}");
+
+        return await Task.FromResult(result);
+      }
       if (typeof(T) == typeof(QualityAreaModel))
       {
         var data = new List<QualityAreaModel>() { new QualityAreaModel() { QualityAreaId = 1, Code = "QA1", Description = "Quality Area 1" }, new QualityAreaModel() { QualityAreaId = 2, Code = "QA2", Description = "Quality Area 2" } };

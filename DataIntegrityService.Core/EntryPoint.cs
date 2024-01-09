@@ -71,6 +71,10 @@ namespace DataIntegrityService.Core
 
     public async Task SynchroniseStaticData(bool forceRehydrateAll, CancellationToken token)
     {
+      Logger.Info("EntryPoint", $"**************************************************");
+      Logger.Info("EntryPoint", $"SynchroniseStaticData() called");
+      Logger.Info("EntryPoint", $"**************************************************");
+
       if (!token.IsCancellationRequested)
       {
         // fetch static data change configuration...
@@ -136,20 +140,13 @@ namespace DataIntegrityService.Core
                   //await changeTrackingService.FlagAsCompleted(pendingChange);
                   else
                   {
-                    Logger.Info("EntryPoint", $"Action failed, number of attempts has been incremented.");
+                    Logger.Error("EntryPoint", $"Action failed, unable to update the local static dataset.");
 
-                    // if we have a 400 Http response or attempted too many times, move to poison messages...
-                    //if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500) || (pendingChange.Attempts > Configuration.ChangeTrackingService.BackOff.Count))
-                    //{
-                    //  // if we have a malformed request then move to poison message queue...
-                    //  if ((actionReponse.HttpResponseCode >= 400 && actionReponse.HttpResponseCode < 500))
-                    //    Logger.Info("EntryPoint", $"Malformed request (Http response {actionReponse.HttpResponseCode}) - moving message to poison message collection.");
-
-                    //  if (pendingChange.Attempts > Configuration.ChangeTrackingService.BackOff.Count)
-                    //    Logger.Info("EntryPoint", $"Number of attempts ({pendingChange.Attempts}) has exceeded the configured backoff amount ({Configuration.ChangeTrackingService.BackOff.Count}) - moving message to poison message collection.");
-
-                    //  await changeTrackingService.FlagAsPoison(pendingChange);
-                    //}
+                    if (localDataSet == null)
+                    {
+                      // if the action failed and we have no matching local dataset, we have a blocker...
+                      throw new InvalidOperationException($"Unable to refresh static data locally. Stopping work.");
+                    }
                   }
 
                   Logger.Info("EntryPoint", $"Workflow complete for data service '{staticDataServiceConfiguration.DatasetName}', iterating...");
