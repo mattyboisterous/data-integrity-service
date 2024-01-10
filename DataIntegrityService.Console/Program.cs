@@ -11,6 +11,8 @@ using DataIntegrityService.Console.Services.Http;
 using DataIntegrityService.Core.Services.Http;
 using DataIntegrityService.Core.Services.Local;
 using DataIntegrityService.Console.Services.Local;
+using DataIntegrityService.Console.Services.ChangeTracking;
+using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
 
 // dummy a new user and pass to entry point...
 IUserProfile user = new UserProfile();
@@ -26,6 +28,9 @@ services.AddTransient<IDataService, MemoService>();
 services.AddTransient<IDataService, ProvisionService>();
 services.AddTransient<IDataService, QualityAreaService>();
 services.AddTransient<IDataService, VisitService>();
+
+services.AddTransient<IChangeTrackingService, MockLocalChangeTrackingService>();
+services.AddTransient<IChangeTrackingService, MockHttpChangeTrackingService>();
 
 services.AddTransient<IHttpService, MockHttpService>();
 services.AddTransient<ILocalCacheService, MockLocalCacheService>();

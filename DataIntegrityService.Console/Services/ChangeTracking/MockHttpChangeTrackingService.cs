@@ -8,24 +8,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataIntegrityService.Core.Services.ChangeTracking
+namespace DataIntegrityService.Console.Services.ChangeTracking
 {
-  public class MockLocalChangeTrackingService : IChangeTrackingService
+  public class MockHttpChangeTrackingService : IChangeTrackingService
   {
-    public string Key => "MockLocalChangeTrackingService";
+    public string Key => "MockHttpChangeTrackingService";
     public bool IsInitialised { get; set; }
 
     public List<DataChangeTrackingModel> TrackedChanges { get; set; } = new List<DataChangeTrackingModel>();
 
     public bool ChangesExist()
     {
-      Logger.Info("MockLocalChangeTrackingService", TrackedChanges.Any() ? $"Further changes exist..." : "No further changes exist.");
+      Logger.Info("MockHttpChangeTrackingService", TrackedChanges.Any() ? $"Further changes exist..." : "No further changes exist.");
       return TrackedChanges.Any();
     }
 
     public async Task CompressPendingChanges()
     {
-      Logger.Info("MockLocalChangeTrackingService", $"Compressing pending changes...");
+      Logger.Info("MockHttpChangeTrackingService", $"Compressing pending changes...");
 
       // do nothing...
       await Task.CompletedTask;
@@ -33,17 +33,16 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public async Task FlagAsCompleted(DataChangeTrackingModel item)
     {
-      Logger.Info("MockLocalChangeTrackingService", $"Flagging this item as complete, removing...");
-
-      TrackedChanges.Remove(item);
+      Logger.Info("MockHttpChangeTrackingService", $"Flagging this item as complete, removing...");
 
       // do nothing...
+      TrackedChanges.Remove(item);
       await Task.CompletedTask;
     }
 
     public async Task FlagAsPoison(DataChangeTrackingModel item)
     {
-      Logger.Warn("MockLocalChangeTrackingService", $"Flagging this item as POISON, removing...");
+      Logger.Warn("MockHttpChangeTrackingService", $"Flagging this item as POISON, removing...");
 
       TrackedChanges.Remove(item);
 
@@ -59,7 +58,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
 
     public DataChangeTrackingModel GetNextChange()
     {
-      Logger.Warn("MockLocalChangeTrackingService", $"Fetching next change...");
+      Logger.Warn("MockHttpChangeTrackingService", $"Fetching next change...");
       
       return TrackedChanges.First();
     }
@@ -69,7 +68,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       item.Attempts++;
       item.LastAttempt = DateTime.UtcNow;
 
-      Logger.Warn("MockLocalChangeTrackingService", $"Incrementing attempt at processing this change, value is {item.Attempts}");
+      Logger.Warn("MockHttpChangeTrackingService", $"Incrementing attempt at processing this change, value is {item.Attempts}");
 
       // do nothing...
       await Task.CompletedTask;
@@ -82,7 +81,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
       // todo: 20% -> Memo update...
       // todo: 20% -> 2 visit and memo update...
 
-      Logger.Info("MockLocalChangeTrackingService", $"Initialising, looking for pending changes...");
+      Logger.Info("MockHttpChangeTrackingService", $"Initialising, looking for pending changes...");
 
       Random rnd = new Random();
       int num = rnd.Next(0, 100);
@@ -147,11 +146,11 @@ namespace DataIntegrityService.Core.Services.ChangeTracking
         });
       }
 
-      Logger.Info("MockLocalChangeTrackingService", $"{TrackedChanges.Count} pending local change(s) found...");
+      Logger.Info("MockHttpChangeTrackingService", $"{TrackedChanges.Count} pending server change(s) found...");
 
-      foreach (var change in TrackedChanges)
+      foreach(var change in TrackedChanges)
       {
-        Logger.Info("MockLocalChangeTrackingService", $"{change.Action.ToUpper()} {change.DatasetName} with key {change.ItemKey}. Attempts: {change.Attempts}");
+        Logger.Info("MockHttpChangeTrackingService", $"{change.Action.ToUpper()} {change.DatasetName} with key {change.ItemKey}. Attempts: {change.Attempts}");
       }
 
       IsInitialised = true;

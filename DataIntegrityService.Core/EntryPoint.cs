@@ -7,7 +7,6 @@ using DataIntegrityService.Core.Services.ChangeTracking;
 using DataIntegrityService.Core.Services.ChangeTracking.Interfaces;
 using DataIntegrityService.Core.Services.ChangeTracking.Static;
 using DataIntegrityService.Core.Services.Http;
-using DataIntegrityService.Core.Services.Interfaces;
 using DataIntegrityService.Core.Workflows;
 using DataIntegrityService.Core.Workflows.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -271,9 +270,6 @@ namespace DataIntegrityService.Core
     private void ConfigureBaseServices(IServiceCollection services)
     {
       services.AddTransient<IStaticChangeTrackingService, StaticChangeTrackingService>();
-
-      services.AddTransient<IChangeTrackingService, MockLocalChangeTrackingService>();
-      services.AddTransient<IChangeTrackingService, MockHttpChangeTrackingService>();
 
       services.AddTransient<IWorkflowService, DeleteInsertAllFlow>();
       services.AddTransient<IWorkflowService, DeleteInsertAllByKeyFlow>();
