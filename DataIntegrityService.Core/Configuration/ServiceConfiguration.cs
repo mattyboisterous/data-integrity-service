@@ -29,7 +29,7 @@ namespace DataIntegrityService.Core.Configuration
     public required string LocalKey { get; set; }
     public required string ServerKey { get; set; }
     public required string ModelType { get; set; }
-    public required bool PosionMessages { get; set; }
+    public required bool PoisonMessages { get; set; }
     public List<int> BackOff { get; set; } = [];
     public required HttpServiceConfiguration Http { get; set; }
     public required LocalCacheServiceConfiguration Cache { get; set; }

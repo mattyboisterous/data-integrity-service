@@ -141,7 +141,7 @@ namespace DataIntegrityService.Console.Services.Http
       Random rnd = new Random();
       int num = rnd.Next(0, 100);
 
-      if (num <= 80)
+      if (num <= 90)
         return 200;
       else if (num <= 95)
         return 400;
