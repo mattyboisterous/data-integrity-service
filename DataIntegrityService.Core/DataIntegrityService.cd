@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DataIntegrityService.Core.Factories.ChangeTrackingServiceFactory" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Factories\ChangeTrackingServiceFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataIntegrityService.Core.Factories.DataServiceFactory" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Factories\DataServiceFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataIntegrityService.Core.Factories.StaticChangeTrackingServiceFactory" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Factories\StaticChangeTrackingServiceFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataIntegrityService.Core.Factories.WorkflowServiceFactory" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAAAAAAA=</HashCode>
+      <FileName>Factories\WorkflowServiceFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataIntegrityService.Core.Services.ChangeTracking.Static.StaticChangeTrackingService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAABAAAACAQQAAAAAAAAAAAIAAAAigAACCAACAAA=</HashCode>
+      <FileName>Services\ChangeTracking\Static\StaticChangeTrackingService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DataIntegrityService.Core.Services.ChangeTracking.HttpChangeTrackingService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAgCAAAIAAACAQQAAAAAAQgAAAIAAgAAEAAACAADAAA=</HashCode>
+      <FileName>Services\ChangeTracking\HttpChangeTrackingService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DataIntegrityService.Core.Services.ChangeTracking.LocalChangeTrackingService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAgCAAAAAAAAAQQAAAAAAQAAAAIAAgAAEAAAAAABAAA=</HashCode>
+      <FileName>Services\ChangeTracking\LocalChangeTrackingService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DataIntegrityService.Core.Services.Http.HttpMessageHandlerService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Http\HttpMessageHandlerService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DataIntegrityService.Core.Services.Http.HttpService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAABAAAAAAAAACAEAAAAAAgAAAAAAAAg=</HashCode>
+      <FileName>Services\Http\HttpService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.169" Collapsed="true" />
+  </Class>
+  <Class Name="DataIntegrityService.Core.Workflows.DeleteInsertAllByKeyFlow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Workflows\DeleteInsertAllByKeyFlow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DataIntegrityService.Core.Workflows.DeleteInsertAllFlow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Workflows\DeleteInsertAllFlow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DataIntegrityService.Core.Workflows.PullFromServerFlow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Workflows\PullFromServerFlow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DataIntegrityService.Core.Workflows.PushToServerFlow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Workflows\PushToServerFlow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="DataIntegrityService.Core.Services.ChangeTracking.Interfaces.IChangeTrackingService" Collapsed="true">
+    <Position X="0.5" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAgCAAAAAAAAAAAAAAAAAQAAAAAAAgAAEAAAAAABAAA=</HashCode>
+      <FileName>Services\ChangeTracking\Interfaces\IChangeTrackingService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataIntegrityService.Core.Services.ChangeTracking.Interfaces.IStaticChangeTrackingService" Collapsed="true">
+    <Position X="0.5" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAigAACCAACAAA=</HashCode>
+      <FileName>Services\ChangeTracking\Interfaces\IStaticChangeTrackingService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataIntegrityService.Core.Services.Http.IHttpMessageHandlerService" Collapsed="true">
+    <Position X="9.5" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Http\IHttpMessageHandlerService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataIntegrityService.Core.Services.Http.IHttpService" Collapsed="true">
+    <Position X="9.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAABAAAAAAAAACAEAAAAAAgAAAAAAAAg=</HashCode>
+      <FileName>Services\Http\IHttpService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataIntegrityService.Core.Services.Interfaces.IDataService" Collapsed="true">
+    <Position X="6.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAgAAAAgAEAIAEAQAAgBAAAAAwAICAQAAAAA=</HashCode>
+      <FileName>Services\Interfaces\IDataService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataIntegrityService.Core.Services.Interfaces.IService" Collapsed="true">
+    <Position X="4.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQQAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Interfaces\IService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataIntegrityService.Core.Services.Local.ILocalCacheService" Collapsed="true">
+    <Position X="13" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAgAAAAAAAAAAAAAAAAAACQAAAAAAAAAA=</HashCode>
+      <FileName>Services\Local\ILocalCacheService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataIntegrityService.Core.Services.Local.ILocalDbService" Collapsed="true">
+    <Position X="13" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEQAAAAAgAAgAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Local\ILocalDbService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataIntegrityService.Core.Workflows.Interfaces.IWorkflowService" Collapsed="true">
+    <Position X="13.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Workflows\Interfaces\IWorkflowService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
