@@ -37,7 +37,7 @@ namespace DataIntegrityService.Core.Services.ChangeTracking.Static
     public async Task Initialise()
     {
       // fetch tracked local changes...
-      LocalReferenceDataSetState = CacheService.GetAllLocal<StaticDataChangeTrackingModel>(Key).ToList();
+      LocalReferenceDataSetState = GetAllLocal(Key).ToList();
 
       // fetch tracked changes from server...
       var serverResponse = await GetAllFromServer(CancellationToken);
@@ -66,12 +66,13 @@ namespace DataIntegrityService.Core.Services.ChangeTracking.Static
 
     public IEnumerable<StaticDataChangeTrackingModel> GetAllLocal(string key)
     {
-      throw new NotImplementedException();
+      return CacheService.GetAllLocal<StaticDataChangeTrackingModel>(Key).ToList();
     }
 
     public int UpsertLocal(string key, IEnumerable<StaticDataChangeTrackingModel> items)
     {
-      throw new NotImplementedException();
+      // todo: implement you fool!
+      return 0;
     }
   }
 }
