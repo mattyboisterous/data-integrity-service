@@ -1,17 +1,20 @@
-## Data Integrity Service
+# Data Integrity Service
 
 !! Building doco with the assistance of AI - this is a work in progress! !!
 
-### Overview
+## Overview
 This system is designed to manage, track and synchronise data changes between a mobile application and a cloud server. Designed to support a strict "offline first" capability it employs a service-oriented architecture enabling modularity, extensibility, and maintainability.
 
 Key functionalities include data change tracking (both local and cloud), support for reference data synchronisation, resiliant HTTP communication, local caching (your choice of providers, both SQL and Non-SQL), transient error backoff, poison message queue and workflow management.
 
-### Big Players
+## Big Players
 
 Looking to seriously decouple some big players eventuated in two key components in this system: IDataService and IWorkflow implentations.
 
-#### IDataService
+### IDataService
+
+TL;DR
+A concrete implementation of IDataService knows how to move/manipulate data for a single business entity (a table in a relational database, for example) to and from a mobile device and the cloud. It knows not how or when it will be used.
 
 The IDataService interface is central to the system's ability to handle data efficiently and effectively. The services implementing this interface are designed to manage the acquisition and storage of data in both server environments and local devices. Here are key aspects of IDataService:
 
@@ -25,7 +28,10 @@ Flexibility and Extensibility: The interface allows for various implementations 
 
 Asynchronous Operations: Given the potentially time-consuming nature of data operations, especially involving network interactions, IDataService implementations likely support asynchronous methods to enhance performance and responsiveness.
 
-#### IWorkflowService
+### IWorkflowService
+
+TL;DR
+A concrete implementation of IWorkflowService understands a pattern of how an IDataService implementation should be used. It ensures such a pattern is repeatable, reusable and it's behaviour is consistant.
 
 The IWorkflowService interface is pivotal in defining and managing the patterns for moving data between devices and servers. It encapsulates the logic for various operational flows, thereby orchestrating complex processes. Key roles include:
 
