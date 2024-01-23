@@ -1,10 +1,10 @@
 
 # Data Integrity Service
-This is a work in progress! !!
+This is a work in progress!!!
 ## Overview
-This system is designed to manage, track and synchronise data changes between a mobile application and a cloud server. Designed to support a strict "offline first" capability it employs a service-oriented architecture enabling modularity, extensibility, and maintainability.
+This system is designed to manage, track and synchronise data changes between a mobile application and a cloud server. Designed to support a strict "offline first" capability, it employs a service-oriented architecture enabling modularity, extensibility, and maintainability.
 
-Key functionalities include data change tracking (both local and cloud), support for reference data synchronisation, resiliant HTTP communication, local caching (your choice of providers, both SQL and Non-SQL), transient error backoff, poison message queue and workflow management.
+Key functionalities include data change tracking (both local and cloud), support for reference data synchronisation, resiliant HTTP communication, local caching (your choice of providers, both SQL and NoSQL), transient error backoff, poison message queue and workflow management.
 
 ## Key components
 Looking to seriously decouple some big players eventuated in two key concepts that are central to this system: IDataService and IWorkflow implementations.
