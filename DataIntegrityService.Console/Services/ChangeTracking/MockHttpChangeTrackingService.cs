@@ -19,7 +19,7 @@ namespace DataIntegrityService.Console.Services.ChangeTracking
 
     public bool ChangesExist()
     {
-      Logger.Info("MockHttpChangeTrackingService", TrackedChanges.Any() ? $"Further changes exist..." : "No further changes exist.");
+      //Logger.Info("MockHttpChangeTrackingService", TrackedChanges.Any() ? $"Further changes exist..." : "No further changes exist.");
       return TrackedChanges.Any();
     }
 

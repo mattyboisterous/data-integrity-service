@@ -90,9 +90,11 @@ namespace DataIntegrityService.Core
           if (staticChangeTrackingDataService.IsInitialised)
           {
             // iterate over server dataset state, if no local version or version mismatch, fetch from server and overwrite locally...
+            Logger.Info("EntryPoint", $"Iterating over server static datasets...");
+
             foreach (var serverDataSet in staticChangeTrackingDataService.ServerReferenceDataSetState)
             {
-              Logger.Info("EntryPoint", $"Processing '{serverDataSet.DatasetName}'...");
+              Logger.Info("EntryPoint", $"Comparing server dataset '{serverDataSet.DatasetName}' with local...");
 
               // look for local match...
               var localDataSet = staticChangeTrackingDataService.LocalReferenceDataSetState.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
@@ -159,6 +161,8 @@ namespace DataIntegrityService.Core
                 else
                   throw new InvalidOperationException($"Please ensure data service '{staticDataServiceConfiguration.DatasetName}' has been configured before calling 'Execute'.");
               }
+              else
+                Logger.Info("EntryPoint", $"Version match, iterating...");
             }
 
             Logger.Info("EntryPoint", $"All work complete for static data.");
@@ -275,8 +279,6 @@ namespace DataIntegrityService.Core
 
     private void ConfigureBaseServices(IServiceCollection services)
     {
-      services.AddTransient<IStaticChangeTrackingService, StaticChangeTrackingService>();
-
       services.AddTransient<IWorkflowService, DeleteInsertAllFlow>();
       services.AddTransient<IWorkflowService, DeleteInsertAllByKeyFlow>();
       services.AddTransient<IWorkflowService, PushToServerFlow>();
