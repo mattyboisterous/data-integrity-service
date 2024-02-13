@@ -92,12 +92,19 @@ namespace DataIntegrityService.Core
             // iterate over server dataset state, if no local version or version mismatch, fetch from server and overwrite locally...
             foreach (var serverDataSet in staticChangeTrackingDataService.ServerReferenceDataSetState)
             {
+              Logger.Info("EntryPoint", $"Processing '{serverDataSet.DatasetName}'...");
+
               // look for local match...
               var localDataSet = staticChangeTrackingDataService.LocalReferenceDataSetState.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
 
               // refresh locally if we need to...
               if (forceRehydrateAll || localDataSet == null || localDataSet!.Version != serverDataSet.Version)
               {
+                if (localDataSet == null)
+                  Logger.Info("EntryPoint", $"No local dataset found, refresh from server...");
+                else if (localDataSet!.Version != serverDataSet.Version)
+                  Logger.Info("EntryPoint", $"Mismatch between local and server versions for this dataset, refresh from server...");
+
                 // fetch configuration, then locate the matching data service...
                 var staticDataServiceConfiguration = Configuration.DataServices.FirstOrDefault(ds => ds.DatasetName == serverDataSet.DatasetName);
 

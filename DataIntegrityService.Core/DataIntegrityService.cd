@@ -53,7 +53,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="DataIntegrityService.Core.Services.Http.HttpMessageHandlerService" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="9.25" Y="1.75" Width="2.25" />
+    <Position X="9.25" Y="2.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Services\Http\HttpMessageHandlerService.cs</FileName>
@@ -61,7 +61,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="DataIntegrityService.Core.Services.Http.HttpService" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="9.25" Y="2.75" Width="1.5" />
+    <Position X="9.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAABAAAAAAAAACAEAAAAAAgAAAAAAAAg=</HashCode>
       <FileName>Services\Http\HttpService.cs</FileName>
@@ -115,14 +115,14 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="DataIntegrityService.Core.Services.Http.IHttpMessageHandlerService" Collapsed="true">
-    <Position X="9.5" Y="4" Width="2.25" />
+    <Position X="9.25" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Services\Http\IHttpMessageHandlerService.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="DataIntegrityService.Core.Services.Http.IHttpService" Collapsed="true">
-    <Position X="9.5" Y="4.75" Width="1.5" />
+    <Position X="9.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAABAAAAAAAAACAEAAAAAAgAAAAAAAAg=</HashCode>
       <FileName>Services\Http\IHttpService.cs</FileName>

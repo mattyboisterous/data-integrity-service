@@ -39,7 +39,7 @@ namespace DataIntegrityService.Core.Workflows
             Logger.Info("PullFromServer", $"Deleting data from local store...");
             dataService.DeleteLocal<T>(message.ItemKey);
 
-            Logger.Error("PullFromServer", $"Work complete.");
+            Logger.Info("PullFromServer", $"Work complete.");
             return new ActionResponse();
           }
           else
@@ -65,7 +65,7 @@ namespace DataIntegrityService.Core.Workflows
                 dataService.UpdateLocal((T)data);
               }
 
-              Logger.Error("PullFromServer", $"Work complete.");
+              Logger.Info("PullFromServer", $"Work complete.");
               return dataResponse;
             }
             else 
