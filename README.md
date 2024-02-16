@@ -1,6 +1,6 @@
 
 # Data Integrity Service
-This is a work in progress!!!
+
 ## Overview
 This system is designed to manage, track and synchronise data changes between a mobile application and a cloud server. Designed to support a strict "offline first" capability, it employs a service-oriented architecture enabling modularity, extensibility, and maintainability.
 
