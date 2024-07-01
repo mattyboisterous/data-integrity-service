@@ -16,6 +16,7 @@ namespace DataIntegrityService.Core.Factories
     {
       _dataServices = dataServices;
     }
+
     public IDataService GetDataService(DataServiceConfiguration serviceConfiguration)
     {
       var dataService = _dataServices.FirstOrDefault(ds => ds.Key == serviceConfiguration.Key)
