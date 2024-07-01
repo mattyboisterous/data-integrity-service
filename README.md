@@ -1,6 +1,6 @@
 
 # Data Integrity Service
-This is a work in progress!!!
+
 ## Overview
 This system is designed to manage, track and synchronise data changes between a mobile application and a cloud server. Designed to support a strict "offline first" capability, it employs a service-oriented architecture enabling modularity, extensibility, and maintainability.
 
@@ -54,8 +54,6 @@ In summary, IDataService and IWorkflowService form the backbone of a system desi
 
 **Mock Services**: Such as MockHttpChangeTrackingService, MockLocalChangeTrackingService, etc., are used for testing purposes. These mock implementations simulate real-world service behavior, crucial for unit testing and ensuring system reliability without external dependencies.
 
-**Models**: Classes like MemoModel, ProvisionModel, QualityAreaModel, etc., represent the data structures used within the system. These models are essential for representing business entities and are manipulated by the services.
-
 **Workflows**: Classes like DeleteInsertAllByKeyFlow, PullFromServerFlow, etc., handle specific business logic or data processing tasks, indicating the system's capability to manage complex operational flows.
 
 ### Key Features
@@ -72,10 +70,6 @@ In summary, IDataService and IWorkflowService form the backbone of a system desi
 Technical Aspects:
 
 **Dependency Injection**: Used extensively for service creation, enhancing the flexibility and testability of the system.
-
-**Asynchronous Operations**: Many service methods are asynchronous, indicating the system's capability to handle intensive operations efficiently.
-
-**HTTP and Local Services**: The system interacts with remote services via HTTP and manages local data, indicating a comprehensive approach to data handling.
 
 **Conclusion**:
 This Data Integrity and Change Tracking System exemplifies a well-architected software solution that balances modularity with functionality. Its emphasis on service orientation, testing, and efficient data handling positions it as a robust and scalable platform for managing data integrity and workflows.
