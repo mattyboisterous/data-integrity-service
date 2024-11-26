@@ -1,7 +1,6 @@
 
 # Data Integrity Service
 
-## Overview
 This system is designed to manage, track and synchronise data changes between a mobile application and a cloud server. Designed to support a strict "offline first" capability, it employs a service-oriented architecture enabling modularity, extensibility, and maintainability.
 
 Key functionalities include data change tracking (both local and cloud), support for reference data synchronisation, resiliant HTTP communication, local caching (your choice of providers, both SQL and NoSQL), transient error backoff, poison message queue and workflow management.
