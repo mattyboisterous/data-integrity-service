@@ -32,7 +32,7 @@ The IWorkflowService interface is pivotal in defining and managing the patterns 
 
 **Workflow Orchestration**: Implementations of IWorkflowService manage the sequence of steps involved in a particular process, such as data synchronization, validation, or transformation tasks.
 
-**Reusability and Standardization**: By defining workflows as reusable services, the system promotes standardization of processes. This approach ensures consistency in how tasks are executed and simplifies maintenance.
+**Reusability and Standardisation**: By defining workflows as reusable services, the system promotes standardisation of processes. This approach ensures consistency in how tasks are executed and simplifies maintenance.
 
 **Decoupling Process Logic**: IWorkflowService abstracts the process logic from the actual execution context, allowing for greater flexibility in how workflows are utilized across the system.
 
